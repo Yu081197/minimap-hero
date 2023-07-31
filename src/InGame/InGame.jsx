@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+// to-do : 이미지 추가 필요
+
 const GameContainer = styled.div`
   width: 100%;
   height: 100vh;
@@ -28,6 +30,7 @@ const Character = styled.div`
   left: ${(props) => props.position.x}px;
 `;
 
+// to-do : 한글 추가 필요
 const characters = ["q", "w", "e", "r", "a", "s", "d", "f"];
 
 const InGame = () => {
