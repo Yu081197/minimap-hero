@@ -6,7 +6,7 @@ function routes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/ingame" element={<InGame />} />
+        <Route path="/" element={<InGame />} />
       </Routes>
     </BrowserRouter>
   );
