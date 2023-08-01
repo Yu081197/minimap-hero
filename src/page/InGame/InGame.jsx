@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
 
+import skillUI from "../../assets/img/skillUI.png";
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
@@ -33,6 +34,12 @@ const StyledWrapper = styled.div`
   .fail {
     color: #cdfafa;
     background-color: #091428;
+  }
+  .skill-ui {
+    width: 800px;
+    position: absolute;
+    bottom: 0;
+    left: 500px;
   }
   .game-container {
     display: flex;
@@ -86,11 +93,13 @@ const InGame = () => {
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition = () => {
     const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
+
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
-      const x = Math.random() * (boxRect.width - 50); // 난수 생성 후 box의 너비에서 문자의 너비를 뺌으로써 문자가 box 밖으로 나가지 않게 함
-      const y = Math.random() * (boxRect.height - 30); // 난수 생성 후 box의 너비에서 문자의 높이를 뺌으로써 문자가 box 밖으로 나가지 않게 함
+
+      const x = Math.random() * (boxRect.width - 450); // 난수 생성 후 box의 너비에서 문자의 너비를 뺌으로써 문자가 box 밖으로 나가지 않게 함
+      const y = Math.random() * (boxRect.height - 350); // 난수 생성 후 box의 너비에서 문자의 높이를 뺌으로써 문자가 box 밖으로 나가지 않게 함
       setPosition({ x, y }); // position의 상태를 랜덤한 값으로 업데이트
     }
   };
@@ -104,7 +113,7 @@ const InGame = () => {
       const randomCharacter =
         characters[Math.floor(Math.random() * characters.length)];
       setTargetCharacter(randomCharacter);
-    }, 500);
+    }, 300);
   };
 
   // 게임이 시작되면 사용자에게 랜덤한 문자가 박스 내부의 랜덤한 위치에 보여진다.
@@ -164,9 +173,9 @@ const InGame = () => {
             // 3초 후에
             setGameStatus("failed"); // 실패 상태를 처리
             resetGame(); // 새로운 대상 문자와 위치를 설정
-          }, 1000)
+          }, 500)
         );
-      }, 1000);
+      }, 500);
       return () => clearTimeout(timeout);
     }
   }, [gameStatus, targetCharacter]);
@@ -189,6 +198,7 @@ const InGame = () => {
             <div className="score">점수 : {score}</div>
           </div>
           <Map />
+          <img className="skill-ui" src={skillUI} />
         </Box>
       </div>
     </StyledWrapper>
