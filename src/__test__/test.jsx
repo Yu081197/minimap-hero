@@ -1,50 +1,80 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import randomstring from 'randomstring';
+import styled from 'styled-components';
 
-import MapImg from "../assets/img/minimap.png";
+const characters = 'qwer';
+const rhythmInterval = 3000; // 리듬 비주기 (3초)
 
-import { styled } from "styled-components";
-
-const StyledWrapper = styled.div`
-  .map-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  }
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 150px);
+  gap: 20px;
 `;
-const Box = styled.div`
-  width: 400px;
-  height: 400px;
-  border: 2px solid #c8aa6e;
+
+const Cell = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  position: relative;
-  background-color: #091428;
+  justify-content: center;
+  font-size: 48px;
+  border: 1px solid #ccc;
 `;
 
-const Character = styled.div`
-  position: absolute;
-  top: ${(props) => props.position.y}px;
-  left: ${(props) => props.position.x}px;
-  color: #0ac8b9;
-  background-color: #091428;
+const GameContainer = styled.div`
+  background-color: black;
+  width: 700px;
+  height: 700px;
+  color: white;
 `;
 
-const characters = ["f1", "f2", "f3", "f4", "f5"];
+const App = () => {
+  const [currentCharacters, setCurrentCharacters] = useState(Array(4).fill(''));
+  const [score, setScore] = useState(0);
+  const [feedback, setFeedback] = useState('');
 
-const Map = () => {
+  useEffect(() => {
+    // 첫 문자 출력 및 리듬 시작
+    setTimeout(() => {
+      displayCharacters();
+      setInterval(displayCharacters, rhythmInterval);
+    }, rhythmInterval);
+  }, []);
+
+  const displayCharacters = () => {
+    const newCharacters = currentCharacters.map(() => {
+      return randomstring.generate({ length: 1, charset: characters });
+    });
+    setCurrentCharacters(newCharacters);
+  };
+
+  const handleKeyPress = (event, index) => {
+    const pressedCharacter = event.key.toLowerCase();
+    if (characters.includes(pressedCharacter) && pressedCharacter === currentCharacters[index]) {
+      setFeedback('Correct! +1');
+      setScore(score => score + 1);
+    } else {
+      setFeedback('Wrong! -1');
+      setScore(score => score - 1);
+    }
+  };
+
   return (
-    <>
-      <StyledWrapper>
-        <div className="map-container">
-          <img src={MapImg} width="330px" height="330px" alt="testA" />
-        </div>
-      </StyledWrapper>
-    </>
+    <GameContainer>
+      <h1>Typing Game</h1>
+      <p>Press the correct key when the character appears! You have 3 seconds for each character.</p>
+      <Container>
+        {currentCharacters.map((character, index) => (
+          <Cell key={index} onKeyDown={(e) => handleKeyPress(e, index)} tabIndex={index}>
+            {character}
+          </Cell>
+        ))}
+      </Container>
+      <p>Score: {score}</p>
+      <p>{feedback}</p>
+      <p>Press the keys: {characters}</p>
+      <input type="text" onKeyPress={handleKeyPress} />
+    </GameContainer>
   );
 };
 
-export default Map;
+export default App;

@@ -43,15 +43,12 @@ const StyledWrapper = styled.div`
   }
   .game-container {
     display: flex;
-    width: 1920px;
-    height: 1080px;
   }
 `;
 
 const Box = styled.div`
-  width: 1920px;
-  height: 1080px;
-  border: 2px solid #c8aa6e;
+  width: 1960px;
+  height: 1060px;
   display: flex;
   justify-content: center;
   align-items: center;
