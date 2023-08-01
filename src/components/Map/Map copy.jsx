@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useEffect } from "react";
 
-const GameContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+import MapImg from "../../assets/img/minimap.png";
+
+import ASkill from "../../assets/img/skills/skill-a.png";
+import SSkill from "../../assets/img/skills/skill-s.png";
+import DSkill from "../../assets/img/skills/skill-d.png";
+import FSkill from "../../assets/img/skills/skill-f.png";
+import QSkill from "../../assets/img/skills/skill-q.png";
+import WSkill from "../../assets/img/skills/skill-w.png";
+import ESkill from "../../assets/img/skills/skill-e.png";
+import RSkill from "../../assets/img/skills/skill-r.png";
+
+import { styled } from "styled-components";
+
+const StyledWrapper = styled.div`
+  .map-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 `;
-
 const Box = styled.div`
-  width: 200px;
-  height: 200px;
-  border: 2px solid #333;
+  width: 400px;
+  height: 400px;
+  border: 2px solid #c8aa6e;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,17 +31,29 @@ const Box = styled.div`
   font-weight: bold;
   color: #333;
   position: relative;
+  background-color: #091428;
 `;
 
 const Character = styled.div`
   position: absolute;
   top: ${(props) => props.position.y}px;
   left: ${(props) => props.position.x}px;
+  color: #0ac8b9;
+  background-color: #091428;
 `;
 
-const characters = ["q", "w", "e", "r", "a", "s", "d", "f"];
+const characters = [
+  { key: "q", kor: "ㅂ", image: QSkill },
+  { key: "w", kor: "ㅈ", image: WSkill },
+  { key: "e", kor: "ㄷ", image: ESkill },
+  { key: "r", kor: "ㄱ", image: RSkill },
+  { key: "a", kor: "ㅁ", image: ASkill },
+  { key: "s", kor: "ㄴ", image: SSkill },
+  { key: "d", kor: "ㅇ", image: DSkill },
+  { key: "f", kor: "ㄹ", image: FSkill },
+];
 
-const InGame = () => {
+const Map = () => {
   const [targetCharacter, setTargetCharacter] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
   const [showCharacter, setShowCharacter] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [position, setPosition] = useState({ x: 0, y: 0 }); // 현재 대상 문자가 나타날 위치를 저장하는 상태
@@ -40,7 +63,7 @@ const InGame = () => {
 
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition = () => {
-    const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
+    const box = document.getElementsByClassName("box"); // box라는 id값을 dom으로 가져온다
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
@@ -59,7 +82,7 @@ const InGame = () => {
       const randomCharacter =
         characters[Math.floor(Math.random() * characters.length)];
       setTargetCharacter(randomCharacter);
-    }, 1000);
+    }, 500);
   };
 
   // 게임이 시작되면 사용자에게 랜덤한 문자가 박스 내부의 랜덤한 위치에 보여진다.
@@ -77,7 +100,10 @@ const InGame = () => {
       const pressedKey = event.key.toLowerCase(); // 입력 된 키는 소문자로 변환하여 저장
       if (showCharacter) {
         // 대상 문자가 화면에 보여질 때
-        if (targetCharacter === pressedKey) {
+        if (
+          targetCharacter.key === pressedKey ||
+          targetCharacter.kor === pressedKey
+        ) {
           // 만약 입력해야할 대상의 문자가 실제로 눌린 키와 같다면 즉, 사용자가 올바른 키를 입력해 성공한 경우
           clearTimeout(failTimeout); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
           setScore(score + 1); // 스코어를 1 올림
@@ -116,24 +142,33 @@ const InGame = () => {
             // 3초 후에
             setGameStatus("failed"); // 실패 상태를 처리
             resetGame(); // 새로운 대상 문자와 위치를 설정
-          }, 3000)
+          }, 1000)
         );
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timeout);
     }
   }, [gameStatus, targetCharacter]);
-
   return (
-    <GameContainer>
-      <Box id="box">
-        {gameStatus === "playing" && showCharacter && (
-          <Character position={position}>{targetCharacter}</Character>
-        )}
-      </Box>
-      {gameStatus === "failed" && <div>실패</div>}
-      score : {score}
-    </GameContainer>
+    <>
+      <StyledWrapper>
+        <div className="map-container">
+          <img src={MapImg} width="330px" height="330px" alt="testA" />
+          <Box className="box">
+            {gameStatus === "playing" && showCharacter && (
+              <Character position={position}>
+                <img src={targetCharacter.image} alt={targetCharacter.key} />
+              </Character>
+            )}
+            {gameStatus === "failed" && <div className="fail">실패</div>}
+            <div className="score-container">
+              <div className="score">점수 : {score}</div>
+            </div>
+            <Map />
+          </Box>
+        </div>
+      </StyledWrapper>
+    </>
   );
 };
 
-export default InGame;
+export default Map;

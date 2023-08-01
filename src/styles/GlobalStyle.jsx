@@ -1,5 +1,5 @@
-import {createGlobalStyle} from 'styled-components'
-import reset from 'styled-reset'
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
     }
     *{
-
+        background-color: #010A13;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -41,29 +41,5 @@ const GlobalStyle = createGlobalStyle`
         cursor: pointer;
     }
         
-    :root {
-        --gray-black: #000000;
-        --gray-900: #191919;
-        --gray-800: #333333;
-        --gray-700: #4C4C4C;
-        --gray-600: #666666;
-        --gray-500: #7F7F7F;
-        --gray-400: #999999;
-        --gray-300: #B2B2B2;
-        --gray-200: #CCCCCC;
-        --gray-100: #E5E5E5;
-        --gray-50: #F6F6F6;
-        --gray-10: #FAFAFA;
-        --gray-white: #FFFFFF;
-
-        --blue-500:#2E90FA;
-        --blue-200:#B2DDFF;
-
-        --red-500:#F04438;
-
-        --yellow-500:#F8D706;
-
-        --brown-600:#2F1B1A;
-    }
-`
-export default GlobalStyle
+`;
+export default GlobalStyle;
