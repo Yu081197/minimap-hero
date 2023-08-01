@@ -33,7 +33,7 @@ const Character = styled.div`
   background-color: #091428;
 `;
 
-const characters = ["q", "w", "e", "r", "a", "s", "d", "f"];
+const characters = ["f1", "f2", "f3", "f4", "f5"];
 
 const Map = () => {
   return (
