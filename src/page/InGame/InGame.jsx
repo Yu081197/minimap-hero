@@ -1,20 +1,40 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import Map from "../../components/Map/Map";
+import MapImg from "../../assets/img/minimap.png";
+
 // to-do : 이미지 추가 필요
 
-const GameContainer = styled.div`
-  width: 100%;
-  height: 100vh;
+const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  .score-container {
+    display: block;
+  }
+  .score {
+    top: 50px;
+    right: 50px;
+    position: absolute;
+    color: #cdfafa;
+    background-color: #091428;
+  }
+  .fail {
+    color: #cdfafa;
+    background-color: #091428;
+  }
+  .game-container {
+    display: flex;
+    width: 1920px;
+    height: 1080px;
+  }
 `;
 
 const Box = styled.div`
-  width: 200px;
-  height: 200px;
-  border: 2px solid #333;
+  width: 1920px;
+  height: 1080px;
+  border: 2px solid #c8aa6e;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,12 +42,15 @@ const Box = styled.div`
   font-weight: bold;
   color: #333;
   position: relative;
+  background-color: #091428;
 `;
 
 const Character = styled.div`
   position: absolute;
   top: ${(props) => props.position.y}px;
   left: ${(props) => props.position.x}px;
+  color: #0ac8b9;
+  background-color: #091428;
 `;
 
 // to-do : 한글 추가 필요
@@ -62,7 +85,7 @@ const InGame = () => {
       const randomCharacter =
         characters[Math.floor(Math.random() * characters.length)];
       setTargetCharacter(randomCharacter);
-    }, 1000);
+    }, 500);
   };
 
   // 게임이 시작되면 사용자에게 랜덤한 문자가 박스 내부의 랜덤한 위치에 보여진다.
@@ -119,23 +142,28 @@ const InGame = () => {
             // 3초 후에
             setGameStatus("failed"); // 실패 상태를 처리
             resetGame(); // 새로운 대상 문자와 위치를 설정
-          }, 3000)
+          }, 1000)
         );
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timeout);
     }
   }, [gameStatus, targetCharacter]);
 
   return (
-    <GameContainer>
-      <Box id="box">
-        {gameStatus === "playing" && showCharacter && (
-          <Character position={position}>{targetCharacter}</Character>
-        )}
-      </Box>
-      {gameStatus === "failed" && <div>실패</div>}
-      score : {score}
-    </GameContainer>
+    <StyledWrapper>
+      <div className="game-container">
+        <Box id="box">
+          {gameStatus === "playing" && showCharacter && (
+            <Character position={position}>{targetCharacter}</Character>
+          )}
+          {gameStatus === "failed" && <div className="fail">실패</div>}
+          <div className="score-container">
+            <div className="score">점수 : {score}</div>
+          </div>
+          <Map />
+        </Box>
+      </div>
+    </StyledWrapper>
   );
 };
 

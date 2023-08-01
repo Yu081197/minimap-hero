@@ -1,12 +1,19 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import InGame from "./InGame/InGame";
+
+import InGame from "./page/InGame/InGame";
+import StartPage from "./page/StartPage/StartPage";
+import Map from "./components/Map/Map";
+
+import { styled } from "styled-components";
 
 function routes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<InGame />} />
+        <Route path="/" element={<StartPage />} />
+        <Route path="/ingame" element={<InGame />} />
+        <Route path="/map" element={<Map />} />
       </Routes>
     </BrowserRouter>
   );
