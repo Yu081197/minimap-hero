@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
+
 import MapImg from "../../assets/img/minimap.png";
+
 import { styled } from "styled-components";
 
 const StyledWrapper = styled.div`

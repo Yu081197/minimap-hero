@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useEffect } from "react";
 
-import Map from "../../components/Map/Map";
+import MapImg from "../../assets/img/minimap.png";
 
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
@@ -12,34 +11,18 @@ import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
 
+import { styled } from "styled-components";
+
 const StyledWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .score-container {
-    display: block;
-  }
-  .score {
-    top: 50px;
-    right: 50px;
+  .map-container {
     position: absolute;
-    color: #cdfafa;
-    background-color: #091428;
-  }
-  .fail {
-    color: #cdfafa;
-    background-color: #091428;
-  }
-  .game-container {
-    display: flex;
-    width: 1920px;
-    height: 1080px;
+    bottom: 0;
+    right: 0;
   }
 `;
-
 const Box = styled.div`
-  width: 1920px;
-  height: 1080px;
+  width: 400px;
+  height: 400px;
   border: 2px solid #c8aa6e;
   display: flex;
   justify-content: center;
@@ -69,9 +52,8 @@ const characters = [
   { key: "d", kor: "ㅇ", image: DSkill },
   { key: "f", kor: "ㄹ", image: FSkill },
 ];
-const skills = [ASkill, SSkill, DSkill, FSkill, QSkill, WSkill, ESkill, RSkill];
 
-const InGame = () => {
+const Map = () => {
   const [targetCharacter, setTargetCharacter] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
   const [showCharacter, setShowCharacter] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [position, setPosition] = useState({ x: 0, y: 0 }); // 현재 대상 문자가 나타날 위치를 저장하는 상태
@@ -81,7 +63,7 @@ const InGame = () => {
 
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition = () => {
-    const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
+    const box = document.getElementsByClassName("box"); // box라는 id값을 dom으로 가져온다
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
@@ -166,25 +148,27 @@ const InGame = () => {
       return () => clearTimeout(timeout);
     }
   }, [gameStatus, targetCharacter]);
-
   return (
-    <StyledWrapper>
-      <div className="game-container">
-        <Box id="box">
-          {gameStatus === "playing" && showCharacter && (
-            <Character position={position}>
-              <img src={targetCharacter.image} alt={targetCharacter.key} />
-            </Character>
-          )}
-          {gameStatus === "failed" && <div className="fail">실패</div>}
-          <div className="score-container">
-            <div className="score">점수 : {score}</div>
-          </div>
-          <Map />
-        </Box>
-      </div>
-    </StyledWrapper>
+    <>
+      <StyledWrapper>
+        <div className="map-container">
+          <img src={MapImg} width="330px" height="330px" alt="testA" />
+          <Box className="box">
+            {gameStatus === "playing" && showCharacter && (
+              <Character position={position}>
+                <img src={targetCharacter.image} alt={targetCharacter.key} />
+              </Character>
+            )}
+            {gameStatus === "failed" && <div className="fail">실패</div>}
+            <div className="score-container">
+              <div className="score">점수 : {score}</div>
+            </div>
+            <Map />
+          </Box>
+        </div>
+      </StyledWrapper>
+    </>
   );
 };
 
-export default InGame;
+export default Map;
