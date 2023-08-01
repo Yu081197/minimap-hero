@@ -16,6 +16,10 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  .skill {
+    border-radius: 50%;
+    border: 2px solid #c8aa6e;
+  }
   .score-container {
     display: block;
   }
@@ -173,7 +177,11 @@ const InGame = () => {
         <Box id="box">
           {gameStatus === "playing" && showCharacter && (
             <Character position={position}>
-              <img src={targetCharacter.image} alt={targetCharacter.key} />
+              <img
+                className="skill"
+                src={targetCharacter.image}
+                alt={targetCharacter.key}
+              />
             </Character>
           )}
           {gameStatus === "failed" && <div className="fail">실패</div>}
