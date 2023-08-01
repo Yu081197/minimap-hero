@@ -59,7 +59,7 @@ const Box = styled.div`
   background-color: #091428;
 `;
 
-const Character = styled.div`
+const SkillStyle = styled.div`
   position: absolute;
   top: ${(props) => props.position.y}px;
   left: ${(props) => props.position.x}px;
@@ -67,7 +67,7 @@ const Character = styled.div`
   background-color: #091428;
 `;
 
-const characters = [
+const skills = [
   { key: "q", kor: "ㅂ", image: QSkill },
   { key: "w", kor: "ㅈ", image: WSkill },
   { key: "e", kor: "ㄷ", image: ESkill },
@@ -77,15 +77,45 @@ const characters = [
   { key: "d", kor: "ㅇ", image: DSkill },
   { key: "f", kor: "ㄹ", image: FSkill },
 ];
-const skills = [ASkill, SSkill, DSkill, FSkill, QSkill, WSkill, ESkill, RSkill];
+function getRandomNumber() {
+  return Math.floor(Math.random() * 3) + 1; // 1, 2, 3 중 랜덤한 숫자 생성
+}
 
 const InGame = () => {
-  const [targetCharacter, setTargetCharacter] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
-  const [showCharacter, setShowCharacter] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
+  const [targetSkill, setTargetSkill] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
+  const [showSkill, setShowSkill] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [position, setPosition] = useState({ x: 0, y: 0 }); // 현재 대상 문자가 나타날 위치를 저장하는 상태
   const [gameStatus, setGameStatus] = useState("playing"); // 게임 상태를 나타내는 상태
   const [failTimeout, setFailTimeout] = useState(null); // 게임 실패 시 사용되는 setTimeout 핸들러 저장하는 상태
   const [score, setScore] = useState(0); // 점수 저장하는 상태
+
+  const [number1, setNumber1] = useState(getRandomNumber());
+  const [number2, setNumber2] = useState(getRandomNumber());
+  const [number3, setNumber3] = useState(getRandomNumber());
+
+  useEffect(() => {
+    const interval1 = setInterval(() => {
+      setNumber1((prevNumber) => prevNumber - 1);
+    }, 1000);
+
+    return () => clearInterval(interval1);
+  }, []);
+
+  useEffect(() => {
+    const interval2 = setInterval(() => {
+      setNumber2((prevNumber) => prevNumber - 1);
+    }, 1000);
+
+    return () => clearInterval(interval2);
+  }, []);
+
+  useEffect(() => {
+    const interval3 = setInterval(() => {
+      setNumber3((prevNumber) => prevNumber - 1);
+    }, 1000);
+
+    return () => clearInterval(interval3);
+  }, []);
 
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition = () => {
@@ -102,36 +132,31 @@ const InGame = () => {
   };
   // 게임을 리셋하는 함수
   const resetGame = () => {
-    setShowCharacter(false);
+    setShowSkill(false);
     clearTimeout(failTimeout);
     setGameStatus("playing");
     setRandomPosition();
     setTimeout(() => {
-      const randomCharacter =
-        characters[Math.floor(Math.random() * characters.length)];
-      setTargetCharacter(randomCharacter);
+      const randomSkill = skills[Math.floor(Math.random() * skills.length)];
+      setTargetSkill(randomSkill);
     }, 300);
   };
 
   // 게임이 시작되면 사용자에게 랜덤한 문자가 박스 내부의 랜덤한 위치에 보여진다.
   useEffect(() => {
-    const randomCharacter =
-      characters[Math.floor(Math.random() * characters.length)]; // characters배열에서 랜덤한 인덱스를 구하고 randomCharacter 변수에 저장
-    setTargetCharacter(randomCharacter); // 대상 문자를 랜덤한 문자로 설정
+    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
+    setTargetSkill(randomSkill); // 대상 문자를 랜덤한 문자로 설정
     setRandomPosition(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
   }, []);
 
-  // showCharacter, targetCharacter, failTimeout 중 하나라도 상태가 변경 될 때 사용자의 키 입력을 처리
+  // showSkill, targetSkill, failTimeout 중 하나라도 상태가 변경 될 때 사용자의 키 입력을 처리
   useEffect(() => {
     const handleKeyPress = (event) => {
       // 사용자가 키보드 누를 때 실행되는 함수
       const pressedKey = event.key.toLowerCase(); // 입력 된 키는 소문자로 변환하여 저장
-      if (showCharacter) {
+      if (showSkill) {
         // 대상 문자가 화면에 보여질 때
-        if (
-          targetCharacter.key === pressedKey ||
-          targetCharacter.kor === pressedKey
-        ) {
+        if (targetSkill.key === pressedKey || targetSkill.kor === pressedKey) {
           // 만약 입력해야할 대상의 문자가 실제로 눌린 키와 같다면 즉, 사용자가 올바른 키를 입력해 성공한 경우
           clearTimeout(failTimeout); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
           setScore(score + 1); // 스코어를 1 올림
@@ -154,16 +179,16 @@ const InGame = () => {
       // 컴포넌트가 언마운트 될 때
       document.removeEventListener("keypress", handleKeyPress);
     };
-  }, [showCharacter, targetCharacter, failTimeout]);
+  }, [showSkill, targetSkill, failTimeout]);
 
-  // gameStatus, targetCharacter가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
+  // gameStatus, targetSkill가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
   // 이 로직에서 문제가 있을것으로 예상 됨
   useEffect(() => {
-    if (gameStatus === "playing" && targetCharacter) {
+    if (gameStatus === "playing" && targetSkill) {
       // 만약 게임이 실행중이고 대상 문자가 저장됐다면
       const timeout = setTimeout(() => {
         // 3초의 지연 시간 이후에
-        setShowCharacter(true); // 대상 문자를 화면에 보여줌
+        setShowSkill(true); // 대상 문자를 화면에 보여줌
         setFailTimeout(
           // 대상 문자를 보여준 후
           setTimeout(() => {
@@ -175,20 +200,20 @@ const InGame = () => {
       }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [gameStatus, targetCharacter]);
+  }, [gameStatus, targetSkill]);
 
   return (
     <StyledWrapper>
       <div className="game-container">
         <Box id="box">
-          {gameStatus === "playing" && showCharacter && (
-            <Character position={position}>
+          {gameStatus === "playing" && showSkill && (
+            <SkillStyle position={position}>
               <img
                 className="skill"
-                src={targetCharacter.image}
-                alt={targetCharacter.key}
+                src={targetSkill.image}
+                alt={targetSkill.key}
               />
-            </Character>
+            </SkillStyle>
           )}
           {gameStatus === "failed" && <div className="fail">실패</div>}
           <div className="score-container">
