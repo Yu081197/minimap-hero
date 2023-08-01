@@ -1,80 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import randomstring from 'randomstring';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
 
-const characters = 'qwer';
-const rhythmInterval = 3000; // 리듬 비주기 (3초)
+function getRandomNumber() {
+  return Math.floor(Math.random() * 3) + 1; // 1, 2, 3 중 랜덤한 숫자 생성
+}
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 150px);
-  gap: 20px;
-`;
-
-const Cell = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  border: 1px solid #ccc;
-`;
-
-const GameContainer = styled.div`
-  background-color: black;
-  width: 700px;
-  height: 700px;
-  color: white;
-`;
-
-const App = () => {
-  const [currentCharacters, setCurrentCharacters] = useState(Array(4).fill(''));
-  const [score, setScore] = useState(0);
-  const [feedback, setFeedback] = useState('');
+function App() {
+  const [number1, setNumber1] = useState(getRandomNumber());
+  const [number2, setNumber2] = useState(getRandomNumber());
+  const [number3, setNumber3] = useState(getRandomNumber());
 
   useEffect(() => {
-    // 첫 문자 출력 및 리듬 시작
-    setTimeout(() => {
-      displayCharacters();
-      setInterval(displayCharacters, rhythmInterval);
-    }, rhythmInterval);
+    const interval1 = setInterval(() => {
+      setNumber1((prevNumber) => prevNumber - 1);
+    }, 1000);
+
+    return () => clearInterval(interval1);
   }, []);
 
-  const displayCharacters = () => {
-    const newCharacters = currentCharacters.map(() => {
-      return randomstring.generate({ length: 1, charset: characters });
-    });
-    setCurrentCharacters(newCharacters);
-  };
+  useEffect(() => {
+    const interval2 = setInterval(() => {
+      setNumber2((prevNumber) => prevNumber - 1);
+    }, 1000);
 
-  const handleKeyPress = (event, index) => {
-    const pressedCharacter = event.key.toLowerCase();
-    if (characters.includes(pressedCharacter) && pressedCharacter === currentCharacters[index]) {
-      setFeedback('Correct! +1');
-      setScore(score => score + 1);
-    } else {
-      setFeedback('Wrong! -1');
-      setScore(score => score - 1);
+    return () => clearInterval(interval2);
+  }, []);
+
+  useEffect(() => {
+    const interval3 = setInterval(() => {
+      setNumber3((prevNumber) => prevNumber - 1);
+    }, 1000);
+
+    return () => clearInterval(interval3);
+  }, []);
+
+  useEffect(() => {
+    // 숫자가 0이 되면 각각 해당 숫자만 초기화
+    if (number1 === -1) {
+      setNumber1(getRandomNumber());
     }
-  };
+    if (number2 === -1) {
+      setNumber2(getRandomNumber());
+    }
+    if (number3 === -1) {
+      setNumber3(getRandomNumber());
+    }
+  }, [number1, number2, number3]);
 
   return (
-    <GameContainer>
-      <h1>Typing Game</h1>
-      <p>Press the correct key when the character appears! You have 3 seconds for each character.</p>
-      <Container>
-        {currentCharacters.map((character, index) => (
-          <Cell key={index} onKeyDown={(e) => handleKeyPress(e, index)} tabIndex={index}>
-            {character}
-          </Cell>
-        ))}
-      </Container>
-      <p>Score: {score}</p>
-      <p>{feedback}</p>
-      <p>Press the keys: {characters}</p>
-      <input type="text" onKeyPress={handleKeyPress} />
-    </GameContainer>
+    <div>
+      <p style={{ color: "white" }}>{number1}</p>
+      <p style={{ color: "white" }}>{number2}</p>
+      <p style={{ color: "white" }}>{number3}</p>
+    </div>
   );
-};
+}
 
 export default App;
