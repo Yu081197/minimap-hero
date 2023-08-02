@@ -106,7 +106,10 @@ const InGame = () => {
   const [gameStatus2, setGameStatus2] = useState("playing"); // 게임 상태를 나타내는 상태
   const [gameStatus3, setGameStatus3] = useState("playing"); // 게임 상태를 나타내는 상태
 
-  const [failTimeout, setFailTimeout] = useState(null); // 게임 실패 시 사용되는 setTimeout 핸들러 저장하는 상태
+  const [failTimeout1, setFailTimeout1] = useState(null); // 게임 실패 시 사용되는 setTimeout 핸들러 저장하는 상태
+  const [failTimeout2, setFailTimeout2] = useState(null); // 게임 실패 시 사용되는 setTimeout 핸들러 저장하는 상태
+  const [failTimeout3, setFailTimeout3] = useState(null); // 게임 실패 시 사용되는 setTimeout 핸들러 저장하는 상태
+
   const [score, setScore] = useState(0); // 점수 저장하는 상태
 
   const [number1, setNumber1] = useState(getRandomNumber7());
@@ -121,73 +124,91 @@ const InGame = () => {
   const [isNumber2Reset, setIsNumber2Reset] = useState(false);
   const [isNumber3Reset, setIsNumber3Reset] = useState(false);
 
+  const [isSkill1Hidden, setIsSkill1Hidden] = useState(false);
+  const [isSkill2Hidden, setIsSkill2Hidden] = useState(false);
+  const [isSkill3Hidden, setIsSkill3Hidden] = useState(false);
+
   const [isNumber1Hidden, setIsNumber1Hidden] = useState(false);
   const [isNumber2Hidden, setIsNumber2Hidden] = useState(false);
   const [isNumber3Hidden, setIsNumber3Hidden] = useState(false);
 
+  const handleKeyPressGame1 = (event) => {};
+
+  // 게임 2의 이벤트 핸들러
+  const handleKeyPressGame2 = (event) => {};
+
+  // 게임 3의 이벤트 핸들러
+  const handleKeyPressGame3 = (event) => {};
+
   useEffect(() => {
-    if (!isNumber1Hidden) {
+    if (!isNumber1Hidden && !isSkill1Hidden) {
       const newInterval1 = setInterval1(() => {
         setNumber1((prevNumber) => prevNumber - 1);
-      }, 700);
+      }, 1000);
       setInterval1(newInterval1);
     } else {
       clearInterval(interval1);
     }
     return () => clearInterval(interval1);
-  }, [isNumber1Hidden]);
+  }, [isNumber1Hidden, isSkill1Hidden]);
 
   useEffect(() => {
-    if (!isNumber2Hidden) {
+    if (!isNumber2Hidden && isSkill2Hidden) {
       const newInterval2 = setInterval2(() => {
         setNumber2((prevNumber) => prevNumber - 1);
-      }, 700);
+      }, 1000);
       setInterval2(newInterval2);
     } else {
       clearInterval(interval2);
     }
     return () => clearInterval(interval2);
-  }, [isNumber2Hidden]);
+  }, [isNumber2Hidden, isSkill2Hidden]);
 
   useEffect(() => {
-    if (!isNumber3Hidden) {
+    if (!isNumber3Hidden && !isSkill3Hidden) {
       const newInterval3 = setInterval3(() => {
         setNumber3((prevNumber) => prevNumber - 1);
-      }, 700);
+      }, 1000);
       setInterval3(newInterval3);
     } else {
       clearInterval(interval3);
     }
     return () => clearInterval(interval3);
-  }, [isNumber3Hidden]);
+  }, [isNumber3Hidden, isSkill3Hidden]);
 
   useEffect(() => {
     // 숫자가 0이 되면 각각 해당 숫자만 초기화
     if (number1 === 0 && !isNumber1Reset) {
       setIsNumber1Hidden(true);
+      setIsSkill1Hidden(true);
       setIsNumber1Reset(true);
       setTimeout(() => {
         setNumber1(getRandomNumber7());
         setIsNumber1Reset(false);
         setIsNumber1Hidden(false);
+        setIsSkill1Hidden(false);
       }, 2000);
     }
     if (number2 === 0 && !isNumber2Reset) {
       setIsNumber2Hidden(true);
+      setIsSkill2Hidden(true);
       setIsNumber2Reset(true);
       setTimeout(() => {
         setNumber2(getRandomNumber7());
         setIsNumber2Reset(false);
         setIsNumber2Hidden(false);
+        setIsSkill2Hidden(false);
       }, 2000);
     }
     if (number3 === 0 && !isNumber3Reset) {
       setIsNumber3Hidden(true);
+      setIsSkill3Hidden(true);
       setIsNumber3Reset(true);
       setTimeout(() => {
         setNumber3(getRandomNumber7());
         setIsNumber3Reset(false);
         setIsNumber3Hidden(false);
+        setIsSkill3Hidden(false);
       }, 2000);
     }
   }, [
@@ -240,7 +261,7 @@ const InGame = () => {
   // 게임을 리셋하는 함수
   const resetGame1 = () => {
     setShowSkill1(false);
-    clearTimeout(failTimeout);
+    clearTimeout(failTimeout1);
     setGameStatus1("playing");
     setRandomPosition1();
     setTimeout(() => {
@@ -251,7 +272,7 @@ const InGame = () => {
 
   const resetGame2 = () => {
     setShowSkill2(false);
-    clearTimeout(failTimeout);
+    clearTimeout(failTimeout2);
     setGameStatus2("playing");
     setRandomPosition2();
     setTimeout(() => {
@@ -262,7 +283,7 @@ const InGame = () => {
 
   const resetGame3 = () => {
     setShowSkill3(false);
-    clearTimeout(failTimeout);
+    clearTimeout(failTimeout3);
     setGameStatus3("playing");
     setRandomPosition3();
     setTimeout(() => {
@@ -299,10 +320,14 @@ const InGame = () => {
         // 대상 문자가 화면에 보여질 때
         if (
           targetSkill1.key === pressedKey ||
-          targetSkill1.kor === pressedKey
+          targetSkill1.kor === pressedKey ||
+          targetSkill2.key === pressedKey ||
+          targetSkill2.kor === pressedKey ||
+          targetSkill3.key === pressedKey ||
+          targetSkill3.kor === pressedKey
         ) {
           // 만약 입력해야할 대상의 문자가 실제로 눌린 키와 같다면 즉, 사용자가 올바른 키를 입력해 성공한 경우
-          clearTimeout(failTimeout); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
+          clearTimeout(failTimeout1); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
           setScore(score + 1); // 스코어를 1 올림
           resetGame1(); // 새로운 대상 문자와 위치를 설정
         } else {
@@ -323,7 +348,7 @@ const InGame = () => {
       // 컴포넌트가 언마운트 될 때
       document.removeEventListener("keypress", handleKeyPress);
     };
-  }, [showSkill1, targetSkill1, failTimeout]);
+  }, [showSkill1, targetSkill1, failTimeout1]);
 
   // showSkill, targetSkill1, failTimeout 중 하나라도 상태가 변경 될 때 사용자의 키 입력을 처리
   useEffect(() => {
@@ -333,11 +358,15 @@ const InGame = () => {
       if (showSkill2) {
         // 대상 문자가 화면에 보여질 때
         if (
+          targetSkill1.key === pressedKey ||
+          targetSkill1.kor === pressedKey ||
           targetSkill2.key === pressedKey ||
-          targetSkill2.kor === pressedKey
+          targetSkill2.kor === pressedKey ||
+          targetSkill3.key === pressedKey ||
+          targetSkill3.kor === pressedKey
         ) {
           // 만약 입력해야할 대상의 문자가 실제로 눌린 키와 같다면 즉, 사용자가 올바른 키를 입력해 성공한 경우
-          clearTimeout(failTimeout); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
+          clearTimeout(failTimeout2); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
           setScore(score + 1); // 스코어를 1 올림
           resetGame2(); // 새로운 대상 문자와 위치를 설정
         } else {
@@ -358,7 +387,7 @@ const InGame = () => {
       // 컴포넌트가 언마운트 될 때
       document.removeEventListener("keypress", handleKeyPress);
     };
-  }, [showSkill2, targetSkill2, failTimeout]);
+  }, [showSkill2, targetSkill2, failTimeout2]);
 
   // showSkill, targetSkill1, failTimeout 중 하나라도 상태가 변경 될 때 사용자의 키 입력을 처리
   useEffect(() => {
@@ -368,11 +397,15 @@ const InGame = () => {
       if (showSkill3) {
         // 대상 문자가 화면에 보여질 때
         if (
+          targetSkill1.key === pressedKey ||
+          targetSkill1.kor === pressedKey ||
+          targetSkill2.key === pressedKey ||
+          targetSkill2.kor === pressedKey ||
           targetSkill3.key === pressedKey ||
           targetSkill3.kor === pressedKey
         ) {
           // 만약 입력해야할 대상의 문자가 실제로 눌린 키와 같다면 즉, 사용자가 올바른 키를 입력해 성공한 경우
-          clearTimeout(failTimeout); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
+          clearTimeout(failTimeout3); // failTimeout 변수에 저장된 실패 핸들러(setTimeout으로 설정된)를 취소 이렇게 함으로써 사용자가 성공적으로 입력을 완료하면 실패 핸들러가 동작하지 않는다.
           setScore(score + 1); // 스코어를 1 올림
           resetGame3(); // 새로운 대상 문자와 위치를 설정
         } else {
@@ -393,7 +426,7 @@ const InGame = () => {
       // 컴포넌트가 언마운트 될 때
       document.removeEventListener("keypress", handleKeyPress);
     };
-  }, [showSkill3, targetSkill3, failTimeout]);
+  }, [showSkill3, targetSkill3, failTimeout3]);
 
   // gameStatus, targetSkill1가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
   // 이 로직에서 문제가 있을것으로 예상 됨
@@ -403,7 +436,7 @@ const InGame = () => {
       const timeout = setTimeout(() => {
         // 3초의 지연 시간 이후에
         setShowSkill1(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout(
+        setFailTimeout1(
           // 대상 문자를 보여준 후
           setTimeout(() => {
             // 3초 후에
@@ -422,7 +455,7 @@ const InGame = () => {
       const timeout = setTimeout(() => {
         // 3초의 지연 시간 이후에
         setShowSkill2(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout(
+        setFailTimeout2(
           // 대상 문자를 보여준 후
           setTimeout(() => {
             // 3초 후에
@@ -441,7 +474,7 @@ const InGame = () => {
       const timeout = setTimeout(() => {
         // 3초의 지연 시간 이후에
         setShowSkill3(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout(
+        setFailTimeout3(
           // 대상 문자를 보여준 후
           setTimeout(() => {
             // 3초 후에
@@ -458,9 +491,9 @@ const InGame = () => {
     <StyledWrapper>
       <div className="game-container">
         <Box id="box">
-          {gameStatus1 === "playing" && showSkill1 && (
+          {gameStatus1 === "playing" && showSkill1 && !isSkill1Hidden && (
             <SkillStyle position={position1}>
-              {isNumber1Hidden ? null : (
+              {!isNumber1Hidden && (
                 <p style={{ fontSize: "20px", color: "white" }}>A: {number1}</p>
               )}
               <img
@@ -470,9 +503,9 @@ const InGame = () => {
               />
             </SkillStyle>
           )}
-          {gameStatus2 === "playing" && showSkill2 && (
+          {gameStatus2 === "playing" && showSkill2 && !isSkill2Hidden && (
             <SkillStyle position={position2}>
-              {isNumber2Hidden ? null : (
+              {!isNumber2Hidden && (
                 <p style={{ fontSize: "20px", color: "white" }}>B: {number2}</p>
               )}
               <img
@@ -482,9 +515,9 @@ const InGame = () => {
               />
             </SkillStyle>
           )}
-          {gameStatus3 === "playing" && showSkill3 && (
+          {gameStatus3 === "playing" && showSkill3 && !isSkill3Hidden && (
             <SkillStyle position={position3}>
-              {isNumber3Hidden ? null : (
+              {!isNumber3Hidden && (
                 <p style={{ fontSize: "20px", color: "white" }}>C: {number3}</p>
               )}
               <img
