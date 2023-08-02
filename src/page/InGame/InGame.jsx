@@ -77,12 +77,9 @@ const skills = [
   { key: "d", kor: "ㅇ", image: DSkill },
   { key: "f", kor: "ㄹ", image: FSkill },
 ];
-function getRandomNumber() {
-  return Math.floor(Math.random() * 3) + 1; // 1, 2, 3 중 랜덤한 숫자 생성
-}
 
 function getRandomNumber7() {
-  return Math.floor(Math.random() * 7) + 1; // 1, 2, 3, 4, 5, 6, 7 중 랜덤한 숫자 생성
+  return Math.floor(Math.random() * 7) + 3; // 1, 2, 3, 4, 5, 6, 7 중 랜덤한 숫자 생성
 }
 
 const InGame = () => {
@@ -132,41 +129,82 @@ const InGame = () => {
   const [isNumber2Hidden, setIsNumber2Hidden] = useState(false);
   const [isNumber3Hidden, setIsNumber3Hidden] = useState(false);
 
+  // gameStatus, targetSkill1가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
+  // 이 로직에서 문제가 있을것으로 예상 됨
   useEffect(() => {
-    if (!isNumber1Hidden && !isSkill1Hidden) {
-      const newInterval1 = setInterval(() => {
-        setNumber1((prevNumber) => prevNumber - 1);
-      }, 1000);
-      setInterval1(newInterval1);
-    } else {
-      clearInterval(interval1);
+    if (gameStatus1 === "playing" && targetSkill1) {
+      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
+      const timeout = setTimeout(() => {
+        // 3초의 지연 시간 이후에
+        setShowSkill1(true); // 대상 문자를 화면에 보여줌
+        setFailTimeout1(
+          // 대상 문자를 보여준 후
+          setTimeout(() => {
+            // 3초 후에
+            setGameStatus1("failed"); // 실패 상태를 처리
+            resetGame1(); // 새로운 대상 문자와 위치를 설정
+          }, randomTime1 * 1000)
+        );
+      }, randomTime1 * 1000);
+      return () => clearTimeout(timeout);
     }
-    return () => clearInterval(interval1);
-  }, [isNumber1Hidden, isSkill1Hidden]);
+  }, [gameStatus1, targetSkill1]);
 
   useEffect(() => {
-    if (!isNumber2Hidden && isSkill2Hidden) {
-      const newInterval2 = setInterval(() => {
-        setNumber2((prevNumber) => prevNumber - 1);
-      }, 1000);
-      setInterval2(newInterval2);
-    } else {
-      clearInterval(interval2);
+    if (gameStatus2 === "playing" && targetSkill2) {
+      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
+      const timeout = setTimeout(() => {
+        // 3초의 지연 시간 이후에
+        setShowSkill2(true); // 대상 문자를 화면에 보여줌
+        setFailTimeout2(
+          // 대상 문자를 보여준 후
+          setTimeout(() => {
+            // 3초 후에
+            setGameStatus2("failed"); // 실패 상태를 처리
+            resetGame2(); // 새로운 대상 문자와 위치를 설정
+          }, randomTime2 * 1000)
+        );
+      }, randomTime2 * 1000);
+      return () => clearTimeout(timeout);
     }
-    return () => clearInterval(interval2);
-  }, [isNumber2Hidden, isSkill2Hidden]);
+  }, [gameStatus2, targetSkill2]);
 
   useEffect(() => {
-    if (!isNumber3Hidden && !isSkill3Hidden) {
-      const newInterval3 = setInterval(() => {
-        setNumber3((prevNumber) => prevNumber - 1);
-      }, 1000);
-      setInterval3(newInterval3);
-    } else {
-      clearInterval(interval3);
+    if (gameStatus3 === "playing" && targetSkill3) {
+      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
+      const timeout = setTimeout(() => {
+        // 3초의 지연 시간 이후에
+        setShowSkill3(true); // 대상 문자를 화면에 보여줌
+        setFailTimeout3(
+          // 대상 문자를 보여준 후
+          setTimeout(() => {
+            // 3초 후에
+            setGameStatus3("failed"); // 실패 상태를 처리
+            resetGame3(); // 새로운 대상 문자와 위치를 설정
+          }, randomTime3 * 1000)
+        );
+      }, randomTime3 * 1000);
+      return () => clearTimeout(timeout);
     }
-    return () => clearInterval(interval3);
-  }, [isNumber3Hidden, isSkill3Hidden]);
+  }, [gameStatus3, targetSkill3]);
+
+  useEffect(() => {
+    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
+    setTargetSkill1(randomSkill); // 대상 문자를 랜덤한 문자로 설정
+    setRandomPosition1(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
+  }, []);
+
+  useEffect(() => {
+    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
+    setTargetSkill2(randomSkill); // 대상 문자를 랜덤한 문자로 설정
+    setRandomPosition2(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
+  }, []);
+
+  useEffect(() => {
+    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
+    setTargetSkill3(randomSkill); // 대상 문자를 랜덤한 문자로 설정
+    setRandomPosition3(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
+  }, []);
 
   useEffect(() => {
     // 숫자가 0이 되면 각각 해당 숫자만 초기화
@@ -181,6 +219,9 @@ const InGame = () => {
         setIsSkill1Hidden(false);
       }, 2000);
     }
+  }, [number1, isNumber1Reset]);
+
+  useEffect(() => {
     if (number2 === 0 && !isNumber2Reset) {
       setIsNumber2Hidden(true);
       setIsSkill2Hidden(true);
@@ -192,6 +233,9 @@ const InGame = () => {
         setIsSkill2Hidden(false);
       }, 2000);
     }
+  }, [number2, isNumber2Reset]);
+
+  useEffect(() => {
     if (number3 === 0 && !isNumber3Reset) {
       setIsNumber3Hidden(true);
       setIsSkill3Hidden(true);
@@ -203,14 +247,7 @@ const InGame = () => {
         setIsSkill3Hidden(false);
       }, 2000);
     }
-  }, [
-    number1,
-    number2,
-    number3,
-    isNumber1Reset,
-    isNumber2Reset,
-    isNumber3Reset,
-  ]);
+  }, [number3, isNumber3Reset]);
 
   useEffect(() => {
     document.addEventListener("keypress", handleKeyPressGame1);
@@ -233,10 +270,105 @@ const InGame = () => {
     };
   }, [showSkill3, targetSkill3, failTimeout3]);
 
+  useEffect(() => {
+    if (!isNumber1Hidden && !isSkill1Hidden) {
+      const newInterval1 = setInterval(() => {
+        setNumber1((prevNumber) => prevNumber - 1);
+      }, 700);
+      setInterval1(newInterval1);
+    } else {
+      clearInterval(interval1);
+    }
+    return () => clearInterval(interval1);
+  }, [isNumber1Hidden, isSkill1Hidden]);
+
+  useEffect(() => {
+    if (!isNumber2Hidden && !isSkill2Hidden) {
+      const newInterval2 = setInterval(() => {
+        setNumber2((prevNumber) => prevNumber - 1);
+      }, 700);
+      setInterval2(newInterval2);
+    } else {
+      clearInterval(interval2);
+    }
+    return () => clearInterval(interval2);
+  }, [isNumber2Hidden, isSkill2Hidden]);
+
+  useEffect(() => {
+    if (!isNumber3Hidden && !isSkill3Hidden) {
+      const newInterval3 = setInterval(() => {
+        setNumber3((prevNumber) => prevNumber - 1);
+      }, 700);
+      setInterval3(newInterval3);
+    } else {
+      clearInterval(interval3);
+    }
+    return () => clearInterval(interval3);
+  }, [isNumber3Hidden, isSkill3Hidden]);
+
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill1) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout1(failTimeout);
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame1);
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame1);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill1, targetSkill1]);
+
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill2) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout2(failTimeout);
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame2);
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame2);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill2, targetSkill2]);
+
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill3) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout3(failTimeout);
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame3);
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame3);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill3, targetSkill3]);
+
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition1 = () => {
     const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
-
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
@@ -249,7 +381,6 @@ const InGame = () => {
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition2 = () => {
     const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
-
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
@@ -262,7 +393,6 @@ const InGame = () => {
   // 박스 내부의 랜덤한 위치로 배치하기 위한 함수
   const setRandomPosition3 = () => {
     const box = document.getElementById("box"); // box라는 id값을 dom으로 가져온다
-
     if (box) {
       // 만약 box가 존재하는 경우
       const boxRect = box.getBoundingClientRect(); // box의 현재 위치와 크기 정보를 가져옴
@@ -280,7 +410,7 @@ const InGame = () => {
     setTimeout(() => {
       const randomSkill = skills[Math.floor(Math.random() * skills.length)];
       setTargetSkill1(randomSkill);
-    }, 900);
+    }, randomTime1 * 1000);
   };
 
   const resetGame2 = () => {
@@ -291,7 +421,7 @@ const InGame = () => {
     setTimeout(() => {
       const randomSkill = skills[Math.floor(Math.random() * skills.length)];
       setTargetSkill2(randomSkill);
-    }, 900);
+    }, randomTime2 * 1000);
   };
 
   const resetGame3 = () => {
@@ -302,27 +432,10 @@ const InGame = () => {
     setTimeout(() => {
       const randomSkill = skills[Math.floor(Math.random() * skills.length)];
       setTargetSkill3(randomSkill);
-    }, 900);
+    }, randomTime3 * 1000);
   };
 
   // 게임이 시작되면 사용자에게 랜덤한 문자가 박스 내부의 랜덤한 위치에 보여진다.
-  useEffect(() => {
-    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
-    setTargetSkill1(randomSkill); // 대상 문자를 랜덤한 문자로 설정
-    setRandomPosition1(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
-  }, []);
-
-  useEffect(() => {
-    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
-    setTargetSkill2(randomSkill); // 대상 문자를 랜덤한 문자로 설정
-    setRandomPosition2(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
-  }, []);
-
-  useEffect(() => {
-    const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
-    setTargetSkill3(randomSkill); // 대상 문자를 랜덤한 문자로 설정
-    setRandomPosition3(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
-  }, []);
 
   // showSkill, targetSkill1, failTimeout 중 하나라도 상태가 변경 될 때 사용자의 키 입력을 처리
   // 게임 1의 이벤트 핸들러
@@ -340,7 +453,7 @@ const InGame = () => {
           const randomSkill = skills[Math.floor(Math.random() * skills.length)];
           setTargetSkill1(randomSkill);
           setIsSkill1Hidden(false);
-        }, 900);
+        }, randomTime1 * 1000);
       }
     }
   };
@@ -360,7 +473,7 @@ const InGame = () => {
           const randomSkill = skills[Math.floor(Math.random() * skills.length)];
           setTargetSkill2(randomSkill);
           setIsSkill2Hidden(false);
-        }, 900);
+        }, randomTime3 * 1000);
       }
     }
   };
@@ -380,137 +493,10 @@ const InGame = () => {
           const randomSkill = skills[Math.floor(Math.random() * skills.length)];
           setTargetSkill3(randomSkill);
           setIsSkill3Hidden(false);
-        }, 900);
+        }, randomTime3 * 1000);
       }
     }
   };
-  useEffect(() => {
-    // 실패 상태를 처리하는 함수를 정의합니다.
-    const handleFailure = () => {
-      if (showSkill1) {
-        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
-        setScore((prevScore) => prevScore - 10);
-      }
-    };
-
-    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
-    const failTimeout = setTimeout(handleFailure, 1500);
-    setFailTimeout1(failTimeout);
-
-    // 키 입력 이벤트 리스너를 등록합니다.
-    document.addEventListener("keypress", handleKeyPressGame1);
-
-    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
-    return () => {
-      document.removeEventListener("keypress", handleKeyPressGame1);
-      clearTimeout(failTimeout);
-    };
-  }, [showSkill1, targetSkill1]);
-
-  useEffect(() => {
-    // 실패 상태를 처리하는 함수를 정의합니다.
-    const handleFailure = () => {
-      if (showSkill2) {
-        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
-        setScore((prevScore) => prevScore - 10);
-      }
-    };
-
-    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
-    const failTimeout = setTimeout(handleFailure, 1500);
-    setFailTimeout2(failTimeout);
-
-    // 키 입력 이벤트 리스너를 등록합니다.
-    document.addEventListener("keypress", handleKeyPressGame2);
-
-    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
-    return () => {
-      document.removeEventListener("keypress", handleKeyPressGame2);
-      clearTimeout(failTimeout);
-    };
-  }, [showSkill2, targetSkill2]);
-
-  useEffect(() => {
-    // 실패 상태를 처리하는 함수를 정의합니다.
-    const handleFailure = () => {
-      if (showSkill3) {
-        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
-        setScore((prevScore) => prevScore - 10);
-      }
-    };
-
-    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
-    const failTimeout = setTimeout(handleFailure, 1500);
-    setFailTimeout3(failTimeout);
-
-    // 키 입력 이벤트 리스너를 등록합니다.
-    document.addEventListener("keypress", handleKeyPressGame3);
-
-    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
-    return () => {
-      document.removeEventListener("keypress", handleKeyPressGame3);
-      clearTimeout(failTimeout);
-    };
-  }, [showSkill3, targetSkill3]);
-
-  // gameStatus, targetSkill1가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
-  // 이 로직에서 문제가 있을것으로 예상 됨
-  useEffect(() => {
-    if (gameStatus1 === "playing" && targetSkill1) {
-      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
-      const timeout = setTimeout(() => {
-        // 3초의 지연 시간 이후에
-        setShowSkill1(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout1(
-          // 대상 문자를 보여준 후
-          setTimeout(() => {
-            // 3초 후에
-            setGameStatus1("failed"); // 실패 상태를 처리
-            resetGame1(); // 새로운 대상 문자와 위치를 설정
-          }, 2000)
-        );
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [gameStatus1, targetSkill1]);
-
-  useEffect(() => {
-    if (gameStatus2 === "playing" && targetSkill2) {
-      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
-      const timeout = setTimeout(() => {
-        // 3초의 지연 시간 이후에
-        setShowSkill2(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout2(
-          // 대상 문자를 보여준 후
-          setTimeout(() => {
-            // 3초 후에
-            setGameStatus2("failed"); // 실패 상태를 처리
-            resetGame2(); // 새로운 대상 문자와 위치를 설정
-          }, 2000)
-        );
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [gameStatus2, targetSkill2]);
-
-  useEffect(() => {
-    if (gameStatus3 === "playing" && targetSkill3) {
-      // 만약 게임이 실행중이고 대상 문자가 저장됐다면
-      const timeout = setTimeout(() => {
-        // 3초의 지연 시간 이후에
-        setShowSkill3(true); // 대상 문자를 화면에 보여줌
-        setFailTimeout3(
-          // 대상 문자를 보여준 후
-          setTimeout(() => {
-            // 3초 후에
-            setGameStatus3("failed"); // 실패 상태를 처리
-            resetGame3(); // 새로운 대상 문자와 위치를 설정
-          }, 2000)
-        );
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [gameStatus3, targetSkill3]);
 
   return (
     <StyledWrapper>
@@ -560,12 +546,6 @@ const InGame = () => {
           </div>
           <Map />
           <img className="skill-ui" src={skillUI} />
-          {/* <div style={{ color: "white", width: "50px" }}>a</div>
-          {isNumber1Hidden ? null : <p style={{ color: "white" }}>{number1}</p>}
-          <div style={{ color: "white", width: "50px" }}>b</div>
-          {isNumber2Hidden ? null : <p style={{ color: "white" }}>{number2}</p>}
-          <div style={{ color: "white", width: "50px" }}>c</div>
-          {isNumber3Hidden ? null : <p style={{ color: "white" }}>{number3}</p>} */}
         </Box>
       </div>
     </StyledWrapper>
