@@ -331,7 +331,7 @@ const InGame = () => {
     if (showSkill1) {
       if (targetSkill1.key === pressedKey || targetSkill1.kor === pressedKey) {
         clearTimeout(failTimeout1);
-        setScore((prevScore) => prevScore + 1);
+        setScore((prevScore) => prevScore + 100);
         setGameStatus1("playing");
         setIsSkill1Hidden(true);
         setNumber1(getRandomNumber7());
@@ -351,7 +351,7 @@ const InGame = () => {
     if (showSkill2) {
       if (targetSkill2.key === pressedKey || targetSkill2.kor === pressedKey) {
         clearTimeout(failTimeout2);
-        setScore((prevScore) => prevScore + 1);
+        setScore((prevScore) => prevScore + 100);
         setGameStatus2("playing");
         setIsSkill2Hidden(true);
         setNumber2(getRandomNumber7());
@@ -371,7 +371,7 @@ const InGame = () => {
     if (showSkill3) {
       if (targetSkill3.key === pressedKey || targetSkill3.kor === pressedKey) {
         clearTimeout(failTimeout3);
-        setScore((prevScore) => prevScore + 1);
+        setScore((prevScore) => prevScore + 100);
         setGameStatus3("playing");
         setIsSkill3Hidden(true);
         setNumber3(getRandomNumber7());
@@ -384,6 +384,74 @@ const InGame = () => {
       }
     }
   };
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill1) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout1(failTimeout);
+
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame1);
+
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame1);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill1, targetSkill1]);
+
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill2) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout2(failTimeout);
+
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame2);
+
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame2);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill2, targetSkill2]);
+
+  useEffect(() => {
+    // 실패 상태를 처리하는 함수를 정의합니다.
+    const handleFailure = () => {
+      if (showSkill3) {
+        // 1.5초 이내에 올바른 키를 누르지 못한 경우 실패 상태를 알려줍니다.
+        setScore((prevScore) => prevScore - 10);
+      }
+    };
+
+    // 1.5초 후에 실패 상태 처리 함수를 호출하는 타이머를 설정합니다.
+    const failTimeout = setTimeout(handleFailure, 1500);
+    setFailTimeout3(failTimeout);
+
+    // 키 입력 이벤트 리스너를 등록합니다.
+    document.addEventListener("keypress", handleKeyPressGame3);
+
+    // 컴포넌트가 언마운트될 때 등록한 이벤트 리스너와 타이머를 정리합니다.
+    return () => {
+      document.removeEventListener("keypress", handleKeyPressGame3);
+      clearTimeout(failTimeout);
+    };
+  }, [showSkill3, targetSkill3]);
 
   // gameStatus, targetSkill1가 변경 될 때마다 실행 됨. 게임 상태 체크 및 대상 문자가 화면에 보여지는 로직 구현
   // 이 로직에서 문제가 있을것으로 예상 됨
@@ -450,7 +518,7 @@ const InGame = () => {
         <Box id="box">
           {gameStatus1 === "playing" && showSkill1 && !isSkill1Hidden && (
             <SkillStyle position={position1}>
-              {!isNumber1Hidden && (
+              {isNumber1Hidden ? null : (
                 <p style={{ fontSize: "20px", color: "white" }}>A: {number1}</p>
               )}
               <img
@@ -462,7 +530,7 @@ const InGame = () => {
           )}
           {gameStatus2 === "playing" && showSkill2 && !isSkill2Hidden && (
             <SkillStyle position={position2}>
-              {!isNumber2Hidden && (
+              {isNumber2Hidden ? null : (
                 <p style={{ fontSize: "20px", color: "white" }}>B: {number2}</p>
               )}
               <img
@@ -474,7 +542,7 @@ const InGame = () => {
           )}
           {gameStatus3 === "playing" && showSkill3 && !isSkill3Hidden && (
             <SkillStyle position={position3}>
-              {!isNumber3Hidden && (
+              {isNumber3Hidden ? null : (
                 <p style={{ fontSize: "20px", color: "white" }}>C: {number3}</p>
               )}
               <img
