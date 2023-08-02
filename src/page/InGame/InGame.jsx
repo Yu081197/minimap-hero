@@ -134,7 +134,7 @@ const InGame = () => {
 
   useEffect(() => {
     if (!isNumber1Hidden && !isSkill1Hidden) {
-      const newInterval1 = setInterval1(() => {
+      const newInterval1 = setInterval(() => {
         setNumber1((prevNumber) => prevNumber - 1);
       }, 1000);
       setInterval1(newInterval1);
@@ -146,7 +146,7 @@ const InGame = () => {
 
   useEffect(() => {
     if (!isNumber2Hidden && isSkill2Hidden) {
-      const newInterval2 = setInterval2(() => {
+      const newInterval2 = setInterval(() => {
         setNumber2((prevNumber) => prevNumber - 1);
       }, 1000);
       setInterval2(newInterval2);
@@ -158,7 +158,7 @@ const InGame = () => {
 
   useEffect(() => {
     if (!isNumber3Hidden && !isSkill3Hidden) {
-      const newInterval3 = setInterval3(() => {
+      const newInterval3 = setInterval(() => {
         setNumber3((prevNumber) => prevNumber - 1);
       }, 1000);
       setInterval3(newInterval3);
