@@ -90,9 +90,9 @@ const InGame = () => {
   const [targetSkill2, setTargetSkill2] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
   const [targetSkill3, setTargetSkill3] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
 
-  const [randomTime1, setrandomTime1] = useState();
-  const [randomTime2, setrandomTime2] = useState();
-  const [randomTime3, setrandomTime3] = useState();
+  const [randomTime1, setrandomTime1] = useState(getRandomNumber7());
+  const [randomTime2, setrandomTime2] = useState(getRandomNumber7());
+  const [randomTime3, setrandomTime3] = useState(getRandomNumber7());
 
   const [showSkill1, setShowSkill1] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [showSkill2, setShowSkill2] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
