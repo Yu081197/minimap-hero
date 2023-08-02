@@ -1,7 +1,19 @@
+// to-do : 잘못 눌렀을 때 스코어 떨어지는 로직 추가 필요
+//         빠르게 누르면 실패하는 로직 추가
+//         test와 ingame 합치기
+//
+//         남은 시간 숫자로 보이게끔 우선적으로 구현
+//         남은 시간이 0~1.5초 사이에 눌러야 스코어 오르게끔 구현
+//
+//         움직이는 이미지 추가
+//
+//         미니맵 안에서도 똑같이 구현하기
+//         미니맵 안에서는 움직이는 이미지 추가할 필요 없음
+
 import React, { useState, useEffect } from "react";
 
 function getRandomNumber() {
-  return Math.floor(Math.random() * 3) + 1; // 1, 2, 3 중 랜덤한 숫자 생성
+  return Math.floor(Math.random() * 7) + 1; // 1, 2, 3, 4, 5, 6, 7 중 랜덤한 숫자 생성
 }
 
 function App() {
@@ -22,7 +34,7 @@ function App() {
     if (!isNumber1Hidden) {
       const newInterval1 = setInterval(() => {
         setNumber1((prevNumber) => prevNumber - 1);
-      }, 500);
+      }, 700);
       setInterval1(newInterval1);
     } else {
       clearInterval(interval1);
@@ -34,7 +46,7 @@ function App() {
     if (!isNumber2Hidden) {
       const newInterval2 = setInterval(() => {
         setNumber2((prevNumber) => prevNumber - 1);
-      }, 500);
+      }, 700);
       setInterval2(newInterval2);
     } else {
       clearInterval(interval2);
@@ -46,7 +58,7 @@ function App() {
     if (!isNumber3Hidden) {
       const newInterval3 = setInterval(() => {
         setNumber3((prevNumber) => prevNumber - 1);
-      }, 500);
+      }, 700);
       setInterval3(newInterval3);
     } else {
       clearInterval(interval3);
@@ -63,7 +75,7 @@ function App() {
         setNumber1(getRandomNumber());
         setIsNumber1Reset(false);
         setIsNumber1Hidden(false);
-      }, 5000);
+      }, 2000);
     }
     if (number2 === 0 && !isNumber2Reset) {
       setIsNumber2Hidden(true);
@@ -72,7 +84,7 @@ function App() {
         setNumber2(getRandomNumber());
         setIsNumber2Reset(false);
         setIsNumber2Hidden(false);
-      }, 5000);
+      }, 2000);
     }
     if (number3 === 0 && !isNumber3Reset) {
       setIsNumber3Hidden(true);
@@ -81,7 +93,7 @@ function App() {
         setNumber3(getRandomNumber());
         setIsNumber3Reset(false);
         setIsNumber3Hidden(false);
-      }, 5000);
+      }, 2000);
     }
   }, [
     number1,
