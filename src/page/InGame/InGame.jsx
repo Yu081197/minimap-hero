@@ -90,6 +90,10 @@ const InGame = () => {
   const [targetSkill2, setTargetSkill2] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
   const [targetSkill3, setTargetSkill3] = useState(""); // 사용자가 입력해야할 대상 문자를 저장
 
+  const [randomTime1, setrandomTime1] = useState();
+  const [randomTime2, setrandomTime2] = useState();
+  const [randomTime3, setrandomTime3] = useState();
+
   const [showSkill1, setShowSkill1] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [showSkill2, setShowSkill2] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
   const [showSkill3, setShowSkill3] = useState(false); // 해당 상태가 'true'이면 사용자에게 현재 대상 문자를 보여줌
@@ -282,7 +286,7 @@ const InGame = () => {
 
   useEffect(() => {
     const randomSkill = skills[Math.floor(Math.random() * skills.length)]; // skills배열에서 랜덤한 인덱스를 구하고 randomSkill 변수에 저장
-    setTargetSkill2(randomSkill); // 대상 문자를 랜덤한 문자로 설정
+    setTargetSkill3(randomSkill); // 대상 문자를 랜덤한 문자로 설정
     setRandomPosition3(); // 랜덤한 위치를 계산하여 position 상태에 저장,  박스 내부의 랜덤한 위치로 문자를 배치하는 역할을 수행
   }, []);
 
