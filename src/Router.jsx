@@ -5,6 +5,7 @@ import InGame from "./page/InGame/InGame";
 import StartPage from "./page/StartPage/StartPage";
 import Map from "./components/Map/Map";
 import Test from "./__test__/test";
+import InGamePlay from "./page/InGamePlay/InGamePlay";
 
 import { styled } from "styled-components";
 
@@ -14,6 +15,7 @@ function routes() {
       <Routes>
         <Route path="/" element={<StartPage />} />
         <Route path="/ingame" element={<InGame />} />
+        <Route path="/ingameplay" element={<InGamePlay />} />
         <Route path="/map" element={<Map />} />
         <Route path="/test" element={<Test />} />
       </Routes>
