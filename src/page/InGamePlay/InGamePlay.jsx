@@ -90,7 +90,7 @@ const skills = [
 const InGamePlay = () => {
   const gameContainer = useRef(null);
   const [time, setTime] = useState(0);
-
+  const [pressedKey, setPressedKey] = useState("");
   const [skill, setSkill] = useState([
     {
       id: 1,
@@ -101,6 +101,9 @@ const InGamePlay = () => {
       positionY: null,
       showTime: null,
       noShowTime: null,
+      currentTime: null,
+      onKeyPressedCurrentTime: 0,
+      showCurrentTime: 0,
     },
     {
       id: 2,
@@ -111,6 +114,9 @@ const InGamePlay = () => {
       positionY: null,
       showTime: null,
       noShowTime: null,
+      currentTime: null,
+      onKeyPressedCurrentTime: 0,
+      showCurrentTime: 0,
     },
     {
       id: 3,
@@ -121,6 +127,9 @@ const InGamePlay = () => {
       positionY: null,
       showTime: null,
       noShowTime: null,
+      currentTime: null,
+      onKeyPressedCurrentTime: 0,
+      showCurrentTime: 0,
     },
   ]);
 
@@ -132,22 +141,18 @@ const InGamePlay = () => {
   }
 
   function getRandomSkill() {
-    let previousSkills = [];
-    if (previousSkills.length === skills.length) {
-      // 모든 스킬이 한 번씩 반환되었으므로, 이전 배열을 초기화
-      previousSkills = [];
+    let randomSkills = [];
+    while (randomSkills.length < 3) {
+      const randomSkill = skills[Math.floor(Math.random() * skills.length)];
+      if (!randomSkills.includes(randomSkill)) {
+        randomSkills.push(randomSkill);
+      }
     }
-    let randomSkill;
-    do {
-      randomSkill = skills[Math.floor(Math.random() * skills.length)];
-    } while (previousSkills.includes(randomSkill));
-    // 이전 배열에 현재 스킬 추가
-    previousSkills.push(randomSkill);
-    return randomSkill;
+    return randomSkills;
   }
 
+  let previousXValues = [];
   function getRandomPositionX() {
-    let previousXValues = [];
     const boxRect = gameContainer.current.getBoundingClientRect();
     // 모든 값이 한 번씩 반환되었으면 이전 배열 초기화
     if (previousXValues.length === Math.floor(boxRect.width - 450)) {
@@ -162,16 +167,16 @@ const InGamePlay = () => {
     return x;
   }
 
+  let previousYValues = [];
   function getRandomPositionY() {
-    let previousYValues = [];
     const boxRect = gameContainer.current.getBoundingClientRect();
     // 모든 값이 한 번씩 반환되었으면 이전 배열 초기화
-    if (previousYValues.length === Math.floor(boxRect.width - 350)) {
+    if (previousYValues.length === Math.floor(boxRect.height - 350)) {
       previousYValues = [];
     }
     let y;
     do {
-      y = Math.random() * (boxRect.width - 350);
+      y = Math.random() * (boxRect.height - 350);
     } while (previousYValues.includes(y));
     // 이전 배열에 현재 x값 추가
     previousYValues.push(y);
@@ -182,14 +187,6 @@ const InGamePlay = () => {
     const interval = setInterval(() => {
       setTime((props) => props + 1);
       console.log("------------------");
-      console.log(skill[0].isShown);
-      console.log("noshow", skill[0].noShowTime);
-      console.log("show", skill[0].showTime);
-      console.log(skill[0].targetSkill);
-      console.log(skill[0].positionX);
-      console.log(skill[0].positionY);
-      // console.log(skill[0].image);
-      // console.log(skill[0].eng);
     }, 700);
     return () => clearInterval(interval);
   }, []);
@@ -198,9 +195,10 @@ const InGamePlay = () => {
     if (skill[0].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
+        const randomSkill = getRandomSkill()[0];
         updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[0].showTime = getRandomNumberTwoToSix();
-        updatedSkill[0].targetSkill = getRandomSkill();
+        updatedSkill[0].targetSkill = randomSkill;
         updatedSkill[0].positionX = getRandomPositionX();
         updatedSkill[0].positionY = getRandomPositionY();
         return updatedSkill; // 변경된 배열을 반환합니다.
@@ -210,6 +208,8 @@ const InGamePlay = () => {
           const updatedSkill = [...prevState];
           updatedSkill[0].isShown = true;
           updatedSkill[0].isGamePlay = "playing";
+          updatedSkill[0].currentTime = time;
+          console.log(updatedSkill[0].currentTime);
           return updatedSkill;
         });
         setTimeout(() => {
@@ -228,9 +228,10 @@ const InGamePlay = () => {
     if (skill[1].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
+        const randomSkill = getRandomSkill()[1];
         updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[1].showTime = getRandomNumberTwoToSix();
-        updatedSkill[1].targetSkill = getRandomSkill();
+        updatedSkill[1].targetSkill = randomSkill;
         updatedSkill[1].positionX = getRandomPositionX();
         updatedSkill[1].positionY = getRandomPositionY();
         return updatedSkill; // 변경된 배열을 반환합니다.
@@ -258,9 +259,10 @@ const InGamePlay = () => {
     if (skill[2].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
+        const randomSkill = getRandomSkill()[2];
         updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[2].showTime = getRandomNumberTwoToSix();
-        updatedSkill[2].targetSkill = getRandomSkill();
+        updatedSkill[2].targetSkill = randomSkill;
         updatedSkill[2].positionX = getRandomPositionX();
         updatedSkill[2].positionY = getRandomPositionY();
         return updatedSkill; // 변경된 배열을 반환합니다.
@@ -284,6 +286,28 @@ const InGamePlay = () => {
     }
   }, [skill[2].isGamePlay]);
 
+  useEffect(() => {
+    document.addEventListener("keypress", handleKeyPress);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  });
+
+  const handleKeyPress = (e) => {
+    if (e) {
+      const pressedKey = e.key.toLowerCase();
+      setPressedKey(pressedKey);
+
+      setSkill((prevState) => {
+        const updatedSkill = [...prevState];
+        updatedSkill[0].onKeyPressedCurrentTime = time;
+        updatedSkill[0].showCurrentTime = time + updatedSkill[0].showTime;
+        return updatedSkill; // 변경된 배열을 반환합니다.
+      });
+      console.log("time", skill[0].onKeyPressedCurrentTime);
+    }
+  };
+
   return (
     <StyledWrapper>
       <div className="game-container" ref={gameContainer}>
@@ -291,6 +315,7 @@ const InGamePlay = () => {
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
         >
+          <div className="time">a:</div>
           {skill[0].isShown ? (
             <img
               className="skill"
@@ -329,6 +354,7 @@ const InGamePlay = () => {
             <></>
           )}
         </div>
+        <div className="time">{pressedKey}</div>
         <div className="time">{time}</div>
         <div className="map-container">
           <Map />
