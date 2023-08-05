@@ -458,7 +458,7 @@ const InGamePlay = () => {
   };
 
   useEffect(() => {
-    if (time === 200) {
+    if (time === 120) {
       navigate("/");
     }
   });
@@ -500,7 +500,7 @@ const InGamePlay = () => {
             <></>
           )}
         </div>
-        <div
+        {/* <div
           className="skill-container"
           style={{ left: skill[2].positionX, top: skill[2].positionY }}
         >
@@ -516,7 +516,7 @@ const InGamePlay = () => {
           ) : (
             <></>
           )}
-        </div>
+        </div> */}
 
         <div className="map-container">
           <div className="time-score-container">

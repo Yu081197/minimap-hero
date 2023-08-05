@@ -67,22 +67,20 @@ const StyledWrapper = styled.div`
 const Map = () => {
   const mapContainer = useRef(null);
   const [pressedKey, setPressedKey] = useState("");
-  const [champion, setChampion] = useState([
-    {
-      id: 1,
-      isGamePlay: "non-playing",
-      targetChampion: null,
-      isShown: false,
-      positionX: null,
-      positionY: null,
-      showTime: null,
-      shownTime: null,
-      noShowTime: null,
-      currentTime: null,
-      keyPressedTime: 0,
-      timePlusShowTime: 0,
-    },
-  ]);
+  const [champion, setChampion] = useState({
+    id: 1,
+    isGamePlay: "non-playing",
+    targetChampion: null,
+    isShown: false,
+    positionX: null,
+    positionY: null,
+    showTime: null,
+    shownTime: null,
+    noShowTime: null,
+    currentTime: null,
+    keyPressedTime: 0,
+    timePlusShowTime: 0,
+  });
 
   function getRandomNumberZeroToTen() {
     const randomIndex = Math.floor(Math.random() * 4);
@@ -100,10 +98,10 @@ const Map = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setChampion((prevState) => {
-        const updatedChampion = [...prevState];
-        updatedChampion[0].shownTime -= 0.5;
-        if (updatedChampion[0].shownTime <= 0) {
-          updatedChampion[0].shownTime = null;
+        const updatedChampion = { ...prevState };
+        updatedChampion.shownTime -= 0.5;
+        if (updatedChampion.shownTime <= 0) {
+          updatedChampion.shownTime = null;
         }
         return updatedChampion;
       });
@@ -113,35 +111,35 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    if (champion[0].isGamePlay === "non-playing") {
+    if (champion.isGamePlay === "non-playing") {
       setChampion((prevState) => {
-        const updatedChampion = [...prevState];
+        const updatedChampion = { ...prevState };
         const randomChampion = getRandomNumberZeroToTen();
-        updatedChampion[0].targetChampion = randomChampion;
-        updatedChampion[0].positionX = getRandomPositionX();
-        updatedChampion[0].positionY = getRandomPositionY();
+        updatedChampion.targetChampion = randomChampion;
+        updatedChampion.positionX = getRandomPositionX();
+        updatedChampion.positionY = getRandomPositionY();
         return updatedChampion; // 변경된 배열을 반환합니다.
       });
-      if (champion[0].isGamePlay === "non-playing") {
+      if (champion.isGamePlay === "non-playing") {
         setTimeout(() => {
           setChampion((prevState) => {
-            const updatedChampion = [...prevState];
-            updatedChampion[0].isShown = true;
-            updatedChampion[0].isGamePlay = "playing";
+            const updatedChampion = { ...prevState };
+            updatedChampion.isShown = true;
+            updatedChampion.isGamePlay = "playing";
             return updatedChampion;
           });
           setTimeout(() => {
             setChampion((prevState) => {
-              const updatedChampion = [...prevState];
-              updatedChampion[0].isShown = false;
-              updatedChampion[0].isGamePlay = "non-playing";
+              const updatedChampion = { ...prevState };
+              updatedChampion.isShown = false;
+              updatedChampion.isGamePlay = "non-playing";
               return updatedChampion;
             });
           }, 2000);
         }, 3000);
       }
     }
-  }, [champion[0].isGamePlay]);
+  }, [champion.isGamePlay]);
 
   useEffect(() => {
     document.addEventListener("keypress", handleKeyPress);
@@ -153,22 +151,14 @@ const Map = () => {
   const handleKeyPress = (e) => {
     const pressedKey = e.key.toLowerCase();
     console.log(pressedKey);
-    if (champion[0].isShown) {
+    if (champion.isShown) {
       setPressedKey(pressedKey);
-      if (champion[0].targetChampion.key === pressedKey) {
-        console.log(champion[0].timePlusShowTime, champion[0].keyPressedTime);
+      if (champion.targetChampion.key === pressedKey) {
+        console.log(champion.timePlusShowTime, champion.keyPressedTime);
         setChampion((prevState) => {
-          const updatedChampion = [...prevState];
-          updatedChampion[0].isShown = false;
-          updatedChampion[0].isGamePlay = "non-playing";
-          return updatedChampion;
-        });
-      } else {
-        console.log("false");
-        setChampion((prevState) => {
-          const updatedChampion = [...prevState];
-          updatedChampion[0].isShown = false;
-          updatedChampion[0].isGamePlay = "non-playing";
+          const updatedChampion = { ...prevState };
+          updatedChampion.isShown = false;
+          updatedChampion.isGamePlay = "non-playing";
           return updatedChampion;
         });
       }
@@ -190,17 +180,16 @@ const Map = () => {
             <div
               className="champion-container"
               style={{
-                left: champion[0].positionX,
-                top: champion[0].positionY + 75,
+                left: champion.positionX,
+                top: champion.positionY + 75,
               }}
             >
-              {champion[0].isShown ? (
+              {champion.isShown ? (
                 <div className="champion-box">
-                  <div className="remain-time">{champion[0].shownTime}</div>
                   <img
                     className="champion"
-                    src={champion[0].targetChampion.image}
-                    alt={champion[0].targetChampion.key}
+                    src={champion.targetChampion.image}
+                    alt={champion.targetChampion.key}
                   />
                 </div>
               ) : (
