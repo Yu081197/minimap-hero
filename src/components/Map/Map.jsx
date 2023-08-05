@@ -16,23 +16,35 @@ import Champ10 from "../../assets/img/champions/Z8HrEpVrkSExFS1so60ppGC0SosF3RDz
 import { styled } from "styled-components";
 
 const Champions = [
-  { id: 1, eng: "f1", image: Champ1 },
-  { id: 2, eng: "f2", image: Champ2 },
-  { id: 3, eng: "f3", image: Champ3 },
-  { id: 4, eng: "f4", image: Champ4 },
-  { id: 5, eng: "f5", image: Champ5 },
-  { id: 6, eng: "f1", image: Champ6 },
-  { id: 7, eng: "f2", image: Champ7 },
-  { id: 8, eng: "f3", image: Champ8 },
-  { id: 9, eng: "f4", image: Champ9 },
-  { id: 10, eng: "f5", image: Champ10 },
+  { id: 1, key: "1", image: Champ1 },
+  { id: 2, key: "2", image: Champ2 },
+  { id: 3, key: "3", image: Champ3 },
+  { id: 4, key: "4", image: Champ4 },
+  { id: 5, key: "5", image: Champ5 },
+  { id: 6, key: "1", image: Champ6 },
+  { id: 7, key: "2", image: Champ7 },
+  { id: 8, key: "3", image: Champ8 },
+  { id: 9, key: "4", image: Champ9 },
+  { id: 10, key: "5", image: Champ10 },
 ];
 
 const StyledWrapper = styled.div`
-  .map-container {
+  .map-box {
+    display: flex;
     position: absolute;
     bottom: 0;
     right: 0;
+    flex-direction: column;
+  }
+  .portrait-container {
+    gap: 10px;
+  }
+  .portrait {
+    width: 70px;
+  }
+  .map-container {
+    width: 330px;
+    height: 330px;
   }
   .map {
     width: 330px;
@@ -46,8 +58,8 @@ const StyledWrapper = styled.div`
   }
 
   .champion {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
 `;
@@ -73,40 +85,16 @@ const Map = () => {
   ]);
 
   function getRandomNumberZeroToTen() {
-    const randomIndex = Math.floor(Math.random() * 10); // Generates a random number between 0 and 2 (inclusive)
+    const randomIndex = Math.floor(Math.random() * 4);
     return Champions[randomIndex];
   }
 
-  let previousXValues = [];
   function getRandomPositionX() {
-    const boxRect = mapContainer.current.getBoundingClientRect();
-    // 모든 값이 한 번씩 반환되었으면 이전 배열 초기화
-    if (previousXValues.length === Math.floor(boxRect.width - 20)) {
-      previousXValues = [];
-    }
-    let x;
-    do {
-      x = Math.random() * boxRect.width;
-    } while (previousXValues.includes(x));
-    // 이전 배열에 현재 x값 추가
-    previousXValues.push(x);
-    return x;
+    return Math.floor(Math.random() * 281) + 10;
   }
 
-  let previousYValues = [];
   function getRandomPositionY() {
-    const boxRect = mapContainer.current.getBoundingClientRect();
-    // 모든 값이 한 번씩 반환되었으면 이전 배열 초기화
-    if (previousYValues.length === Math.floor(boxRect.height - 20)) {
-      previousYValues = [];
-    }
-    let y;
-    do {
-      y = Math.random() * boxRect.height;
-    } while (previousYValues.includes(y));
-    // 이전 배열에 현재 x값 추가
-    previousYValues.push(y);
-    return y;
+    return Math.floor(Math.random() * 281) + 10;
   }
 
   useEffect(() => {
@@ -155,30 +143,70 @@ const Map = () => {
     }
   }, [champion[0].isGamePlay]);
 
+  useEffect(() => {
+    document.addEventListener("keypress", handleKeyPress);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  });
+
+  const handleKeyPress = (e) => {
+    const pressedKey = e.key.toLowerCase();
+    console.log(pressedKey);
+    if (champion[0].isShown) {
+      setPressedKey(pressedKey);
+      if (champion[0].targetChampion.key === pressedKey) {
+        console.log(champion[0].timePlusShowTime, champion[0].keyPressedTime);
+        setChampion((prevState) => {
+          const updatedChampion = [...prevState];
+          updatedChampion[0].isShown = false;
+          updatedChampion[0].isGamePlay = "non-playing";
+          return updatedChampion;
+        });
+      } else {
+        console.log("false");
+        setChampion((prevState) => {
+          const updatedChampion = [...prevState];
+          updatedChampion[0].isShown = false;
+          updatedChampion[0].isGamePlay = "non-playing";
+          return updatedChampion;
+        });
+      }
+    }
+  };
+
   return (
     <>
       <StyledWrapper>
-        <div className="map-container" ref={mapContainer}>
-          <img className="map" src={MapImg} />
-          <div
-            className="champion-container"
-            style={{
-              left: champion[0].positionX,
-              top: champion[0].positionY,
-            }}
-          >
-            {champion[0].isShown ? (
-              <div className="champion-box">
-                <div className="remain-time">{champion[0].shownTime}</div>
-                <img
-                  className="champion"
-                  src={champion[0].targetChampion.image}
-                  alt={champion[0].targetChampion.eng}
-                />
-              </div>
-            ) : (
-              <></>
-            )}
+        <div className="map-box">
+          <div className="portrait-container">
+            <img className="portrait" src={Champ1} />
+            <img className="portrait" src={Champ2} />
+            <img className="portrait" src={Champ3} />
+            <img className="portrait" src={Champ4} />
+          </div>
+          <div className="map-container" ref={mapContainer}>
+            <img className="map" src={MapImg} />
+            <div
+              className="champion-container"
+              style={{
+                left: champion[0].positionX,
+                top: champion[0].positionY + 75,
+              }}
+            >
+              {champion[0].isShown ? (
+                <div className="champion-box">
+                  <div className="remain-time">{champion[0].shownTime}</div>
+                  <img
+                    className="champion"
+                    src={champion[0].targetChampion.image}
+                    alt={champion[0].targetChampion.key}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
       </StyledWrapper>
