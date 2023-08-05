@@ -73,7 +73,7 @@ const StartPage = () => {
   return (
     <>
       <StyledWrapper>
-        <Link to="/ingame">
+        <Link to="/ingameplay">
           <div class="button button-start">game start</div>
         </Link>
       </StyledWrapper>
