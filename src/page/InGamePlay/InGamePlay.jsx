@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
@@ -38,25 +39,40 @@ const StyledWrapper = styled.div`
   .ui {
     width: 1000px;
   }
-  .time {
-    color: white;
+  .skill-box {
+    border-radius: 50%;
+    display: flex;
+    background-color: #091428;
+    flex-direction: column-reverse;
+    gap: 5px;
+  }
+  .remain-time {
+    color: #0ac8b9;
+    font-size: 25px;
+    background-color: #091428;
   }
   .skill {
     border-radius: 50%;
     border: 2px solid #c8aa6e;
-    width: 70px;
-    height: 70px;
-    color: #0ac8b9;
+    width: 100px;
+    height: 100px;
     background-color: #091428;
   }
-  .score-container {
-    display: block;
-  }
-  .score {
-    top: 50px;
+  .time-score-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    top: 30px;
     right: 50px;
     position: absolute;
     color: #cdfafa;
+    background-color: #091428;
+    font-size: 30px;
+  }
+  .time {
+    background-color: #091428;
+  }
+  .score {
     background-color: #091428;
   }
   .fail {
@@ -89,6 +105,7 @@ const skills = [
 ];
 
 const InGamePlay = () => {
+  const navigate = useNavigate();
   const gameContainer = useRef(null);
   const [time, setTime] = useState(0);
   const [score, setScore] = useState(0);
@@ -115,6 +132,7 @@ const InGamePlay = () => {
       positionX: null,
       positionY: null,
       showTime: null,
+      shownTime: null,
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
@@ -129,6 +147,7 @@ const InGamePlay = () => {
       positionY: null,
       showTime: null,
       noShowTime: null,
+      shownTime: null,
       currentTime: null,
       keyPressedTime: 0,
       timePlusShowTime: 0,
@@ -141,6 +160,7 @@ const InGamePlay = () => {
       positionX: null,
       positionY: null,
       showTime: null,
+      shownTime: null,
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
@@ -148,23 +168,36 @@ const InGamePlay = () => {
     },
   ]);
 
-  function getRandomNumberTwoToSix() {
-    return Math.floor(Math.random() * 5) + 2; // 2,3,4,5,6중 랜덤한 숫자 생성
+  function getRandomNumberThreeToSix() {
+    return Math.floor(Math.random() * 5) + 3; // 3,4,5,6중 랜덤한 숫자 생성
   }
   function getRandomNumberTwoToFour() {
     return Math.floor(Math.random() * 4) + 2; // 2,3,4 중 랜덤한 숫자 생성
   }
 
-  function getRandomSkill() {
-    let randomSkills = [];
-    while (randomSkills.length < 3) {
-      const randomSkill = skills[Math.floor(Math.random() * skills.length)];
-      if (!randomSkills.includes(randomSkill)) {
-        randomSkills.push(randomSkill);
-      }
-    }
-    return randomSkills;
+  function getRandomNumberZeroToTwo() {
+    const randomIndex = Math.floor(Math.random() * 3); // Generates a random number between 0 and 2 (inclusive)
+    return skills[randomIndex];
   }
+  function getRandomNumberThreeToFive() {
+    const randomIndex = Math.floor(Math.random() * 3) + 3; // Generates a random number between 3 and 5 (inclusive)
+    return skills[randomIndex];
+  }
+  function getRandomNumberSixToSeven() {
+    const randomIndex = Math.floor(Math.random() * 2) + 6; // Generates a random number between 6 and 7 (inclusive)
+    return skills[randomIndex];
+  }
+
+  // function getRandomSkill() {
+  //   let randomSkills = [];
+  //   while (randomSkills.length < 3) {
+  //     const randomSkill = skills[Math.floor(Math.random() * skills.length)];
+  //     if (!randomSkills.includes(randomSkill)) {
+  //       randomSkills.push(randomSkill);
+  //     }
+  //   }
+  //   return randomSkills;
+  // }
 
   let previousXValues = [];
   function getRandomPositionX() {
@@ -202,7 +235,24 @@ const InGamePlay = () => {
     const interval = setInterval(() => {
       setTime((props) => props + 1);
       console.log("------------------");
-    }, 1000);
+      setSkill((prevState) => {
+        const updatedSkill = [...prevState];
+        updatedSkill[0].shownTime -= 0.5;
+        updatedSkill[1].shownTime -= 0.5;
+        updatedSkill[2].shownTime -= 0.5;
+        if (updatedSkill[0].shownTime <= 0) {
+          updatedSkill[0].shownTime = null;
+        }
+        if (updatedSkill[1].shownTime <= 1) {
+          updatedSkill[1].shownTime = null;
+        }
+        if (updatedSkill[2].shownTime <= 2) {
+          updatedSkill[2].shownTime = null;
+        }
+        return updatedSkill;
+      });
+    }, 700);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -210,13 +260,14 @@ const InGamePlay = () => {
     if (skill[0].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomSkill()[0];
+        const randomSkill = getRandomNumberZeroToTwo();
         updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[0].showTime = getRandomNumberTwoToSix();
+        updatedSkill[0].showTime = getRandomNumberThreeToSix();
         updatedSkill[0].targetSkill = randomSkill;
         updatedSkill[0].positionX = getRandomPositionX();
         updatedSkill[0].positionY = getRandomPositionY();
-        updatedSkill[0].timePlusShowTime = time + skill[0].noShowTime;
+        updatedSkill[0].timePlusShowTime =
+          time + skill[0].noShowTime + skill[0].showTime;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       if (skill[0].isGamePlay === "non-playing") {
@@ -225,6 +276,7 @@ const InGamePlay = () => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = true;
             updatedSkill[0].isGamePlay = "playing";
+            updatedSkill[0].shownTime = skill[0].showTime + 1;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -232,11 +284,10 @@ const InGamePlay = () => {
               const updatedSkill = [...prevState];
               updatedSkill[0].isShown = false;
               updatedSkill[0].isGamePlay = "non-playing";
-
               return updatedSkill;
             });
-          }, skill[0].showTime * 1000);
-        }, skill[0].noShowTime * 1000);
+          }, skill[0].showTime * 700);
+        }, skill[0].noShowTime * 700);
       }
     }
   }, [skill[0].isGamePlay]);
@@ -245,61 +296,72 @@ const InGamePlay = () => {
     if (skill[1].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomSkill()[1];
+        const randomSkill = getRandomNumberThreeToFive();
         updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[1].showTime = getRandomNumberTwoToSix();
+        updatedSkill[1].showTime = getRandomNumberThreeToSix();
         updatedSkill[1].targetSkill = randomSkill;
         updatedSkill[1].positionX = getRandomPositionX();
         updatedSkill[1].positionY = getRandomPositionY();
+        updatedSkill[1].timePlusShowTime =
+          time + skill[1].noShowTime + skill[1].showTime;
+
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
-      setTimeout(() => {
-        setSkill((prevState) => {
-          const updatedSkill = [...prevState];
-          updatedSkill[1].isShown = true;
-          updatedSkill[1].isGamePlay = "playing";
-          return updatedSkill;
-        });
+      if (skill[1].isGamePlay === "non-playing") {
         setTimeout(() => {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
-            updatedSkill[1].isShown = false;
-            updatedSkill[1].isGamePlay = "non-playing";
+            updatedSkill[1].isShown = true;
+            updatedSkill[1].isGamePlay = "playing";
+            updatedSkill[1].shownTime = skill[1].showTime + 1;
             return updatedSkill;
           });
-        }, skill[1].showTime * 1000);
-      }, skill[1].noShowTime * 1000);
+          setTimeout(() => {
+            setSkill((prevState) => {
+              const updatedSkill = [...prevState];
+              updatedSkill[1].isShown = false;
+              updatedSkill[1].isGamePlay = "non-playing";
+              return updatedSkill;
+            });
+          }, skill[1].showTime * 700);
+        }, skill[1].noShowTime * 700);
+      }
     }
-  }, [skill[0].isGamePlay]);
+  }, [skill[1].isGamePlay]);
 
   useEffect(() => {
     if (skill[2].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomSkill()[2];
+        const randomSkill = getRandomNumberSixToSeven();
         updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[2].showTime = getRandomNumberTwoToSix();
+        updatedSkill[2].showTime = getRandomNumberThreeToSix();
         updatedSkill[2].targetSkill = randomSkill;
         updatedSkill[2].positionX = getRandomPositionX();
         updatedSkill[2].positionY = getRandomPositionY();
+        updatedSkill[2].timePlusShowTime =
+          time + skill[2].noShowTime + skill[2].showTime;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
-      setTimeout(() => {
-        setSkill((prevState) => {
-          const updatedSkill = [...prevState];
-          updatedSkill[2].isShown = true;
-          updatedSkill[2].isGamePlay = "playing";
-          return updatedSkill;
-        });
+      if (skill[2].isGamePlay === "non-playing") {
         setTimeout(() => {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
-            updatedSkill[2].isGamePlay = "non-playing";
-            updatedSkill[2].isShown = false;
+            updatedSkill[2].isShown = true;
+            updatedSkill[2].isGamePlay = "playing";
+            updatedSkill[2].shownTime = skill[2].showTime + 1;
             return updatedSkill;
           });
-        }, skill[2].showTime * 1000);
-      }, skill[2].noShowTime * 1000);
+          setTimeout(() => {
+            setSkill((prevState) => {
+              const updatedSkill = [...prevState];
+              updatedSkill[2].isShown = false;
+              updatedSkill[2].isGamePlay = "non-playing";
+              return updatedSkill;
+            });
+          }, skill[2].showTime * 700);
+        }, skill[2].noShowTime * 700);
+      }
     }
   }, [skill[2].isGamePlay]);
 
@@ -312,27 +374,95 @@ const InGamePlay = () => {
 
   const handleKeyPress = (e) => {
     const pressedKey = e.key.toLowerCase();
-    if (skill[0].isShown) {
+    console.log(skill[0].shownTime);
+    if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
       setPressedKey(pressedKey);
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].keyPressedTime = time;
+        updatedSkill[1].keyPressedTime = time;
+        updatedSkill[2].keyPressedTime = time;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       if (
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
-        setScore((prevScore) => prevScore + 100);
-        setSkill((prevState) => {
-          const updatedSkill = [...prevState];
-          updatedSkill[0].isShown = false;
-          updatedSkill[0].isGamePlay = "non-playing";
-          return updatedSkill;
-        });
+        if (skill[0].timePlusShowTime - skill[0].keyPressedTime < 2) {
+          setScore((prevScore) => prevScore + 100);
+          console.log(skill[0].timePlusShowTime, skill[0].keyPressedTime);
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[0].isShown = false;
+            updatedSkill[0].isGamePlay = "non-playing";
+            return updatedSkill;
+          });
+        } else {
+          setScore((prevScore) => prevScore - 50);
+          console.log("false");
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[0].isShown = false;
+            updatedSkill[0].isGamePlay = "non-playing";
+
+            return updatedSkill;
+          });
+        }
+      } else if (
+        skill[1].targetSkill.eng === pressedKey ||
+        skill[1].targetSkill.kor === pressedKey
+      ) {
+        if (skill[1].timePlusShowTime - skill[1].keyPressedTime < 2) {
+          setScore((prevScore) => prevScore + 100);
+          console.log(skill[1].timePlusShowTime, skill[1].keyPressedTime);
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[1].isShown = false;
+            updatedSkill[1].isGamePlay = "non-playing";
+            return updatedSkill;
+          });
+        } else {
+          setScore((prevScore) => prevScore - 50);
+          console.log("false");
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[1].isShown = false;
+            updatedSkill[1].isGamePlay = "non-playing";
+            return updatedSkill;
+          });
+        }
+      } else if (
+        skill[2].targetSkill.eng === pressedKey ||
+        skill[2].targetSkill.kor === pressedKey
+      ) {
+        if (skill[2].timePlusShowTime - skill[2].keyPressedTime < 2) {
+          setScore((prevScore) => prevScore + 100);
+          console.log(skill[2].timePlusShowTime, skill[2].keyPressedTime);
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[2].isShown = false;
+            updatedSkill[2].isGamePlay = "non-playing";
+            return updatedSkill;
+          });
+        } else {
+          setScore((prevScore) => prevScore - 50);
+          console.log("false");
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[2].isShown = false;
+            updatedSkill[2].isGamePlay = "non-playing";
+            return updatedSkill;
+          });
+        }
       }
     }
   };
+
+  useEffect(() => {
+    if (time === 200) {
+      navigate("/");
+    }
+  });
 
   return (
     <StyledWrapper>
@@ -341,13 +471,15 @@ const InGamePlay = () => {
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
         >
-          <div className="time">a:</div>
           {skill[0].isShown ? (
-            <img
-              className="skill"
-              src={skill[0].targetSkill.image}
-              alt={skill[0].targetSkill.eng}
-            />
+            <div className="skill-box">
+              <div className="remain-time">{skill[0].shownTime}</div>
+              <img
+                className="skill"
+                src={skill[0].targetSkill.image}
+                alt={skill[0].targetSkill.eng}
+              />
+            </div>
           ) : (
             <></>
           )}
@@ -357,11 +489,14 @@ const InGamePlay = () => {
           style={{ left: skill[1].positionX, top: skill[1].positionY }}
         >
           {skill[1].isShown ? (
-            <img
-              className="skill"
-              src={skill[1].targetSkill.image}
-              alt={skill[1].targetSkill.eng}
-            />
+            <div className="skill-box">
+              <div className="remain-time">{skill[1].shownTime}</div>
+              <img
+                className="skill"
+                src={skill[1].targetSkill.image}
+                alt={skill[1].targetSkill.eng}
+              />
+            </div>
           ) : (
             <></>
           )}
@@ -371,18 +506,24 @@ const InGamePlay = () => {
           style={{ left: skill[2].positionX, top: skill[2].positionY }}
         >
           {skill[2].isShown ? (
-            <img
-              className="skill"
-              src={skill[2].targetSkill.image}
-              alt={skill[2].targetSkill.eng}
-            />
+            <div className="skill-box">
+              <div className="remain-time">{skill[2].shownTime}</div>
+              <img
+                className="skill"
+                src={skill[2].targetSkill.image}
+                alt={skill[2].targetSkill.eng}
+              />
+            </div>
           ) : (
             <></>
           )}
         </div>
-        <div className="time">{time}</div>
+
         <div className="map-container">
-          <div className="time">score:{score}</div>
+          <div className="time-score-container">
+            <div className="time">시간 : {time}</div>
+            <div className="score">점수 : {score}</div>
+          </div>
           <Map />
         </div>
         <div className="ui-container">
