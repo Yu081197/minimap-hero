@@ -13,7 +13,6 @@ import QSkill from "../../assets/img/skills/skill-q.png";
 import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
-import { shallowEqual } from "react-redux";
 
 const StyledWrapper = styled.div`
   p {

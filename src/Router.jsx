@@ -3,10 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import StartPage from "./page/StartPage/StartPage";
 import Map from "./components/Map/Map";
-
 import InGamePlay from "./page/InGamePlay/InGamePlay";
-
-import { styled } from "styled-components";
 
 function routes() {
   return (
