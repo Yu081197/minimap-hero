@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
+
 import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
@@ -106,8 +109,13 @@ const skills = [
 const InGamePlay = () => {
   const navigate = useNavigate();
   const gameContainer = useRef(null);
-  const [time, setTime] = useState(0);
-  const [score, setScore] = useState(0);
+  const prevTimeoutRef = useRef();
+  const [time, setTime] = useState(100);
+  const dispatch = useDispatch();
+  const score = useSelector((state) => {
+    return state.score;
+  });
+
   const [pressedKey, setPressedKey] = useState("");
 
   /* 
@@ -167,11 +175,29 @@ const InGamePlay = () => {
     },
   ]);
 
+  const incrementScore = (amount) => {
+    dispatch(increaseScore(amount));
+  };
+
+  const decrementScore = (amount) => {
+    dispatch(decreaseScore(amount));
+  };
+
   function getRandomNumberThreeToSix() {
     return Math.floor(Math.random() * 5) + 3; // 3,4,5,6중 랜덤한 숫자 생성
   }
   function getRandomNumberTwoToFour() {
     return Math.floor(Math.random() * 4) + 2; // 2,3,4 중 랜덤한 숫자 생성
+  }
+
+  function getRandomNumberZeroToThree() {
+    const randomIndex = Math.floor(Math.random() * 3);
+    return skills[randomIndex];
+  }
+
+  function getRandomNumberFourToSeven() {
+    const randomIndex = Math.floor(Math.random() * 4) + 4; // Generates a random number between 3 and 5 (inclusive)
+    return skills[randomIndex];
   }
 
   function getRandomNumberZeroToTwo() {
@@ -232,7 +258,7 @@ const InGamePlay = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime((props) => props + 1);
+      setTime((props) => props - 1);
       console.log("------------------");
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
@@ -259,7 +285,7 @@ const InGamePlay = () => {
     if (skill[0].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberZeroToTwo();
+        const randomSkill = getRandomNumberZeroToThree();
         updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[0].showTime = getRandomNumberThreeToSix();
         updatedSkill[0].targetSkill = randomSkill;
@@ -269,13 +295,13 @@ const InGamePlay = () => {
           time + skill[0].noShowTime + skill[0].showTime;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
-      if (skill[0].isGamePlay === "non-playing") {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (skill[0].isGamePlay === "non-playing") {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = true;
             updatedSkill[0].isGamePlay = "playing";
-            updatedSkill[0].shownTime = skill[0].showTime + 1;
+            updatedSkill[0].shownTime = skill[0].showTime;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -286,16 +312,20 @@ const InGamePlay = () => {
               return updatedSkill;
             });
           }, skill[0].showTime * 700);
-        }, skill[0].noShowTime * 700);
-      }
+        }
+      }, skill[0].noShowTime * 700);
     }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, skill[0].noShowTime * 700);
   }, [skill[0].isGamePlay]);
 
   useEffect(() => {
     if (skill[1].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberThreeToFive();
+        const randomSkill = getRandomNumberFourToSeven();
         updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[1].showTime = getRandomNumberThreeToSix();
         updatedSkill[1].targetSkill = randomSkill;
@@ -303,16 +333,15 @@ const InGamePlay = () => {
         updatedSkill[1].positionY = getRandomPositionY();
         updatedSkill[1].timePlusShowTime =
           time + skill[1].noShowTime + skill[1].showTime;
-
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
-      if (skill[1].isGamePlay === "non-playing") {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (skill[1].isGamePlay === "non-playing") {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = true;
             updatedSkill[1].isGamePlay = "playing";
-            updatedSkill[1].shownTime = skill[1].showTime + 1;
+            updatedSkill[1].shownTime = skill[1].showTime;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -323,16 +352,20 @@ const InGamePlay = () => {
               return updatedSkill;
             });
           }, skill[1].showTime * 700);
-        }, skill[1].noShowTime * 700);
-      }
+        }
+      }, skill[1].noShowTime * 700);
     }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, skill[1].noShowTime * 700);
   }, [skill[1].isGamePlay]);
 
   useEffect(() => {
     if (skill[2].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberSixToSeven();
+        const randomSkill = getRandomNumberFourToSeven();
         updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[2].showTime = getRandomNumberThreeToSix();
         updatedSkill[2].targetSkill = randomSkill;
@@ -342,13 +375,13 @@ const InGamePlay = () => {
           time + skill[2].noShowTime + skill[2].showTime;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
-      if (skill[2].isGamePlay === "non-playing") {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (skill[2].isGamePlay === "non-playing") {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = true;
             updatedSkill[2].isGamePlay = "playing";
-            updatedSkill[2].shownTime = skill[2].showTime + 1;
+            updatedSkill[2].shownTime = skill[2].showTime;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -359,9 +392,13 @@ const InGamePlay = () => {
               return updatedSkill;
             });
           }, skill[2].showTime * 700);
-        }, skill[2].noShowTime * 700);
-      }
+        }
+      }, skill[2].noShowTime * 700);
     }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, skill[2].noShowTime * 700);
   }, [skill[2].isGamePlay]);
 
   useEffect(() => {
@@ -387,8 +424,8 @@ const InGamePlay = () => {
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
-        if (skill[0].timePlusShowTime - skill[0].keyPressedTime < 2) {
-          setScore((prevScore) => prevScore + 100);
+        if (skill[0].timePlusShowTime - skill[0].keyPressedTime < 3) {
+          incrementScore(100);
           console.log(skill[0].timePlusShowTime, skill[0].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -397,7 +434,7 @@ const InGamePlay = () => {
             return updatedSkill;
           });
         } else {
-          setScore((prevScore) => prevScore - 50);
+          decrementScore(50);
           console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -411,8 +448,8 @@ const InGamePlay = () => {
         skill[1].targetSkill.eng === pressedKey ||
         skill[1].targetSkill.kor === pressedKey
       ) {
-        if (skill[1].timePlusShowTime - skill[1].keyPressedTime < 2) {
-          setScore((prevScore) => prevScore + 100);
+        if (skill[1].timePlusShowTime - skill[1].keyPressedTime < 3) {
+          incrementScore(100);
           console.log(skill[1].timePlusShowTime, skill[1].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -421,7 +458,7 @@ const InGamePlay = () => {
             return updatedSkill;
           });
         } else {
-          setScore((prevScore) => prevScore - 50);
+          decrementScore(50);
           console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -434,8 +471,8 @@ const InGamePlay = () => {
         skill[2].targetSkill.eng === pressedKey ||
         skill[2].targetSkill.kor === pressedKey
       ) {
-        if (skill[2].timePlusShowTime - skill[2].keyPressedTime < 2) {
-          setScore((prevScore) => prevScore + 100);
+        if (skill[2].timePlusShowTime - skill[2].keyPressedTime < 3) {
+          incrementScore(100);
           console.log(skill[2].timePlusShowTime, skill[2].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -444,7 +481,7 @@ const InGamePlay = () => {
             return updatedSkill;
           });
         } else {
-          setScore((prevScore) => prevScore - 50);
+          decrementScore(50);
           console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -458,8 +495,8 @@ const InGamePlay = () => {
   };
 
   useEffect(() => {
-    if (time === 120) {
-      navigate("/");
+    if (time === 0) {
+      navigate("/score");
     }
   });
 
@@ -472,6 +509,7 @@ const InGamePlay = () => {
         >
           {skill[0].isShown ? (
             <div className="skill-box">
+              <div className="remain-time">A</div>
               <div className="remain-time">{skill[0].shownTime}</div>
               <img
                 className="skill"

@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
+
 import MapImg from "../../assets/img/minimap.png";
 
 import Champ1 from "../../assets/img/champions/i0128364288.jpg";
@@ -66,7 +69,14 @@ const StyledWrapper = styled.div`
 
 const Map = () => {
   const mapContainer = useRef(null);
+  const prevTimeoutRef = useRef();
+  const dispatch = useDispatch();
+
   const [pressedKey, setPressedKey] = useState("");
+  const [isFirstDivClicked, setFirstDivClicked] = useState(false);
+  const [isSecondDivClicked, setSecondDivClicked] = useState(false);
+  const [isThirdDivClicked, setThirdDivClicked] = useState(false);
+  const [isForthDivClicked, setForthDivClicked] = useState(false);
   const [champion, setChampion] = useState({
     id: 1,
     isGamePlay: "non-playing",
@@ -81,6 +91,10 @@ const Map = () => {
     keyPressedTime: 0,
     timePlusShowTime: 0,
   });
+
+  const incrementScore = (amount) => {
+    dispatch(increaseScore(amount));
+  };
 
   function getRandomNumberZeroToTen() {
     const randomIndex = Math.floor(Math.random() * 4);
@@ -138,6 +152,10 @@ const Map = () => {
           }, 2000);
         }, 3000);
       }
+      if (prevTimeoutRef.current) {
+        clearTimeout(prevTimeoutRef.current);
+      }
+      prevTimeoutRef.current = setTimeout(() => {}, champion.noShowTime * 700);
     }
   }, [champion.isGamePlay]);
 
@@ -150,11 +168,20 @@ const Map = () => {
 
   const handleKeyPress = (e) => {
     const pressedKey = e.key.toLowerCase();
+    if (e.key === "1") {
+      setFirstDivClicked(!isFirstDivClicked);
+    } else if (e.key === "2") {
+      setSecondDivClicked(!isSecondDivClicked);
+    } else if (e.key === "3") {
+      setThirdDivClicked(!isThirdDivClicked);
+    } else if (e.key === "4") {
+      setForthDivClicked(!isForthDivClicked);
+    }
     console.log(pressedKey);
     if (champion.isShown) {
       setPressedKey(pressedKey);
       if (champion.targetChampion.key === pressedKey) {
-        console.log(champion.timePlusShowTime, champion.keyPressedTime);
+        incrementScore(200);
         setChampion((prevState) => {
           const updatedChampion = { ...prevState };
           updatedChampion.isShown = false;
@@ -170,13 +197,13 @@ const Map = () => {
       <StyledWrapper>
         <div className="map-box">
           <div className="portrait-container">
-            <img className="portrait" src={Champ1} />
-            <img className="portrait" src={Champ2} />
-            <img className="portrait" src={Champ3} />
-            <img className="portrait" src={Champ4} />
+            <img className="portrait" src={Champ1} alt={1} />
+            <img className="portrait" src={Champ2} alt={2} />
+            <img className="portrait" src={Champ3} alt={3} />
+            <img className="portrait" src={Champ4} alt={4} />
           </div>
           <div className="map-container" ref={mapContainer}>
-            <img className="map" src={MapImg} />
+            <img className="map" src={MapImg} alt={"map"} />
             <div
               className="champion-container"
               style={{
