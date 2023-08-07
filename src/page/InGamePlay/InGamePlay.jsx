@@ -6,8 +6,8 @@ import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
+import UI from "../../components/UI/UI";
 
-import skillUI from "../../assets/img/skillUI.png";
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
@@ -484,11 +484,11 @@ const InGamePlay = () => {
     }
   };
 
-  useEffect(() => {
-    if (time === 0) {
-      navigate("/score");
-    }
-  });
+  // useEffect(() => {
+  //   if (time === 0) {
+  //     navigate("/score");
+  //   }
+  // });
 
   return (
     <StyledWrapper>
@@ -552,9 +552,7 @@ const InGamePlay = () => {
           </div>
           <Map />
         </div>
-        <div className="ui-container">
-          <img className="ui" src={skillUI}></img>
-        </div>
+        <UI />
       </div>
     </StyledWrapper>
   );

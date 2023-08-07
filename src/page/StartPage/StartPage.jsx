@@ -1,15 +1,36 @@
 import styled from "styled-components";
 
-import Button from "../../components/Button";
+import ASkill from "../../assets/img/skills/skill-a.png";
+import SSkill from "../../assets/img/skills/skill-s.png";
+import DSkill from "../../assets/img/skills/skill-d.png";
+import FSkill from "../../assets/img/skills/skill-f.png";
+import QSkill from "../../assets/img/skills/skill-q.png";
+import WSkill from "../../assets/img/skills/skill-w.png";
+import ESkill from "../../assets/img/skills/skill-e.png";
+import RSkill from "../../assets/img/skills/skill-r.png";
 import { Link } from "react-router-dom";
 
 const StyledWrapper = styled.div`
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  .start-container {
+    display: flex;
+    margin-top: 0px;
+    flex-direction: column;
   }
-
+  img {
+    width: 100px;
+  }
+  .explain-container {
+    gap: 100px;
+    margin-bottom: 10px;
+  }
+  .explain-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .explain {
+    font-size: 40px;
+    color: #cdfafa;
+  }
   .button-start {
     width: 300px;
     height: 100px;
@@ -73,9 +94,49 @@ const StartPage = () => {
   return (
     <>
       <StyledWrapper>
-        <Link to="/ingameplay">
-          <div class="button button-start">game start</div>
-        </Link>
+        <div className="start-container">
+          <div className="explain-container">
+            <div className="explain-box">
+              <img src={QSkill} alt="ASkill" />
+              <div className="explain">Q</div>
+            </div>
+            <div className="explain-box">
+              <img src={WSkill} alt="ASkill" />
+              <div className="explain">W</div>
+            </div>
+            <div className="explain-box">
+              <img src={ESkill} alt="ASkill" />
+              <div className="explain">E</div>
+            </div>
+            <div className="explain-box">
+              <img src={RSkill} alt="ASkill" />
+              <div className="explain">R</div>
+            </div>
+          </div>
+          <div className="explain-container">
+            <div className="explain-box">
+              <img src={ASkill} alt="ASkill" />
+              <div className="explain">A</div>
+            </div>
+            <div className="explain-box">
+              <img src={SSkill} alt="ASkill" />
+              <div className="explain">S</div>
+            </div>
+            <div className="explain-box">
+              <img src={DSkill} alt="ASkill" />
+              <div className="explain">D</div>
+            </div>
+            <div className="explain-box">
+              <img src={FSkill} alt="ASkill" />
+              <div className="explain">F</div>
+            </div>
+          </div>
+        </div>
+        <div className="button-container">
+          <Link to="/countdown">
+            <div class="button button-start">game start</div>
+          </Link>
+        </div>
       </StyledWrapper>
 
       {/* <Button /> */}
