@@ -50,112 +50,64 @@ const StyledWrapper = styled.div`
   }
 `;
 const UI = () => {
-  //   const [isKeyQPressed, setIsKeyQPressed] = useState(false);
-  //   const [isKeyWPressed, setIsKeyWPressed] = useState(false);
-  //   const [isKeyEPressed, setIsKeyEPressed] = useState(false);
-  //   const [isKeyRPressed, setIsKeyRPressed] = useState(false);
-  //   const [isKeyDPressed, setIsKeyDPressed] = useState(false);
-  //   const [isKeyFPressed, setIsKeyFPressed] = useState(false);
+  const [isKeyQPressed, setIsKeyQPressed] = useState(false);
+  const [isKeyWPressed, setIsKeyWPressed] = useState(false);
+  const [isKeyEPressed, setIsKeyEPressed] = useState(false);
+  const [isKeyRPressed, setIsKeyRPressed] = useState(false);
+  const [isKeyDPressed, setIsKeyDPressed] = useState(false);
+  const [isKeyFPressed, setIsKeyFPressed] = useState(false);
 
-  //   useEffect(() => {
-  //     document.addEventListener("keypress", handleKeyPress);
-  //     document.addEventListener("keyup", handleKeyUp);
-  //     return () => {
-  //       document.removeEventListener("keypress", handleKeyPress);
-  //       document.removeEventListener("keyup", handleKeyUp);
-  //     };
-  //   });
+  useEffect(() => {
+    document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  });
 
-  //   const handleKeyPress = (e) => {
-  //     if (e.key === "q") {
-  //       setIsKeyQPressed(true);
-  //     }
-  //     if (e.key === "w") {
-  //       setIsKeyWPressed(true);
-  //     }
-  //     if (e.key === "e") {
-  //       setIsKeyEPressed(true);
-  //     }
-  //     if (e.key === "r") {
-  //       setIsKeyRPressed(true);
-  //     }
-  //     if (e.key === "d") {
-  //       setIsKeyDPressed(true);
-  //     }
-  //     if (e.key === "f") {
-  //       setIsKeyFPressed(true);
-  //     }
-  //   };
+  const handleKeyPress = (e) => {
+    if (e.key === "q") {
+      setIsKeyQPressed(true);
+    }
+    if (e.key === "w") {
+      setIsKeyWPressed(true);
+    }
+    if (e.key === "e") {
+      setIsKeyEPressed(true);
+    }
+    if (e.key === "r") {
+      setIsKeyRPressed(true);
+    }
+    if (e.key === "d") {
+      setIsKeyDPressed(true);
+    }
+    if (e.key === "f") {
+      setIsKeyFPressed(true);
+    }
+  };
 
-  //   const handleKeyUp = (e) => {
-  //     if (e.key === "q") {
-  //       setIsKeyQPressed(false);
-  //     }
-  //     if (e.key === "w") {
-  //       setIsKeyWPressed(false);
-  //     }
-  //     if (e.key === "e") {
-  //       setIsKeyEPressed(false);
-  //     }
-  //     if (e.key === "r") {
-  //       setIsKeyRPressed(false);
-  //     }
-  //     if (e.key === "d") {
-  //       setIsKeyDPressed(false);
-  //     }
-  //     if (e.key === "f") {
-  //       setIsKeyFPressed(false);
-  //     }
-  //   };
-  return (
-    <StyledWrapper>
-      <div className="ui-container">
-        <img className="ui" src={skillUI} />
-        <img
-          className="ui-skill skill-d"
-          src={DSkill}
-          //   style={{
-          //     border: `5px solid ${isKeyDPressed ? "red" : ""}`,
-          //   }}
-        />
-        <img
-          className="ui-skill skill-f"
-          src={FSkill}
-          //   style={{
-          //     border: `5px solid ${isKeyFPressed ? "red" : ""}`,
-          //   }}
-        />
-        <img
-          className="ui-skill skill-q"
-          src={QSkill}
-          //   style={{
-          //     border: `5px solid ${isKeyQPressed ? "red" : ""}`,
-          //   }}
-        />
-        <img
-          className="ui-skill skill-w"
-          src={WSkill}
-          //   style={{
-          //     border: `5px solid ${isKeyWPressed ? "red" : ""}`,
-          //   }}
-        />
-        <img
-          className="ui-skill skill-e"
-          src={ESkill}
-          //   style={{
-          //     border: `5px solid ${isKeyEPressed ? "red" : ""}`,
-          //   }}
-        />
-        <img
-          className="ui-skill skill-r"
-          src={RSkill}
-          //   style={{
-          //     border: `5px solid ${isKeyRPressed ? "red" : ""}`,
-          //   }}
-        />
-      </div>
-    </StyledWrapper>
-  );
+  const handleKeyUp = (e) => {
+    if (e.key === "q") {
+      setIsKeyQPressed(false);
+    }
+    if (e.key === "w") {
+      setIsKeyWPressed(false);
+    }
+    if (e.key === "e") {
+      setIsKeyEPressed(false);
+    }
+    if (e.key === "r") {
+      setIsKeyRPressed(false);
+    }
+    if (e.key === "d") {
+      setIsKeyDPressed(false);
+    }
+    if (e.key === "f") {
+      setIsKeyFPressed(false);
+    }
+  };
+  return <StyledWrapper></StyledWrapper>;
 };
 
 export default UI;

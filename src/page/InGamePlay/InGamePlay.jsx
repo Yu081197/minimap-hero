@@ -6,7 +6,8 @@ import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
-import UI from "../../components/UI/UI";
+
+import skillUI from "../../assets/img/skillUI.png";
 
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
@@ -33,10 +34,47 @@ const StyledWrapper = styled.div`
     background-color: #091428;
     border: 2px solid #c8aa6e;
   }
-  .ui-container {
+  .ui-cotainer {
+    display: block;
+    position: relative;
+  }
+  .ui {
     position: absolute;
-    bottom: 0;
-    left: 400px;
+    bottom: 0px;
+  }
+  .ui-skill {
+    position: absolute;
+    bottom: 0px;
+  }
+  .skill-d {
+    bottom: 93px;
+    right: 774px;
+    width: 40px;
+  }
+  .skill-f {
+    bottom: 93px;
+    right: 722px;
+    width: 40px;
+  }
+  .skill-q {
+    bottom: 78px;
+    right: 1038px;
+    width: 54px;
+  }
+  .skill-w {
+    bottom: 78px;
+    right: 972px;
+    width: 54px;
+  }
+  .skill-e {
+    bottom: 78px;
+    right: 902px;
+    width: 54px;
+  }
+  .skill-r {
+    bottom: 78px;
+    right: 836.5px;
+    width: 54px;
   }
   .ui {
     width: 1000px;
@@ -117,6 +155,12 @@ const InGamePlay = () => {
   });
 
   const [pressedKey, setPressedKey] = useState("");
+  const [isKeyQPressed, setIsKeyQPressed] = useState(false);
+  const [isKeyWPressed, setIsKeyWPressed] = useState(false);
+  const [isKeyEPressed, setIsKeyEPressed] = useState(false);
+  const [isKeyRPressed, setIsKeyRPressed] = useState(false);
+  const [isKeyDPressed, setIsKeyDPressed] = useState(false);
+  const [isKeyFPressed, setIsKeyFPressed] = useState(false);
 
   /* 
     isGamePlay: 게임 중 상태
@@ -397,12 +441,32 @@ const InGamePlay = () => {
 
   useEffect(() => {
     document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keyup", handleKeyUp);
     return () => {
       document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
 
   const handleKeyPress = (e) => {
+    if (e.key === "q") {
+      setIsKeyQPressed(true);
+    }
+    if (e.key === "w") {
+      setIsKeyWPressed(true);
+    }
+    if (e.key === "e") {
+      setIsKeyEPressed(true);
+    }
+    if (e.key === "r") {
+      setIsKeyRPressed(true);
+    }
+    if (e.key === "d") {
+      setIsKeyDPressed(true);
+    }
+    if (e.key === "f") {
+      setIsKeyFPressed(true);
+    }
     const pressedKey = e.key.toLowerCase();
     if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
       setSkill((prevState) => {
@@ -483,12 +547,32 @@ const InGamePlay = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (time === 0) {
-      navigate("/score");
+  const handleKeyUp = (e) => {
+    if (e.key === "q") {
+      setIsKeyQPressed(false);
     }
-  });
+    if (e.key === "w") {
+      setIsKeyWPressed(false);
+    }
+    if (e.key === "e") {
+      setIsKeyEPressed(false);
+    }
+    if (e.key === "r") {
+      setIsKeyRPressed(false);
+    }
+    if (e.key === "d") {
+      setIsKeyDPressed(false);
+    }
+    if (e.key === "f") {
+      setIsKeyFPressed(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (time === 0) {
+  //     navigate("/score");
+  //   }
+  // });
 
   return (
     <StyledWrapper>
@@ -552,7 +636,57 @@ const InGamePlay = () => {
           </div>
           <Map />
         </div>
-        <UI />
+        <div className="ui-container">
+          <img className="ui" src={skillUI} />
+          <img
+            className="ui-skill skill-d"
+            src={DSkill}
+            style={{
+              border: isKeyDPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+          <img
+            className="ui-skill skill-f"
+            src={FSkill}
+            style={{
+              border: isKeyFPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+          <img
+            className="ui-skill skill-q"
+            src={QSkill}
+            style={{
+              border: isKeyQPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+          <img
+            className="ui-skill skill-w"
+            src={WSkill}
+            style={{
+              border: isKeyWPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+          <img
+            className="ui-skill skill-e"
+            src={ESkill}
+            style={{
+              border: isKeyEPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+          <img
+            className="ui-skill skill-r"
+            src={RSkill}
+            style={{
+              border: isKeyRPressed ? "3px solid red" : "none",
+            }}
+            alt="skill"
+          />
+        </div>
       </div>
     </StyledWrapper>
   );
