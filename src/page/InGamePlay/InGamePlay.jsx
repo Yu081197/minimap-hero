@@ -484,11 +484,11 @@ const InGamePlay = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (time === 0) {
-  //     navigate("/score");
-  //   }
-  // });
+  useEffect(() => {
+    if (time === 0) {
+      navigate("/score");
+    }
+  });
 
   return (
     <StyledWrapper>

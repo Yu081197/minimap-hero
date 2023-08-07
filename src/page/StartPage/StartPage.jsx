@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+import Champ1 from "../../assets/img/champions/bdPiW70pfZb3EEqPIYRFFZtsakJSklTCEN-2f6DFuZAEClUD2g4aZzzf2m67NN2zAqvzMH4bevJD25S0Y3iC3w.jpg";
+import Champ2 from "../../assets/img/champions/i1827421181.jpg";
+import Champ3 from "../../assets/img/champions/i3573951229.jpg";
+import Champ4 from "../../assets/img/champions/i4121612975.jpg";
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
@@ -14,6 +18,11 @@ const StyledWrapper = styled.div`
   .start-container {
     display: flex;
     margin-top: 0px;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .explain-wrapper {
+    display: flex;
     flex-direction: column;
   }
   img {
@@ -95,47 +104,67 @@ const StartPage = () => {
     <>
       <StyledWrapper>
         <div className="start-container">
-          <div className="explain-container">
-            <div className="explain-box">
-              <img src={QSkill} alt="ASkill" />
-              <div className="explain">Q</div>
+          <div className="explain-wrapper">
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={Champ1} alt="ASkill" />
+                <div className="explain">1</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ2} alt="ASkill" />
+                <div className="explain">2</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ3} alt="ASkill" />
+                <div className="explain">3</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ4} alt="ASkill" />
+                <div className="explain">4</div>
+              </div>
             </div>
-            <div className="explain-box">
-              <img src={WSkill} alt="ASkill" />
-              <div className="explain">W</div>
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={QSkill} alt="ASkill" />
+                <div className="explain">Q</div>
+              </div>
+              <div className="explain-box">
+                <img src={WSkill} alt="ASkill" />
+                <div className="explain">W</div>
+              </div>
+              <div className="explain-box">
+                <img src={ESkill} alt="ASkill" />
+                <div className="explain">E</div>
+              </div>
+              <div className="explain-box">
+                <img src={RSkill} alt="ASkill" />
+                <div className="explain">R</div>
+              </div>
             </div>
-            <div className="explain-box">
-              <img src={ESkill} alt="ASkill" />
-              <div className="explain">E</div>
-            </div>
-            <div className="explain-box">
-              <img src={RSkill} alt="ASkill" />
-              <div className="explain">R</div>
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={ASkill} alt="ASkill" />
+                <div className="explain">A</div>
+              </div>
+              <div className="explain-box">
+                <img src={SSkill} alt="ASkill" />
+                <div className="explain">S</div>
+              </div>
+              <div className="explain-box">
+                <img src={DSkill} alt="ASkill" />
+                <div className="explain">D</div>
+              </div>
+              <div className="explain-box">
+                <img src={FSkill} alt="ASkill" />
+                <div className="explain">F</div>
+              </div>
             </div>
           </div>
-          <div className="explain-container">
-            <div className="explain-box">
-              <img src={ASkill} alt="ASkill" />
-              <div className="explain">A</div>
-            </div>
-            <div className="explain-box">
-              <img src={SSkill} alt="ASkill" />
-              <div className="explain">S</div>
-            </div>
-            <div className="explain-box">
-              <img src={DSkill} alt="ASkill" />
-              <div className="explain">D</div>
-            </div>
-            <div className="explain-box">
-              <img src={FSkill} alt="ASkill" />
-              <div className="explain">F</div>
-            </div>
+          <div className="button-container">
+            <Link to="/countdown">
+              <div class="button button-start">game start</div>
+            </Link>
           </div>
-        </div>
-        <div className="button-container">
-          <Link to="/countdown">
-            <div class="button button-start">game start</div>
-          </Link>
         </div>
       </StyledWrapper>
 

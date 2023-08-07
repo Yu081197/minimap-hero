@@ -5,10 +5,10 @@ import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 
 import MapImg from "../../assets/img/minimap.png";
 
-import Champ1 from "../../assets/img/champions/i0128364288.jpg";
+import Champ1 from "../../assets/img/champions/bdPiW70pfZb3EEqPIYRFFZtsakJSklTCEN-2f6DFuZAEClUD2g4aZzzf2m67NN2zAqvzMH4bevJD25S0Y3iC3w.jpg";
 import Champ2 from "../../assets/img/champions/i1827421181.jpg";
 import Champ3 from "../../assets/img/champions/i3573951229.jpg";
-import Champ4 from "../../assets/img/champions/i3596591190.jpg";
+import Champ4 from "../../assets/img/champions/i4121612975.jpg";
 import Champ5 from "../../assets/img/champions/i3783144528.png";
 import Champ6 from "../../assets/img/champions/i4121612975.jpg";
 import Champ7 from "../../assets/img/champions/i4825916414.jpg";
