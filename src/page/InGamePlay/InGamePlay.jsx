@@ -259,9 +259,9 @@ const InGamePlay = () => {
       console.log("------------------");
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        updatedSkill[0].shownTime -= 0.5;
-        updatedSkill[1].shownTime -= 0.5;
-        updatedSkill[2].shownTime -= 0.5;
+        updatedSkill[0].shownTime -= 1;
+        updatedSkill[1].shownTime -= 1;
+        updatedSkill[2].shownTime -= 1;
         if (updatedSkill[0].shownTime <= 0) {
           updatedSkill[0].shownTime = null;
         }
