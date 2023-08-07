@@ -143,7 +143,6 @@ const InGamePlay = () => {
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
-      timePlusShowTime: 0,
     },
     {
       id: 2,
@@ -157,7 +156,6 @@ const InGamePlay = () => {
       shownTime: null,
       currentTime: null,
       keyPressedTime: 0,
-      timePlusShowTime: 0,
     },
     {
       id: 3,
@@ -171,7 +169,6 @@ const InGamePlay = () => {
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
-      timePlusShowTime: 0,
     },
   ]);
 
@@ -183,6 +180,15 @@ const InGamePlay = () => {
     dispatch(decreaseScore(amount));
   };
 
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function getRandomSkillFromRange(startIndex, endIndex) {
+    const randomIndex = getRandomNumber(startIndex, endIndex);
+    return skills[randomIndex];
+  }
+
   function getRandomNumberThreeToSix() {
     return Math.floor(Math.random() * 5) + 3; // 3,4,5,6중 랜덤한 숫자 생성
   }
@@ -190,14 +196,16 @@ const InGamePlay = () => {
     return Math.floor(Math.random() * 4) + 2; // 2,3,4 중 랜덤한 숫자 생성
   }
 
-  function getRandomNumberZeroToThree() {
-    const randomIndex = Math.floor(Math.random() * 3);
-    return skills[randomIndex];
+  function getRandomNumberZeroToTwo() {
+    return getRandomSkillFromRange(0, 2);
   }
 
-  function getRandomNumberFourToSeven() {
-    const randomIndex = Math.floor(Math.random() * 4) + 4; // Generates a random number between 3 and 5 (inclusive)
-    return skills[randomIndex];
+  function getRandomNumberThreeToFive() {
+    return getRandomSkillFromRange(3, 5);
+  }
+
+  function getRandomNumberSixToSeven() {
+    return getRandomSkillFromRange(6, 7);
   }
 
   function getRandomNumberZeroToTwo() {
@@ -212,17 +220,6 @@ const InGamePlay = () => {
     const randomIndex = Math.floor(Math.random() * 2) + 6; // Generates a random number between 6 and 7 (inclusive)
     return skills[randomIndex];
   }
-
-  // function getRandomSkill() {
-  //   let randomSkills = [];
-  //   while (randomSkills.length < 3) {
-  //     const randomSkill = skills[Math.floor(Math.random() * skills.length)];
-  //     if (!randomSkills.includes(randomSkill)) {
-  //       randomSkills.push(randomSkill);
-  //     }
-  //   }
-  //   return randomSkills;
-  // }
 
   let previousXValues = [];
   function getRandomPositionX() {
@@ -268,10 +265,10 @@ const InGamePlay = () => {
         if (updatedSkill[0].shownTime <= 0) {
           updatedSkill[0].shownTime = null;
         }
-        if (updatedSkill[1].shownTime <= 1) {
+        if (updatedSkill[1].shownTime <= 0) {
           updatedSkill[1].shownTime = null;
         }
-        if (updatedSkill[2].shownTime <= 2) {
+        if (updatedSkill[2].shownTime <= 0) {
           updatedSkill[2].shownTime = null;
         }
         return updatedSkill;
@@ -285,14 +282,13 @@ const InGamePlay = () => {
     if (skill[0].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberZeroToThree();
+        const randomSkill = getRandomNumberZeroToTwo();
         updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[0].showTime = getRandomNumberThreeToSix();
         updatedSkill[0].targetSkill = randomSkill;
         updatedSkill[0].positionX = getRandomPositionX();
         updatedSkill[0].positionY = getRandomPositionY();
-        updatedSkill[0].timePlusShowTime =
-          time + skill[0].noShowTime + skill[0].showTime;
+
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       setTimeout(() => {
@@ -325,14 +321,13 @@ const InGamePlay = () => {
     if (skill[1].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberFourToSeven();
+        const randomSkill = getRandomNumberThreeToFive();
         updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[1].showTime = getRandomNumberThreeToSix();
         updatedSkill[1].targetSkill = randomSkill;
         updatedSkill[1].positionX = getRandomPositionX();
         updatedSkill[1].positionY = getRandomPositionY();
-        updatedSkill[1].timePlusShowTime =
-          time + skill[1].noShowTime + skill[1].showTime;
+
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       setTimeout(() => {
@@ -365,14 +360,13 @@ const InGamePlay = () => {
     if (skill[2].isGamePlay === "non-playing") {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberFourToSeven();
+        const randomSkill = getRandomNumberSixToSeven();
         updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
         updatedSkill[2].showTime = getRandomNumberThreeToSix();
         updatedSkill[2].targetSkill = randomSkill;
         updatedSkill[2].positionX = getRandomPositionX();
         updatedSkill[2].positionY = getRandomPositionY();
-        updatedSkill[2].timePlusShowTime =
-          time + skill[2].noShowTime + skill[2].showTime;
+
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       setTimeout(() => {
@@ -406,13 +400,11 @@ const InGamePlay = () => {
     return () => {
       document.removeEventListener("keypress", handleKeyPress);
     };
-  });
+  }, []);
 
   const handleKeyPress = (e) => {
     const pressedKey = e.key.toLowerCase();
-    console.log(skill[0].shownTime);
     if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
-      setPressedKey(pressedKey);
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].keyPressedTime = time;
@@ -424,9 +416,9 @@ const InGamePlay = () => {
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
-        if (skill[0].timePlusShowTime - skill[0].keyPressedTime < 3) {
+        console.log(skill[0].shownTime);
+        if (skill[0].shownTime <= 1) {
           incrementScore(100);
-          console.log(skill[0].timePlusShowTime, skill[0].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
@@ -435,12 +427,10 @@ const InGamePlay = () => {
           });
         } else {
           decrementScore(50);
-          console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
             updatedSkill[0].isGamePlay = "non-playing";
-
             return updatedSkill;
           });
         }
@@ -448,7 +438,7 @@ const InGamePlay = () => {
         skill[1].targetSkill.eng === pressedKey ||
         skill[1].targetSkill.kor === pressedKey
       ) {
-        if (skill[1].timePlusShowTime - skill[1].keyPressedTime < 3) {
+        if (skill[1].shownTime <= 1) {
           incrementScore(100);
           console.log(skill[1].timePlusShowTime, skill[1].keyPressedTime);
           setSkill((prevState) => {
@@ -471,7 +461,7 @@ const InGamePlay = () => {
         skill[2].targetSkill.eng === pressedKey ||
         skill[2].targetSkill.kor === pressedKey
       ) {
-        if (skill[2].timePlusShowTime - skill[2].keyPressedTime < 3) {
+        if (skill[2].shownTime <= 1) {
           incrementScore(100);
           console.log(skill[2].timePlusShowTime, skill[2].keyPressedTime);
           setSkill((prevState) => {
@@ -509,6 +499,7 @@ const InGamePlay = () => {
         >
           {skill[0].isShown ? (
             <div className="skill-box">
+              <div className="remain-time">A</div>
               <div className="remain-time">{skill[0].shownTime}</div>
               <img
                 className="skill"
@@ -537,7 +528,7 @@ const InGamePlay = () => {
             <></>
           )}
         </div>
-        {/* <div
+        <div
           className="skill-container"
           style={{ left: skill[2].positionX, top: skill[2].positionY }}
         >
@@ -553,7 +544,7 @@ const InGamePlay = () => {
           ) : (
             <></>
           )}
-        </div> */}
+        </div>
 
         <div className="map-container">
           <div className="time-score-container">

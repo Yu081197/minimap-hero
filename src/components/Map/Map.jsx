@@ -44,6 +44,7 @@ const StyledWrapper = styled.div`
   }
   .portrait {
     width: 70px;
+    border: 3px solid ${(props) => (props.isBorderRed ? "red" : "none")};
   }
   .map-container {
     width: 330px;
@@ -72,11 +73,11 @@ const Map = () => {
   const prevTimeoutRef = useRef();
   const dispatch = useDispatch();
 
-  const [pressedKey, setPressedKey] = useState("");
-  const [isFirstDivClicked, setFirstDivClicked] = useState(false);
-  const [isSecondDivClicked, setSecondDivClicked] = useState(false);
-  const [isThirdDivClicked, setThirdDivClicked] = useState(false);
-  const [isForthDivClicked, setForthDivClicked] = useState(false);
+  const [isKeyOnePressed, setIsKeyOnePressed] = useState(false);
+  const [isKeyTwoPressed, setIsKeyTwoPressed] = useState(false);
+  const [isKeyThreePressed, setIsKeyThreePressed] = useState(false);
+  const [isKeyFourPressed, setIsKeyFourPressed] = useState(false);
+
   const [champion, setChampion] = useState({
     id: 1,
     isGamePlay: "non-playing",
@@ -161,25 +162,28 @@ const Map = () => {
 
   useEffect(() => {
     document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keyup", handleKeyUp);
     return () => {
       document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyUp);
     };
   });
 
   const handleKeyPress = (e) => {
-    const pressedKey = e.key.toLowerCase();
     if (e.key === "1") {
-      setFirstDivClicked(!isFirstDivClicked);
-    } else if (e.key === "2") {
-      setSecondDivClicked(!isSecondDivClicked);
-    } else if (e.key === "3") {
-      setThirdDivClicked(!isThirdDivClicked);
-    } else if (e.key === "4") {
-      setForthDivClicked(!isForthDivClicked);
+      setIsKeyOnePressed(true);
     }
-    console.log(pressedKey);
+    if (e.key === "2") {
+      setIsKeyTwoPressed(true);
+    }
+    if (e.key === "3") {
+      setIsKeyThreePressed(true);
+    }
+    if (e.key === "4") {
+      setIsKeyFourPressed(true);
+    }
+    const pressedKey = e.key.toLowerCase();
     if (champion.isShown) {
-      setPressedKey(pressedKey);
       if (champion.targetChampion.key === pressedKey) {
         incrementScore(200);
         setChampion((prevState) => {
@@ -191,16 +195,58 @@ const Map = () => {
       }
     }
   };
+  const handleKeyUp = (e) => {
+    if (e.key === "1") {
+      setIsKeyOnePressed(false);
+    }
+    if (e.key === "2") {
+      setIsKeyTwoPressed(false);
+    }
+    if (e.key === "3") {
+      setIsKeyThreePressed(false);
+    }
+    if (e.key === "4") {
+      setIsKeyFourPressed(false);
+    }
+  };
 
   return (
     <>
       <StyledWrapper>
         <div className="map-box">
           <div className="portrait-container">
-            <img className="portrait" src={Champ1} alt={1} />
-            <img className="portrait" src={Champ2} alt={2} />
-            <img className="portrait" src={Champ3} alt={3} />
-            <img className="portrait" src={Champ4} alt={4} />
+            <img
+              className="portrait"
+              src={Champ1}
+              alt={1}
+              style={{
+                border: `5px solid ${isKeyOnePressed ? "red" : ""}`,
+              }}
+            />
+            <img
+              className="portrait"
+              src={Champ2}
+              alt={2}
+              style={{
+                border: `5px solid ${isKeyTwoPressed ? "red" : ""}`,
+              }}
+            />
+            <img
+              className="portrait"
+              src={Champ3}
+              alt={3}
+              style={{
+                border: `5px solid ${isKeyThreePressed ? "red" : ""}`,
+              }}
+            />
+            <img
+              className="portrait"
+              src={Champ4}
+              alt={4}
+              style={{
+                border: `5px solid ${isKeyFourPressed ? "red" : ""}`,
+              }}
+            />
           </div>
           <div className="map-container" ref={mapContainer}>
             <img className="map" src={MapImg} alt={"map"} />
