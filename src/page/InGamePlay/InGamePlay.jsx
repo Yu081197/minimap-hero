@@ -499,7 +499,6 @@ const InGamePlay = () => {
         >
           {skill[0].isShown ? (
             <div className="skill-box">
-              <div className="remain-time">A</div>
               <div className="remain-time">{skill[0].shownTime}</div>
               <img
                 className="skill"
