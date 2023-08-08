@@ -133,7 +133,7 @@ const HowToPlay02 = () => {
           ></img>
 
           <div className="explain explain-04">
-            화면에 챔피언이 나타나면 해당 키를 클릭!
+            화면에 챔피언이 나타나면 마우스를 올리고 해당 키를 클릭!
           </div>
         </div>
       </StyledWrapper>
