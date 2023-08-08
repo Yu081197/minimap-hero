@@ -62,7 +62,10 @@ const StyledWrapper = styled.div`
     border-image: linear-gradient(to bottom, #c8aa6d, #7a5c29);
     border-image-slice: 1;
   }
-
+  .button-wrapper {
+    display: flex;
+    gap: 30px;
+  }
   .button:hover {
     text-shadow: 0 0 5px #ffffff80;
     box-shadow: 0 0 8px 0 #ffffff50;
@@ -160,10 +163,17 @@ const StartPage = () => {
               </div>
             </div>
           </div>
-          <div className="button-container">
-            <Link to="/countdown">
-              <div class="button button-start">game start</div>
-            </Link>
+          <div className="button-wrapper">
+            <div className="button-container">
+              <Link to="/countdown">
+                <div class="button button-start">game start</div>
+              </Link>
+            </div>
+            <div className="button-container">
+              <Link to="/how-to-play">
+                <div class="button button-start">how to play</div>
+              </Link>
+            </div>
           </div>
         </div>
       </StyledWrapper>
