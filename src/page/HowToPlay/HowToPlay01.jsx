@@ -7,8 +7,7 @@ import HowToPlayImg01 from "../../assets/img/how-to-play/how-to-play-01.png";
 import HowToPlayImg02 from "../../assets/img/how-to-play/how-to-play-02.png";
 import HowToPlayImg03 from "../../assets/img/how-to-play/how-to-play-03.png";
 import HowToPlayImg04 from "../../assets/img/how-to-play/how-to-play-04.png";
-import HowToPlayImg05 from "../../assets/img/how-to-play/how-to-play-05.png";
-import HowToPlayImg06 from "../../assets/img/how-to-play/how-to-play-06.png";
+import HowToPlayImg08 from "../../assets/img/how-to-play/how-to-play-08.png";
 
 const StyledWrapper = styled.div`
   .how-to-play-container {
@@ -39,21 +38,32 @@ const StyledWrapper = styled.div`
     top: 55.125rem;
   }
   .explain-02 {
+    top: 28rem;
     left: 40rem;
   }
   .explain-03 {
+    top: 28rem;
     left: 47rem;
   }
   .explain-04 {
+    top: 28rem;
     left: 54rem;
   }
   .explain-05 {
-    top: 20rem;
+    top: 10rem;
     font-size: 30px;
   }
   .explain-06 {
-    top: 37.5rem;
+    top: 23.5rem;
     font-size: 30px;
+  }
+  .explain-07 {
+    top: 38.5rem;
+    font-size: 30px;
+  }
+  .explain-08 {
+    top: 15rem;
+    width: 6rem;
   }
 
   .button {
@@ -122,8 +132,14 @@ const HowToPlay01 = () => {
             </Link>
           </div>
           <div className="explain explain-05">
-            화면에 나오는 무작위 스킬의 시간을 확인
+            화면에 나오는 무작위 스킬을 확인
           </div>
+          <img
+            src={HowToPlayImg08}
+            className="explain explain-08"
+            alt="how-to-play"
+          ></img>
+          <div className="explain explain-06">마우스를 올리고</div>
           <img
             src={HowToPlayImg02}
             className="explain explain-02"
@@ -139,7 +155,7 @@ const HowToPlay01 = () => {
             className="explain explain-04"
             alt="how-to-play"
           ></img>
-          <div className="explain explain-06">
+          <div className="explain explain-07">
             1이 될 때 해당 스킬의 키를 클릭!
           </div>
           {/* <img src={HowToPlayImg05} alt="how-to-play"></img>

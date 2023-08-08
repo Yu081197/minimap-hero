@@ -189,7 +189,6 @@ const Map = () => {
         setChampion((prevState) => {
           const updatedChampion = { ...prevState };
           updatedChampion.isShown = false;
-          updatedChampion.isGamePlay = "non-playing";
           return updatedChampion;
         });
       }
