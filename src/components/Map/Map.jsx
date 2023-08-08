@@ -103,11 +103,11 @@ const Map = () => {
   }
 
   function getRandomPositionX() {
-    return Math.floor(Math.random() * 281) + 10;
+    return Math.floor(Math.random() * 241) + 10;
   }
 
   function getRandomPositionY() {
-    return Math.floor(Math.random() * 281) + 10;
+    return Math.floor(Math.random() * 221) + 85;
   }
 
   useEffect(() => {
@@ -254,7 +254,7 @@ const Map = () => {
               className="champion-container"
               style={{
                 left: champion.positionX,
-                top: champion.positionY + 75,
+                top: champion.positionY,
               }}
             >
               {champion.isShown ? (
