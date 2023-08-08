@@ -27,7 +27,6 @@ const StyledWrapper = styled.div`
     position: relative;
     align-items: center;
     justify-content: center;
-    margin-top: 15%;
     width: 1604px;
     height: 904px;
     border: 1px solid black;
