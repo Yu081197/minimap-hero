@@ -28,8 +28,8 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 15%;
-    width: 1964px;
-    height: 1084px;
+    width: 1604px;
+    height: 904px;
     border: 1px solid black;
     background-color: #091428;
     border: 2px solid #c8aa6e;
@@ -47,39 +47,46 @@ const StyledWrapper = styled.div`
     bottom: 0px;
   }
   .skill-d {
-    bottom: 93px;
-    right: 774px;
-    width: 40px;
+    bottom: 4.7rem;
+    right: 41.6rem;
+    width: 31px;
+    height: 31px;
   }
   .skill-f {
-    bottom: 93px;
-    right: 722px;
-    width: 40px;
+    bottom: 4.7rem;
+    right: 39.1rem;
+    width: 31px;
+    height: 31px;
   }
   .skill-q {
-    bottom: 78px;
-    right: 1038px;
-    width: 54px;
+    bottom: 4rem;
+    right: 39.1rem;
+    right: 54.86rem;
+    width: 42px;
   }
   .skill-w {
-    bottom: 78px;
-    right: 972px;
-    width: 54px;
+    bottom: 4rem;
+    right: 51.55rem;
+    width: 42px;
   }
   .skill-e {
-    bottom: 78px;
-    right: 902px;
-    width: 54px;
+    bottom: 4rem;
+    right: 48.1rem;
+    width: 42px;
   }
   .skill-r {
-    bottom: 78px;
-    right: 836.5px;
-    width: 54px;
+    bottom: 4rem;
+    right: 44.8rem;
+    width: 42px;
   }
   .ui {
     width: 1000px;
   }
   .skill-box {
+    width: 110%;
+    max-width: 100px;
+    max-height: 100px;
+    height: 110%;
     border-radius: 50%;
     display: flex;
     background-color: #091428;
@@ -92,10 +99,10 @@ const StyledWrapper = styled.div`
     background-color: #091428;
   }
   .skill {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     border: 2px solid #c8aa6e;
-    width: 100px;
-    height: 100px;
     background-color: #091428;
   }
   .time-score-container {
@@ -120,10 +127,10 @@ const StyledWrapper = styled.div`
     background-color: #091428;
   }
   .skill-ui {
-    width: 800px;
+    width: 50%;
     position: absolute;
     bottom: 0;
-    left: 500px;
+    left: 23%;
   }
   .skill-container {
     background-color: #091428;
@@ -632,7 +639,7 @@ const InGamePlay = () => {
           <Map />
         </div>
         <div className="ui-container">
-          <img className="ui" src={skillUI} />
+          <img className="skill-ui" src={skillUI} alt="skill-ui" />
           <img
             className="ui-skill skill-d"
             src={DSkill}

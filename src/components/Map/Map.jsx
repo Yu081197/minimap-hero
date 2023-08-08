@@ -47,12 +47,12 @@ const StyledWrapper = styled.div`
     border: 3px solid ${(props) => (props.isBorderRed ? "red" : "none")};
   }
   .map-container {
-    width: 330px;
-    height: 330px;
+    width: 100%;
+    height: 100%;
   }
   .map {
-    width: 330px;
-    height: 330px;
+    width: 100%;
+    height: 100%;
   }
   .champion-container {
     position: absolute;

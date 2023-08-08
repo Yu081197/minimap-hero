@@ -3,6 +3,7 @@ import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
+    
     style{
     display: none;
     }
@@ -39,6 +40,12 @@ const GlobalStyle = createGlobalStyle`
         border: 0;
         background: transparent;
         cursor: pointer;
+    }
+    script {
+    width:0;
+    height:0;
+    display:none;
+    visibility:hidden;
     }
         
 `;

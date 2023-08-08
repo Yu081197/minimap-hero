@@ -12,6 +12,9 @@ import HowToPlayImg06 from "../../assets/img/how-to-play/how-to-play-06.png";
 import HowToPlayImg07 from "../../assets/img/how-to-play/how-to-play-07.png";
 
 const StyledWrapper = styled.div`
+  .how-to-play-container {
+    position: relative;
+  }
   .explain {
     color: white;
     position: absolute;
@@ -19,22 +22,26 @@ const StyledWrapper = styled.div`
     background: #091429;
   }
   .display {
-    top: 150px;
+    top: 10.125rem;
   }
   .skill-ui {
-    top: 730px;
+    top: 40.125rem;
   }
   .score-time {
-    top: 140px;
-    right: 1050px;
+    top: 5.125rem;
+    right: 15.125rem;
   }
   .minimap {
-    right: 950px;
-    top: 550px;
+    top: 30.125rem;
+    right: 10.125rem;
+  }
+  .button-container {
+    position: absolute;
+    top: 60.125rem;
   }
   .explain-01 {
-    top: 250px;
-    right: 1000px;
+    top: 10rem;
+    right: 10rem;
     font-size: 30px;
   }
 

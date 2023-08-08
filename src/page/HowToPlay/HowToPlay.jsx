@@ -11,6 +11,9 @@ import HowToPlayImg05 from "../../assets/img/how-to-play/how-to-play-05.png";
 import HowToPlayImg06 from "../../assets/img/how-to-play/how-to-play-06.png";
 
 const StyledWrapper = styled.div`
+  .how-to-play-container {
+    position: relative;
+  }
   .explain {
     color: white;
     position: absolute;
@@ -18,22 +21,22 @@ const StyledWrapper = styled.div`
     background: #091429;
   }
   .display {
-    top: 150px;
+    top: 10.125rem;
   }
   .skill-ui {
-    top: 730px;
+    top: 40.125rem;
   }
   .score-time {
-    top: 140px;
-    right: 1050px;
+    top: 5.125rem;
+    right: 15.125rem;
   }
   .minimap {
-    right: 950px;
-    top: 550px;
+    top: 30.125rem;
+    right: 10.125rem;
   }
   .button-container {
     position: absolute;
-    top: 950px;
+    top: 60.125rem;
   }
   .button {
     font-family: "Marcellus SC", serif;
@@ -90,7 +93,6 @@ const HowToPlay = () => {
       <StyledWrapper>
         <div className="how-to-play-container">
           <img src={HowToPlayImg01} alt="how-to-play"></img>
-
           <div className="explain display">화면</div>
           <div className="explain skill-ui">스킬창</div>
           <div className="explain score-time">시간 및 점수</div>
