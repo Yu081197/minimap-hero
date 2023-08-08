@@ -142,7 +142,9 @@ const HowToPlay01 = () => {
             className="explain explain-04"
             alt="how-to-play"
           ></img>
-          <div className="explain explain-06">1이 될 때 E를 클릭!</div>
+          <div className="explain explain-06">
+            1이 될 때 해당 스킬의 키를 클릭!
+          </div>
           {/* <img src={HowToPlayImg05} alt="how-to-play"></img>
           <img src={HowToPlayImg06} alt="how-to-play"></img> */}
         </div>
