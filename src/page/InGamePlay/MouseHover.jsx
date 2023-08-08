@@ -302,35 +302,30 @@ const MouseHover = () => {
 
   useEffect(() => {
     if (skill[0].isGamePlay === "non-playing") {
-      setSkill((prevState) => {
-        const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberZeroToTwo();
-        updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[0].showTime = getRandomNumberThreeToSix();
-        updatedSkill[0].targetSkill = randomSkill;
-        updatedSkill[0].positionX = getRandomPositionX();
-        updatedSkill[0].positionY = getRandomPositionY();
-
-        return updatedSkill; // 변경된 배열을 반환합니다.
-      });
       setTimeout(() => {
-        if (skill[0].isGamePlay === "non-playing") {
-          setSkill((prevState) => {
-            const updatedSkill = [...prevState];
-            updatedSkill[0].isShown = true;
-            updatedSkill[0].isGamePlay = "playing";
-            updatedSkill[0].shownTime = skill[0].showTime;
-            return updatedSkill;
-          });
-          setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberZeroToTwo();
+          updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[0].showTime = getRandomNumberThreeToSix();
+          updatedSkill[0].targetSkill = randomSkill;
+          updatedSkill[0].positionX = getRandomPositionX();
+          updatedSkill[0].positionY = getRandomPositionY();
+          updatedSkill[0].isShown = true;
+          updatedSkill[0].isGamePlay = "playing";
+          updatedSkill[0].shownTime = skill[0].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[0].isGamePlay === "playing") {
             setSkill((prevState) => {
               const updatedSkill = [...prevState];
               updatedSkill[0].isShown = false;
               updatedSkill[0].isGamePlay = "non-playing";
               return updatedSkill;
             });
-          }, skill[0].showTime * 700);
-        }
+          }
+        }, skill[0].showTime * 700);
       }, skill[0].noShowTime * 700);
     }
     if (prevTimeoutRef.current) {
@@ -385,7 +380,6 @@ const MouseHover = () => {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
-            updatedSkill[0].isGamePlay = "non-playing";
             return updatedSkill;
           });
         } else {
@@ -393,7 +387,6 @@ const MouseHover = () => {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
-            updatedSkill[0].isGamePlay = "non-playing";
             return updatedSkill;
           });
         }

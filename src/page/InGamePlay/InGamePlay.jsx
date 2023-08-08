@@ -7,6 +7,9 @@ import styled from "styled-components";
 
 import Map from "../../components/Map/Map";
 
+import NormalCursor from "../../assets/Summoner/normal.cur";
+import AttackCursor from "../../assets/Summoner/alt.cur";
+
 import skillUI from "../../assets/img/skillUI.png";
 
 import ASkill from "../../assets/img/skills/skill-a.png";
@@ -193,6 +196,7 @@ const InGamePlay = () => {
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
+      isHovered: false,
     },
     {
       id: 2,
@@ -206,6 +210,7 @@ const InGamePlay = () => {
       shownTime: null,
       currentTime: null,
       keyPressedTime: 0,
+      isHovered: false,
     },
     {
       id: 3,
@@ -219,6 +224,7 @@ const InGamePlay = () => {
       noShowTime: null,
       currentTime: null,
       keyPressedTime: 0,
+      isHovered: false,
     },
   ]);
 
@@ -306,7 +312,6 @@ const InGamePlay = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((props) => props - 1);
-      console.log("------------------");
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].shownTime -= 1;
@@ -330,35 +335,30 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[0].isGamePlay === "non-playing") {
-      setSkill((prevState) => {
-        const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberZeroToTwo();
-        updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[0].showTime = getRandomNumberThreeToSix();
-        updatedSkill[0].targetSkill = randomSkill;
-        updatedSkill[0].positionX = getRandomPositionX();
-        updatedSkill[0].positionY = getRandomPositionY();
-
-        return updatedSkill; // 변경된 배열을 반환합니다.
-      });
       setTimeout(() => {
-        if (skill[0].isGamePlay === "non-playing") {
-          setSkill((prevState) => {
-            const updatedSkill = [...prevState];
-            updatedSkill[0].isShown = true;
-            updatedSkill[0].isGamePlay = "playing";
-            updatedSkill[0].shownTime = skill[0].showTime;
-            return updatedSkill;
-          });
-          setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberZeroToTwo();
+          updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[0].showTime = getRandomNumberThreeToSix();
+          updatedSkill[0].targetSkill = randomSkill;
+          updatedSkill[0].positionX = getRandomPositionX();
+          updatedSkill[0].positionY = getRandomPositionY();
+          updatedSkill[0].isShown = true;
+          updatedSkill[0].isGamePlay = "playing";
+          updatedSkill[0].shownTime = skill[0].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[0].isGamePlay === "playing") {
             setSkill((prevState) => {
               const updatedSkill = [...prevState];
               updatedSkill[0].isShown = false;
               updatedSkill[0].isGamePlay = "non-playing";
               return updatedSkill;
             });
-          }, skill[0].showTime * 700);
-        }
+          }
+        }, skill[0].showTime * 700);
       }, skill[0].noShowTime * 700);
     }
     if (prevTimeoutRef.current) {
@@ -369,35 +369,30 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[1].isGamePlay === "non-playing") {
-      setSkill((prevState) => {
-        const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberThreeToFive();
-        updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[1].showTime = getRandomNumberThreeToSix();
-        updatedSkill[1].targetSkill = randomSkill;
-        updatedSkill[1].positionX = getRandomPositionX();
-        updatedSkill[1].positionY = getRandomPositionY();
-
-        return updatedSkill; // 변경된 배열을 반환합니다.
-      });
       setTimeout(() => {
-        if (skill[1].isGamePlay === "non-playing") {
-          setSkill((prevState) => {
-            const updatedSkill = [...prevState];
-            updatedSkill[1].isShown = true;
-            updatedSkill[1].isGamePlay = "playing";
-            updatedSkill[1].shownTime = skill[1].showTime;
-            return updatedSkill;
-          });
-          setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberThreeToFive();
+          updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[1].showTime = getRandomNumberThreeToSix();
+          updatedSkill[1].targetSkill = randomSkill;
+          updatedSkill[1].positionX = getRandomPositionX();
+          updatedSkill[1].positionY = getRandomPositionY();
+          updatedSkill[1].isShown = true;
+          updatedSkill[1].isGamePlay = "playing";
+          updatedSkill[1].shownTime = skill[1].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[1].isGamePlay === "playing") {
             setSkill((prevState) => {
               const updatedSkill = [...prevState];
               updatedSkill[1].isShown = false;
               updatedSkill[1].isGamePlay = "non-playing";
               return updatedSkill;
             });
-          }, skill[1].showTime * 700);
-        }
+          }
+        }, skill[1].showTime * 700);
       }, skill[1].noShowTime * 700);
     }
     if (prevTimeoutRef.current) {
@@ -408,35 +403,30 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[2].isGamePlay === "non-playing") {
-      setSkill((prevState) => {
-        const updatedSkill = [...prevState];
-        const randomSkill = getRandomNumberSixToSeven();
-        updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
-        updatedSkill[2].showTime = getRandomNumberThreeToSix();
-        updatedSkill[2].targetSkill = randomSkill;
-        updatedSkill[2].positionX = getRandomPositionX();
-        updatedSkill[2].positionY = getRandomPositionY();
-
-        return updatedSkill; // 변경된 배열을 반환합니다.
-      });
       setTimeout(() => {
-        if (skill[2].isGamePlay === "non-playing") {
-          setSkill((prevState) => {
-            const updatedSkill = [...prevState];
-            updatedSkill[2].isShown = true;
-            updatedSkill[2].isGamePlay = "playing";
-            updatedSkill[2].shownTime = skill[2].showTime;
-            return updatedSkill;
-          });
-          setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberSixToSeven();
+          updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[2].showTime = getRandomNumberThreeToSix();
+          updatedSkill[2].targetSkill = randomSkill;
+          updatedSkill[2].positionX = getRandomPositionX();
+          updatedSkill[2].positionY = getRandomPositionY();
+          updatedSkill[2].isShown = true;
+          updatedSkill[2].isGamePlay = "playing";
+          updatedSkill[2].shownTime = skill[2].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[2].isGamePlay === "playing") {
             setSkill((prevState) => {
               const updatedSkill = [...prevState];
               updatedSkill[2].isShown = false;
               updatedSkill[2].isGamePlay = "non-playing";
               return updatedSkill;
             });
-          }, skill[2].showTime * 700);
-        }
+          }
+        }, skill[2].showTime * 700);
       }, skill[2].noShowTime * 700);
     }
     if (prevTimeoutRef.current) {
@@ -486,12 +476,11 @@ const InGamePlay = () => {
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
-        if (skill[0].shownTime <= 1) {
+        if (skill[0].shownTime <= 1 && skill[0].isHovered === true) {
           incrementScore(100);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
-            updatedSkill[0].isGamePlay = "non-playing";
             return updatedSkill;
           });
         } else {
@@ -499,7 +488,6 @@ const InGamePlay = () => {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
-            updatedSkill[0].isGamePlay = "non-playing";
             return updatedSkill;
           });
         }
@@ -507,12 +495,11 @@ const InGamePlay = () => {
         skill[1].targetSkill.eng === pressedKey ||
         skill[1].targetSkill.kor === pressedKey
       ) {
-        if (skill[1].shownTime <= 1) {
+        if (skill[1].shownTime <= 1 && skill[1].isHovered === true) {
           incrementScore(100);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
-            updatedSkill[1].isGamePlay = "non-playing";
             return updatedSkill;
           });
         } else {
@@ -528,7 +515,7 @@ const InGamePlay = () => {
         skill[2].targetSkill.eng === pressedKey ||
         skill[2].targetSkill.kor === pressedKey
       ) {
-        if (skill[2].shownTime <= 1) {
+        if (skill[2].shownTime <= 1 && skill[2].isHovered === true) {
           incrementScore(100);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -575,6 +562,26 @@ const InGamePlay = () => {
     }
   });
 
+  const handleMouseEnter = () => {
+    setSkill((prevState) => {
+      const updatedSkill = [...prevState];
+      updatedSkill[0].isHovered = true;
+      updatedSkill[1].isHovered = true;
+      updatedSkill[2].isHovered = true;
+      return updatedSkill; // 변경된 배열을 반환합니다.
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setSkill((prevState) => {
+      const updatedSkill = [...prevState];
+      updatedSkill[0].isHovered = false;
+      updatedSkill[1].isHovered = false;
+      updatedSkill[2].isHovered = false;
+      return updatedSkill; // 변경된 배열을 반환합니다.
+    });
+  };
+
   return (
     <StyledWrapper>
       <div className="game-container" ref={gameContainer}>
@@ -589,6 +596,13 @@ const InGamePlay = () => {
                 className="skill"
                 src={skill[0].targetSkill.image}
                 alt={skill[0].targetSkill.eng}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: skill[0].isHovered
+                    ? `url(${AttackCursor}), auto`
+                    : "default",
+                }}
               />
             </div>
           ) : (
@@ -606,6 +620,13 @@ const InGamePlay = () => {
                 className="skill"
                 src={skill[1].targetSkill.image}
                 alt={skill[1].targetSkill.eng}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: skill[1].isHovered
+                    ? `url(${AttackCursor}), auto`
+                    : "default",
+                }}
               />
             </div>
           ) : (
@@ -623,6 +644,13 @@ const InGamePlay = () => {
                 className="skill"
                 src={skill[2].targetSkill.image}
                 alt={skill[2].targetSkill.eng}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: skill[2].isHovered
+                    ? `url(${AttackCursor}), auto`
+                    : "default",
+                }}
               />
             </div>
           ) : (
