@@ -449,22 +449,22 @@ const InGamePlay = () => {
   }, []);
 
   const handleKeyPress = (e) => {
-    if (e.key === "q") {
+    if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(true);
     }
-    if (e.key === "w") {
+    if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(true);
     }
-    if (e.key === "e") {
+    if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(true);
     }
-    if (e.key === "r") {
+    if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(true);
     }
-    if (e.key === "d") {
+    if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(true);
     }
-    if (e.key === "f") {
+    if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(true);
     }
     const pressedKey = e.key.toLowerCase();
@@ -480,7 +480,6 @@ const InGamePlay = () => {
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
-        console.log(skill[0].shownTime);
         if (skill[0].shownTime <= 1) {
           incrementScore(100);
           setSkill((prevState) => {
@@ -504,7 +503,6 @@ const InGamePlay = () => {
       ) {
         if (skill[1].shownTime <= 1) {
           incrementScore(100);
-          console.log(skill[1].timePlusShowTime, skill[1].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
@@ -513,7 +511,6 @@ const InGamePlay = () => {
           });
         } else {
           decrementScore(50);
-          console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
@@ -527,7 +524,6 @@ const InGamePlay = () => {
       ) {
         if (skill[2].shownTime <= 1) {
           incrementScore(100);
-          console.log(skill[2].timePlusShowTime, skill[2].keyPressedTime);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
@@ -536,7 +532,6 @@ const InGamePlay = () => {
           });
         } else {
           decrementScore(50);
-          console.log("false");
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
@@ -548,31 +543,31 @@ const InGamePlay = () => {
     }
   };
   const handleKeyUp = (e) => {
-    if (e.key === "q") {
+    if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(false);
     }
-    if (e.key === "w") {
+    if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(false);
     }
-    if (e.key === "e") {
+    if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(false);
     }
-    if (e.key === "r") {
+    if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(false);
     }
-    if (e.key === "d") {
+    if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(false);
     }
-    if (e.key === "f") {
+    if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(false);
     }
   };
 
-  // useEffect(() => {
-  //   if (time === 0) {
-  //     navigate("/score");
-  //   }
-  // });
+  useEffect(() => {
+    if (time === 0) {
+      navigate("/score");
+    }
+  });
 
   return (
     <StyledWrapper>
