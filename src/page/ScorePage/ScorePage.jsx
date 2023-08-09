@@ -93,7 +93,10 @@ const ScorePage = () => {
         <div className="score-container">
           <div className="score">점수 : {score}</div>
           <Link to="/">
-            <div class="button button-start" onClick={handleResetScore}>
+            <div
+              class="button button-start restart-button"
+              onClick={handleResetScore}
+            >
               restart
             </div>
           </Link>

@@ -485,22 +485,24 @@ const InGamePlay = () => {
         skill[0].targetSkill.kor === pressedKey
       ) {
         if (skill[0].shownTime <= 1 && skill[0].isHovered === true) {
-          incrementScore(100);
-          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
+            updatedSkill[0].isHovered = false;
             return updatedSkill;
           });
+          incrementScore(100);
+          setPlus100Score(true);
           setTimeout(() => {
             setPlus100Score(false);
           }, 2000);
-        } else {
+        } else if (skill[0].shownTime > 1) {
           decrementScore(50);
           setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
+            updatedSkill[0].isHovered = false;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -512,23 +514,24 @@ const InGamePlay = () => {
         skill[1].targetSkill.kor === pressedKey
       ) {
         if (skill[1].shownTime <= 1 && skill[1].isHovered === true) {
-          incrementScore(100);
-          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
+            updatedSkill[1].isHovered = false;
             return updatedSkill;
           });
+          incrementScore(100);
+          setPlus100Score(true);
           setTimeout(() => {
             setPlus100Score(false);
           }, 2000);
-        } else {
+        } else if (skill[1].shownTime > 1) {
           decrementScore(50);
           setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
-            updatedSkill[1].isGamePlay = "non-playing";
+            updatedSkill[1].isHovered = false;
             return updatedSkill;
           });
           setTimeout(() => {
@@ -540,24 +543,24 @@ const InGamePlay = () => {
         skill[2].targetSkill.kor === pressedKey
       ) {
         if (skill[2].shownTime <= 1 && skill[2].isHovered === true) {
-          incrementScore(100);
-          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
-            updatedSkill[2].isGamePlay = "non-playing";
+            updatedSkill[2].isHovered = false;
             return updatedSkill;
           });
+          incrementScore(100);
+          setPlus100Score(true);
           setTimeout(() => {
             setPlus100Score(false);
           }, 2000);
-        } else {
+        } else if (skill[2].shownTime > 1) {
           decrementScore(50);
           setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
-            updatedSkill[2].isGamePlay = "non-playing";
+            updatedSkill[2].isHovered = false;
             return updatedSkill;
           });
           setTimeout(() => {
