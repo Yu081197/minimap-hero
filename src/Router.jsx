@@ -12,6 +12,8 @@ import HowToPlay01 from "./page/HowToPlay/HowToPlay01";
 import HowToPlay02 from "./page/HowToPlay/HowToPlay02";
 import HowToPlay03 from "./page/HowToPlay/HowToPlay03";
 
+import MouseHover from "./page/InGamePlay/MouseHover";
+
 function routes() {
   return (
     <BrowserRouter>
@@ -26,6 +28,7 @@ function routes() {
         <Route path="/ingameplay" element={<InGamePlay />} />
         <Route path="/map" element={<Map />} />
         <Route path="/ui" element={<UI />} />
+        <Route path="/mousehover" element={<MouseHover />} />
       </Routes>
     </BrowserRouter>
   );

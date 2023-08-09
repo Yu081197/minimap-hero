@@ -36,7 +36,7 @@ const StyledWrapper = styled.div`
   }
   .button-container {
     position: absolute;
-    top: 60.125rem;
+    top: 55.125rem;
   }
   .button {
     font-family: "Marcellus SC", serif;
