@@ -66,12 +66,22 @@ const StyledWrapper = styled.div`
     height: 40px;
     border-radius: 50%;
   }
+  .score {
+    top: -40px;
+    right: 70px;
+    position: absolute;
+    color: #cdfafa;
+    background-color: #091428;
+    font-size: 30px;
+  }
 `;
 
 const Map = () => {
   const mapContainer = useRef(null);
   const prevTimeoutRef = useRef();
   const dispatch = useDispatch();
+
+  const [plus200Score, setPlus200Score] = useState(false);
 
   const [isKeyOnePressed, setIsKeyOnePressed] = useState(false);
   const [isKeyTwoPressed, setIsKeyTwoPressed] = useState(false);
@@ -186,11 +196,13 @@ const Map = () => {
     if (champion.isShown) {
       if (champion.targetChampion.key === pressedKey) {
         incrementScore(200);
+        setPlus200Score(true);
         setChampion((prevState) => {
           const updatedChampion = { ...prevState };
           updatedChampion.isShown = false;
           return updatedChampion;
         });
+        setTimeout(() => setPlus200Score(false), 2000);
       }
     }
   };
@@ -248,6 +260,11 @@ const Map = () => {
             />
           </div>
           <div className="map-container" ref={mapContainer}>
+            {plus200Score ? (
+              <div className="score score-state">+ 200</div>
+            ) : (
+              <></>
+            )}
             <img className="map" src={MapImg} alt={"map"} />
             <div
               className="champion-container"

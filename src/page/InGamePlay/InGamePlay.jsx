@@ -32,9 +32,14 @@ const StyledWrapper = styled.div`
     justify-content: center;
     width: 1604px;
     height: 904px;
-    border: 1px solid black;
     background-color: #091428;
     border: 2px solid #c8aa6e;
+  }
+  .canvas-container {
+    position: absolute;
+    width: 1600px;
+    height: 900px;
+    background-color: #091428;
   }
   .ui-cotainer {
     display: block;
@@ -154,6 +159,7 @@ const skills = [
 ];
 
 const InGamePlay = () => {
+  const canvasRef = useRef(null);
   const navigate = useNavigate();
   const gameContainer = useRef(null);
   const prevTimeoutRef = useRef();
@@ -162,6 +168,8 @@ const InGamePlay = () => {
   const score = useSelector((state) => {
     return state.score;
   });
+  const [plus100Score, setPlus100Score] = useState(false);
+  const [minus50Score, setMinus50Score] = useState(false);
 
   const [pressedKey, setPressedKey] = useState("");
   const [isKeyQPressed, setIsKeyQPressed] = useState(false);
@@ -478,18 +486,26 @@ const InGamePlay = () => {
       ) {
         if (skill[0].shownTime <= 1 && skill[0].isHovered === true) {
           incrementScore(100);
+          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
             return updatedSkill;
           });
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
         } else {
           decrementScore(50);
+          setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
             return updatedSkill;
           });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
         }
       } else if (
         skill[1].targetSkill.eng === pressedKey ||
@@ -497,19 +513,27 @@ const InGamePlay = () => {
       ) {
         if (skill[1].shownTime <= 1 && skill[1].isHovered === true) {
           incrementScore(100);
+          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
             return updatedSkill;
           });
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
         } else {
           decrementScore(50);
+          setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[1].isShown = false;
             updatedSkill[1].isGamePlay = "non-playing";
             return updatedSkill;
           });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
         }
       } else if (
         skill[2].targetSkill.eng === pressedKey ||
@@ -517,20 +541,28 @@ const InGamePlay = () => {
       ) {
         if (skill[2].shownTime <= 1 && skill[2].isHovered === true) {
           incrementScore(100);
+          setPlus100Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
             updatedSkill[2].isGamePlay = "non-playing";
             return updatedSkill;
           });
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
         } else {
           decrementScore(50);
+          setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[2].isShown = false;
             updatedSkill[2].isGamePlay = "non-playing";
             return updatedSkill;
           });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
         }
       }
     }
@@ -585,6 +617,8 @@ const InGamePlay = () => {
   return (
     <StyledWrapper>
       <div className="game-container" ref={gameContainer}>
+        <canvas className="canvas-container" ref={canvasRef}></canvas>
+
         <div
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
@@ -662,6 +696,16 @@ const InGamePlay = () => {
           <div className="time-score-container">
             <div className="time">시간 : {time}</div>
             <div className="score">점수 : {score}</div>
+            {plus100Score ? (
+              <div className="score score-state">+ 100</div>
+            ) : (
+              <></>
+            )}
+            {minus50Score ? (
+              <div className="score score-state">- 50</div>
+            ) : (
+              <></>
+            )}
           </div>
           <Map />
         </div>
