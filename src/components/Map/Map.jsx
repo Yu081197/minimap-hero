@@ -67,12 +67,12 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
   }
   .score {
-    top: -40px;
+    top: -100px;
     right: 70px;
     position: absolute;
-    color: #cdfafa;
+    color: #00ff00;
     background-color: #091428;
-    font-size: 30px;
+    font-size: 70px;
   }
 `;
 

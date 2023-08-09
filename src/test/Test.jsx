@@ -1,25 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
+import { increaseScore, decreaseScore } from "../services/ScoreSlice";
+
+import Canvas from "./Canvas";
 
 import styled from "styled-components";
 
-import Map from "../../components/Map/Map";
+import Map from "../components/Map/Map";
 
-import skillUI from "../../assets/img/skillUI.png";
+import NormalCursor from "../assets/Summoner/normal.cur";
+import AttackCursor from "../assets/Summoner/alt.cur";
 
-import NormalCursor from "../../assets/Summoner/normal.cur";
-import AttackCursor from "../../assets/Summoner/alt.cur";
+import skillUI from "../assets/img/skillUI.png";
 
-import ASkill from "../../assets/img/skills/skill-a.png";
-import SSkill from "../../assets/img/skills/skill-s.png";
-import DSkill from "../../assets/img/skills/skill-d.png";
-import FSkill from "../../assets/img/skills/skill-f.png";
-import QSkill from "../../assets/img/skills/skill-q.png";
-import WSkill from "../../assets/img/skills/skill-w.png";
-import ESkill from "../../assets/img/skills/skill-e.png";
-import RSkill from "../../assets/img/skills/skill-r.png";
+import ASkill from "../assets/img/skills/skill-a.png";
+import SSkill from "../assets/img/skills/skill-s.png";
+import DSkill from "../assets/img/skills/skill-d.png";
+import FSkill from "../assets/img/skills/skill-f.png";
+import QSkill from "../assets/img/skills/skill-q.png";
+import WSkill from "../assets/img/skills/skill-w.png";
+import ESkill from "../assets/img/skills/skill-e.png";
+import RSkill from "../assets/img/skills/skill-r.png";
 
 const StyledWrapper = styled.div`
   p {
@@ -32,9 +34,14 @@ const StyledWrapper = styled.div`
     justify-content: center;
     width: 1604px;
     height: 904px;
-    border: 1px solid black;
     background-color: #091428;
     border: 2px solid #c8aa6e;
+  }
+  .canvas-container {
+    position: absolute;
+    width: 1600px;
+    height: 900px;
+    background-color: #091428;
   }
   .ui-cotainer {
     display: block;
@@ -124,6 +131,14 @@ const StyledWrapper = styled.div`
   .score {
     background-color: #091428;
   }
+  .score-plus {
+    font-size: 50px;
+    color: #00ff00;
+  }
+  .score-minus {
+    font-size: 50px;
+    color: #f70000;
+  }
   .fail {
     color: #cdfafa;
     background-color: #091428;
@@ -153,7 +168,8 @@ const skills = [
   { id: 8, eng: "f", kor: "ㄹ", image: FSkill },
 ];
 
-const MouseHover = () => {
+const Test = () => {
+  const canvasRef = useRef(null);
   const navigate = useNavigate();
   const gameContainer = useRef(null);
   const prevTimeoutRef = useRef();
@@ -162,9 +178,10 @@ const MouseHover = () => {
   const score = useSelector((state) => {
     return state.score;
   });
+  const [plus100Score, setPlus100Score] = useState(false);
+  const [minus50Score, setMinus50Score] = useState(false);
 
   const [pressedKey, setPressedKey] = useState("");
-  const [isKeyAPressed, setIsKeyAPressed] = useState(false);
   const [isKeyQPressed, setIsKeyQPressed] = useState(false);
   const [isKeyWPressed, setIsKeyWPressed] = useState(false);
   const [isKeyEPressed, setIsKeyEPressed] = useState(false);
@@ -184,10 +201,37 @@ const MouseHover = () => {
     timePlusShowTime: 전체 시간과 화면에 보여지는 시간을 더한 상태
 
   */
-
   const [skill, setSkill] = useState([
     {
       id: 1,
+      isGamePlay: "non-playing",
+      targetSkill: null,
+      isShown: false,
+      positionX: null,
+      positionY: null,
+      showTime: null,
+      shownTime: null,
+      noShowTime: null,
+      currentTime: null,
+      keyPressedTime: 0,
+      isHovered: false,
+    },
+    {
+      id: 2,
+      isGamePlay: "non-playing",
+      targetSkill: null,
+      isShown: false,
+      positionX: null,
+      positionY: null,
+      showTime: null,
+      noShowTime: null,
+      shownTime: null,
+      currentTime: null,
+      keyPressedTime: 0,
+      isHovered: false,
+    },
+    {
+      id: 3,
       isGamePlay: "non-playing",
       targetSkill: null,
       isShown: false,
@@ -286,12 +330,19 @@ const MouseHover = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((props) => props - 1);
-      console.log("------------------");
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].shownTime -= 1;
+        updatedSkill[1].shownTime -= 1;
+        updatedSkill[2].shownTime -= 1;
         if (updatedSkill[0].shownTime <= 0) {
           updatedSkill[0].shownTime = null;
+        }
+        if (updatedSkill[1].shownTime <= 0) {
+          updatedSkill[1].shownTime = null;
+        }
+        if (updatedSkill[2].shownTime <= 0) {
+          updatedSkill[2].shownTime = null;
         }
         return updatedSkill;
       });
@@ -335,6 +386,74 @@ const MouseHover = () => {
   }, [skill[0].isGamePlay]);
 
   useEffect(() => {
+    if (skill[1].isGamePlay === "non-playing") {
+      setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberThreeToFive();
+          updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[1].showTime = getRandomNumberThreeToSix();
+          updatedSkill[1].targetSkill = randomSkill;
+          updatedSkill[1].positionX = getRandomPositionX();
+          updatedSkill[1].positionY = getRandomPositionY();
+          updatedSkill[1].isShown = true;
+          updatedSkill[1].isGamePlay = "playing";
+          updatedSkill[1].shownTime = skill[1].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[1].isGamePlay === "playing") {
+            setSkill((prevState) => {
+              const updatedSkill = [...prevState];
+              updatedSkill[1].isShown = false;
+              updatedSkill[1].isGamePlay = "non-playing";
+              return updatedSkill;
+            });
+          }
+        }, skill[1].showTime * 700);
+      }, skill[1].noShowTime * 700);
+    }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, skill[1].noShowTime * 700);
+  }, [skill[1].isGamePlay]);
+
+  useEffect(() => {
+    if (skill[2].isGamePlay === "non-playing") {
+      setTimeout(() => {
+        setSkill((prevState) => {
+          const updatedSkill = [...prevState];
+          const randomSkill = getRandomNumberSixToSeven();
+          updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
+          updatedSkill[2].showTime = getRandomNumberThreeToSix();
+          updatedSkill[2].targetSkill = randomSkill;
+          updatedSkill[2].positionX = getRandomPositionX();
+          updatedSkill[2].positionY = getRandomPositionY();
+          updatedSkill[2].isShown = true;
+          updatedSkill[2].isGamePlay = "playing";
+          updatedSkill[2].shownTime = skill[2].showTime;
+          return updatedSkill; // 변경된 배열을 반환합니다.
+        });
+        setTimeout(() => {
+          if (skill[2].isGamePlay === "playing") {
+            setSkill((prevState) => {
+              const updatedSkill = [...prevState];
+              updatedSkill[2].isShown = false;
+              updatedSkill[2].isGamePlay = "non-playing";
+              return updatedSkill;
+            });
+          }
+        }, skill[2].showTime * 700);
+      }, skill[2].noShowTime * 700);
+    }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, skill[2].noShowTime * 700);
+  }, [skill[2].isGamePlay]);
+
+  useEffect(() => {
     document.addEventListener("keypress", handleKeyPress);
     document.addEventListener("keyup", handleKeyUp);
     return () => {
@@ -362,13 +481,13 @@ const MouseHover = () => {
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(true);
     }
-    if (e.key === "a" || e.key === "ㅁ") {
-    }
     const pressedKey = e.key.toLowerCase();
-    if (skill[0].isShown) {
+    if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].keyPressedTime = time;
+        updatedSkill[1].keyPressedTime = time;
+        updatedSkill[2].keyPressedTime = time;
         return updatedSkill; // 변경된 배열을 반환합니다.
       });
       if (
@@ -376,19 +495,87 @@ const MouseHover = () => {
         skill[0].targetSkill.kor === pressedKey
       ) {
         if (skill[0].shownTime <= 1 && skill[0].isHovered === true) {
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[0].isShown = false;
+            updatedSkill[0].isHovered = false;
+            return updatedSkill;
+          });
           incrementScore(100);
-          setSkill((prevState) => {
-            const updatedSkill = [...prevState];
-            updatedSkill[0].isShown = false;
-            return updatedSkill;
-          });
-        } else {
+          setPlus100Score(true);
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
+        } else if (skill[0].shownTime > 1) {
           decrementScore(50);
+          setMinus50Score(true);
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
             updatedSkill[0].isShown = false;
+            updatedSkill[0].isHovered = false;
             return updatedSkill;
           });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
+        }
+      } else if (
+        skill[1].targetSkill.eng === pressedKey ||
+        skill[1].targetSkill.kor === pressedKey
+      ) {
+        if (skill[1].shownTime <= 1 && skill[1].isHovered === true) {
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[1].isShown = false;
+            updatedSkill[1].isHovered = false;
+            return updatedSkill;
+          });
+          incrementScore(100);
+          setPlus100Score(true);
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
+        } else if (skill[1].shownTime > 1) {
+          decrementScore(50);
+          setMinus50Score(true);
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[1].isShown = false;
+            updatedSkill[1].isHovered = false;
+            return updatedSkill;
+          });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
+        }
+      } else if (
+        skill[2].targetSkill.eng === pressedKey ||
+        skill[2].targetSkill.kor === pressedKey
+      ) {
+        if (skill[2].shownTime <= 1 && skill[2].isHovered === true) {
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[2].isShown = false;
+            updatedSkill[2].isHovered = false;
+            return updatedSkill;
+          });
+          incrementScore(100);
+          setPlus100Score(true);
+          setTimeout(() => {
+            setPlus100Score(false);
+          }, 2000);
+        } else if (skill[2].shownTime > 1) {
+          decrementScore(50);
+          setMinus50Score(true);
+          setSkill((prevState) => {
+            const updatedSkill = [...prevState];
+            updatedSkill[2].isShown = false;
+            updatedSkill[2].isHovered = false;
+            return updatedSkill;
+          });
+          setTimeout(() => {
+            setMinus50Score(false);
+          }, 2000);
         }
       }
     }
@@ -414,27 +601,58 @@ const MouseHover = () => {
     }
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 1600;
+    canvas.height = 900;
+
+    let radius = 100;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = "blue";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      radius -= 1;
+
+      if (radius > 0) {
+        requestAnimationFrame(draw);
+      }
+    }
+
+    draw();
+  }, []);
   const handleMouseEnter = () => {
     setSkill((prevState) => {
       const updatedSkill = [...prevState];
       updatedSkill[0].isHovered = true;
+      updatedSkill[1].isHovered = true;
+      updatedSkill[2].isHovered = true;
       return updatedSkill; // 변경된 배열을 반환합니다.
     });
-    console.log("hover!");
   };
 
   const handleMouseLeave = () => {
     setSkill((prevState) => {
       const updatedSkill = [...prevState];
       updatedSkill[0].isHovered = false;
+      updatedSkill[1].isHovered = false;
+      updatedSkill[2].isHovered = false;
       return updatedSkill; // 변경된 배열을 반환합니다.
     });
-    console.log("non-hover!");
   };
 
   return (
     <StyledWrapper>
       <div className="game-container" ref={gameContainer}>
+        <canvas className="canvas-container" ref={canvasRef}></canvas>
         <div
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
@@ -459,23 +677,69 @@ const MouseHover = () => {
             <></>
           )}
         </div>
-        {/* <div
+        <div
           className="skill-container"
-          style={{ left: skill[0].positionX, top: skill[0].positionY }}
+          style={{ left: skill[1].positionX, top: skill[1].positionY }}
         >
-          <div className="skill-box">
-            <div className="remain-time">{skill[0].shownTime}</div>
-            <img
-              className="skill"
-              src={skill[0].targetSkill.image}
-              alt={skill[0].targetSkill.eng}
-            />
-          </div>
-        </div> */}
+          {skill[1].isShown ? (
+            <div className="skill-box">
+              <div className="remain-time">{skill[1].shownTime}</div>
+              <img
+                className="skill"
+                src={skill[1].targetSkill.image}
+                alt={skill[1].targetSkill.eng}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: skill[1].isHovered
+                    ? `url(${AttackCursor}), auto`
+                    : "default",
+                }}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div
+          className="skill-container"
+          style={{ left: skill[2].positionX, top: skill[2].positionY }}
+        >
+          {skill[2].isShown ? (
+            <div className="skill-box">
+              <div className="remain-time">{skill[2].shownTime}</div>
+              <img
+                className="skill"
+                src={skill[2].targetSkill.image}
+                alt={skill[2].targetSkill.eng}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: skill[2].isHovered
+                    ? `url(${AttackCursor}), auto`
+                    : "default",
+                }}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+
         <div className="map-container">
           <div className="time-score-container">
             <div className="time">시간 : {time}</div>
             <div className="score">점수 : {score}</div>
+            {plus100Score ? (
+              <div className="score score-plus">+ 100</div>
+            ) : (
+              <></>
+            )}
+            {minus50Score ? (
+              <div className="score score-minus">- 50</div>
+            ) : (
+              <></>
+            )}
           </div>
           <Map />
         </div>
@@ -535,4 +799,4 @@ const MouseHover = () => {
   );
 };
 
-export default MouseHover;
+export default Test;
