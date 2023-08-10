@@ -3,6 +3,19 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+import Champ1 from "../../assets/img/champions/bdPiW70pfZb3EEqPIYRFFZtsakJSklTCEN-2f6DFuZAEClUD2g4aZzzf2m67NN2zAqvzMH4bevJD25S0Y3iC3w.jpg";
+import Champ2 from "../../assets/img/champions/i1827421181.jpg";
+import Champ3 from "../../assets/img/champions/i3573951229.jpg";
+import Champ4 from "../../assets/img/champions/i4121612975.jpg";
+import ASkill from "../../assets/img/skills/skill-a.png";
+import SSkill from "../../assets/img/skills/skill-s.png";
+import DSkill from "../../assets/img/skills/skill-d.png";
+import FSkill from "../../assets/img/skills/skill-f.png";
+import QSkill from "../../assets/img/skills/skill-q.png";
+import WSkill from "../../assets/img/skills/skill-w.png";
+import ESkill from "../../assets/img/skills/skill-e.png";
+import RSkill from "../../assets/img/skills/skill-r.png";
+
 import HowToPlayImg01 from "../../assets/img/how-to-play/how-to-play-01.png";
 import HowToPlayImg02 from "../../assets/img/how-to-play/how-to-play-02.png";
 import HowToPlayImg03 from "../../assets/img/how-to-play/how-to-play-03.png";
@@ -14,6 +27,32 @@ import HowToPlayImg07 from "../../assets/img/how-to-play/how-to-play-07.png";
 const StyledWrapper = styled.div`
   .how-to-play-container {
     position: relative;
+  }
+  .explain-describe {
+    color: white;
+    font-size: 40px;
+    background-color: transparent;
+  }
+  .explain-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    background-color: transparent;
+    right: 7rem;
+    top: 15rem;
+  }
+  .explain-wrapper img {
+    width: 50px;
+  }
+  .explain-container {
+    background-color: transparent;
+    gap: 50px;
+  }
+  .explain-box {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
   }
   .explain {
     color: white;
@@ -134,6 +173,62 @@ const HowToPlay02 = () => {
 
           <div className="explain explain-04">
             화면에 챔피언이 나타나면 해당 키를 클릭!
+          </div>
+          <div className="explain-wrapper">
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={Champ1} alt="ASkill" />
+                <div className="explain-describe">1</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ2} alt="ASkill" />
+                <div className="explain-describe">2</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ3} alt="ASkill" />
+                <div className="explain-describe">3</div>
+              </div>
+              <div className="explain-box">
+                <img src={Champ4} alt="ASkill" />
+                <div className="explain-describe">4</div>
+              </div>
+            </div>
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={QSkill} alt="ASkill" />
+                <div className="explain-describe">Q</div>
+              </div>
+              <div className="explain-box">
+                <img src={WSkill} alt="ASkill" />
+                <div className="explain-describe">W</div>
+              </div>
+              <div className="explain-box">
+                <img src={ESkill} alt="ASkill" />
+                <div className="explain-describe">E</div>
+              </div>
+              <div className="explain-box">
+                <img src={RSkill} alt="ASkill" />
+                <div className="explain-describe">R</div>
+              </div>
+            </div>
+            <div className="explain-container">
+              <div className="explain-box">
+                <img src={ASkill} alt="ASkill" />
+                <div className="explain-describe">A</div>
+              </div>
+              <div className="explain-box">
+                <img src={SSkill} alt="ASkill" />
+                <div className="explain-describe">S</div>
+              </div>
+              <div className="explain-box">
+                <img src={DSkill} alt="ASkill" />
+                <div className="explain-describe">D</div>
+              </div>
+              <div className="explain-box">
+                <img src={FSkill} alt="ASkill" />
+                <div className="explain-describe">F</div>
+              </div>
+            </div>
           </div>
         </div>
       </StyledWrapper>
