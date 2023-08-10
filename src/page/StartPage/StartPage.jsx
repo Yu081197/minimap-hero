@@ -24,6 +24,7 @@ const StyledWrapper = styled.div`
   .explain-wrapper {
     display: flex;
     flex-direction: column;
+    margin-bottom: 30px;
   }
   img {
     width: 100px;
@@ -64,7 +65,7 @@ const StyledWrapper = styled.div`
   }
   .button-wrapper {
     display: flex;
-    gap: 30px;
+    gap: 80px;
   }
   .button:hover {
     text-shadow: 0 0 5px #ffffff80;
@@ -100,6 +101,27 @@ const StyledWrapper = styled.div`
       U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122,
       U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
+
+  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+
+  @font-face {
+    font-family: GalanoGrosteque;
+    src: url("/fonts/GalanoGrotesqueAltBold.otf");
+  }
+  .title {
+    text-shadow: 0 0 5px #ffffff80;
+    transition: 0.1s;
+    font-family: "Roboto", sans-serif;
+    color: rgb(218, 212, 212);
+    font-size: 90px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 5px 15px;
+    box-shadow: inset 0 0 2px #000000;
+    width: 700px;
+    margin: 50px;
+  }
 `;
 
 const StartPage = () => {
@@ -107,6 +129,9 @@ const StartPage = () => {
     <>
       <StyledWrapper>
         <div className="start-container">
+          <div className="title-container">
+            <div class=" button-start title">MINIMAP HERO</div>
+          </div>
           <div className="explain-wrapper">
             <div className="explain-container">
               <div className="explain-box">
