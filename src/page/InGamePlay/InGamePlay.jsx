@@ -129,6 +129,14 @@ const StyledWrapper = styled.div`
   .score {
     background-color: #091428;
   }
+  .score-plus {
+    font-size: 50px;
+    color: #00ff00;
+  }
+  .score-minus {
+    font-size: 50px;
+    color: #f70000;
+  }
   .fail {
     color: #cdfafa;
     background-color: #091428;
@@ -140,7 +148,7 @@ const StyledWrapper = styled.div`
     left: 23%;
   }
   .skill-container {
-    background-color: #091428;
+    background-color: transparent;
     position: absolute;
     top: ${(props) => props.positionY}px;
     left: ${(props) => props.positionX}px;
@@ -700,12 +708,12 @@ const InGamePlay = () => {
             <div className="time">시간 : {time}</div>
             <div className="score">점수 : {score}</div>
             {plus100Score ? (
-              <div className="score score-state">+ 100</div>
+              <div className="score score-plus">+ 100</div>
             ) : (
               <></>
             )}
             {minus50Score ? (
-              <div className="score score-state">- 50</div>
+              <div className="score score-minus">- 50</div>
             ) : (
               <></>
             )}
