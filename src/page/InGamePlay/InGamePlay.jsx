@@ -3,15 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 
-import styled from "styled-components";
-
+import InGamePlayStyled from "./styles/InGamePlay.styled";
+import useGetRandom from "../../utils/useGetRandom";
 import Map from "../../components/Map/Map";
-
 import NormalCursor from "../../assets/Summoner/normal.cur";
 import AttackCursor from "../../assets/Summoner/alt.cur";
 
 import skillUI from "../../assets/img/skillUI.png";
-
 import ASkill from "../../assets/img/skills/skill-a.png";
 import SSkill from "../../assets/img/skills/skill-s.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
@@ -20,140 +18,6 @@ import QSkill from "../../assets/img/skills/skill-q.png";
 import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
-
-const StyledWrapper = styled.div`
-  p {
-    color: white;
-  }
-  .game-container {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    width: 1604px;
-    height: 904px;
-    background-color: #091428;
-    border: 2px solid #c8aa6e;
-  }
-  .canvas-container {
-    position: absolute;
-    width: 1600px;
-    height: 900px;
-    background-color: #091428;
-  }
-  .ui-cotainer {
-    display: block;
-    position: relative;
-  }
-  .ui {
-    position: absolute;
-    bottom: 0px;
-  }
-  .ui-skill {
-    position: absolute;
-    bottom: 0px;
-  }
-  .skill-d {
-    bottom: 4.7rem;
-    right: 41.6rem;
-    width: 31px;
-    height: 31px;
-  }
-  .skill-f {
-    bottom: 4.7rem;
-    right: 39.1rem;
-    width: 31px;
-    height: 31px;
-  }
-  .skill-q {
-    bottom: 4rem;
-    right: 39.1rem;
-    right: 54.86rem;
-    width: 42px;
-  }
-  .skill-w {
-    bottom: 4rem;
-    right: 51.55rem;
-    width: 42px;
-  }
-  .skill-e {
-    bottom: 4rem;
-    right: 48.1rem;
-    width: 42px;
-  }
-  .skill-r {
-    bottom: 4rem;
-    right: 44.8rem;
-    width: 42px;
-  }
-  .ui {
-    width: 1000px;
-  }
-  .skill-box {
-    width: 110%;
-    max-width: 100px;
-    max-height: 100px;
-    height: 110%;
-    border-radius: 50%;
-    display: flex;
-    background-color: #091428;
-    flex-direction: column-reverse;
-    gap: 5px;
-  }
-  .remain-time {
-    color: #0ac8b9;
-    font-size: 25px;
-    background-color: #091428;
-  }
-  .skill {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid #c8aa6e;
-    background-color: #091428;
-  }
-  .time-score-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    top: 30px;
-    right: 50px;
-    position: absolute;
-    color: #cdfafa;
-    background-color: #091428;
-    font-size: 30px;
-  }
-  .time {
-    background-color: #091428;
-  }
-  .score {
-    background-color: #091428;
-  }
-  .score-plus {
-    font-size: 50px;
-    color: #00ff00;
-  }
-  .score-minus {
-    font-size: 50px;
-    color: #f70000;
-  }
-  .fail {
-    color: #cdfafa;
-    background-color: #091428;
-  }
-  .skill-ui {
-    width: 50%;
-    position: absolute;
-    bottom: 0;
-    left: 23%;
-  }
-  .skill-container {
-    background-color: transparent;
-    position: absolute;
-    top: ${(props) => props.positionY}px;
-    left: ${(props) => props.positionX}px;
-  }
-`;
 
 const skills = [
   { id: 1, eng: "q", kor: "ㅂ", image: QSkill },
@@ -173,6 +37,7 @@ const InGamePlay = () => {
   const prevTimeoutRef = useRef();
   const [time, setTime] = useState(100);
   const dispatch = useDispatch();
+  const randomUtils = useGetRandom();
   const score = useSelector((state) => {
     return state.score;
   });
@@ -211,7 +76,6 @@ const InGamePlay = () => {
       shownTime: null,
       noShowTime: null,
       currentTime: null,
-      keyPressedTime: 0,
       isHovered: false,
     },
     {
@@ -225,7 +89,6 @@ const InGamePlay = () => {
       noShowTime: null,
       shownTime: null,
       currentTime: null,
-      keyPressedTime: 0,
       isHovered: false,
     },
     {
@@ -239,7 +102,6 @@ const InGamePlay = () => {
       shownTime: null,
       noShowTime: null,
       currentTime: null,
-      keyPressedTime: 0,
       isHovered: false,
     },
   ]);
@@ -252,13 +114,13 @@ const InGamePlay = () => {
     dispatch(decreaseScore(amount));
   };
 
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   function getRandomSkillFromRange(startIndex, endIndex) {
     const randomIndex = getRandomNumber(startIndex, endIndex);
     return skills[randomIndex];
+  }
+
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   function getRandomNumberThreeToSix() {
@@ -325,6 +187,8 @@ const InGamePlay = () => {
     return y;
   }
 
+  // setInterval로 스킬이 보여지는 시간 관리
+  // 700마다 숫자가 떨어지고 shownTime이 0보다 작아지면 shownTime을 null로 바꾼다.
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((props) => props - 1);
@@ -349,13 +213,17 @@ const InGamePlay = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // isGamePlay가 non-playing일때 실행되는 useEffect
+  // 각각 1, 2, 3초 후에 skill의 상태 업데이트 (보여지는 시간, 랜덤한 스킬, 위치, 보여지는 불리언, 게임 플레이 상태, 줄어드는 시간)
+  // 랜덤한 초 setTimeout 이후에 , 즉 랜덤한 시간 보여진 다음에 게임 플레이 상태가 플레이중이면 skill의 상태를 다시 업데이트(보여지는 불리언 false로, 게임 non 플레잉 상태)
+  // 루프 생성
+
   useEffect(() => {
     if (skill[0].isGamePlay === "non-playing") {
       setTimeout(() => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
           const randomSkill = getRandomNumberZeroToTwo();
-          updatedSkill[0].noShowTime = getRandomNumberTwoToFour();
           updatedSkill[0].showTime = getRandomNumberThreeToSix();
           updatedSkill[0].targetSkill = randomSkill;
           updatedSkill[0].positionX = getRandomPositionX();
@@ -375,12 +243,11 @@ const InGamePlay = () => {
             });
           }
         }, skill[0].showTime * 700);
-      }, skill[0].noShowTime * 700);
+      }, 1000);
     }
     if (prevTimeoutRef.current) {
       clearTimeout(prevTimeoutRef.current);
     }
-    prevTimeoutRef.current = setTimeout(() => {}, skill[0].noShowTime * 700);
   }, [skill[0].isGamePlay]);
 
   useEffect(() => {
@@ -389,7 +256,6 @@ const InGamePlay = () => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
           const randomSkill = getRandomNumberThreeToFive();
-          updatedSkill[1].noShowTime = getRandomNumberTwoToFour();
           updatedSkill[1].showTime = getRandomNumberThreeToSix();
           updatedSkill[1].targetSkill = randomSkill;
           updatedSkill[1].positionX = getRandomPositionX();
@@ -409,12 +275,11 @@ const InGamePlay = () => {
             });
           }
         }, skill[1].showTime * 700);
-      }, skill[1].noShowTime * 700);
+      }, 2000);
     }
     if (prevTimeoutRef.current) {
       clearTimeout(prevTimeoutRef.current);
     }
-    prevTimeoutRef.current = setTimeout(() => {}, skill[1].noShowTime * 700);
   }, [skill[1].isGamePlay]);
 
   useEffect(() => {
@@ -423,7 +288,6 @@ const InGamePlay = () => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
           const randomSkill = getRandomNumberSixToSeven();
-          updatedSkill[2].noShowTime = getRandomNumberTwoToFour();
           updatedSkill[2].showTime = getRandomNumberThreeToSix();
           updatedSkill[2].targetSkill = randomSkill;
           updatedSkill[2].positionX = getRandomPositionX();
@@ -443,12 +307,11 @@ const InGamePlay = () => {
             });
           }
         }, skill[2].showTime * 700);
-      }, skill[2].noShowTime * 700);
+      }, 3000);
     }
     if (prevTimeoutRef.current) {
       clearTimeout(prevTimeoutRef.current);
     }
-    prevTimeoutRef.current = setTimeout(() => {}, skill[2].noShowTime * 700);
   }, [skill[2].isGamePlay]);
 
   useEffect(() => {
@@ -479,19 +342,18 @@ const InGamePlay = () => {
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(true);
     }
+
+    // 키를 눌렀을 때 확인하는 함수
+    // 세 개의 스킬들중 하나라도 보인다면 실행
+    // skill의 상태 변경
+
     const pressedKey = e.key.toLowerCase();
     if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
-      setSkill((prevState) => {
-        const updatedSkill = [...prevState];
-        updatedSkill[0].keyPressedTime = time;
-        updatedSkill[1].keyPressedTime = time;
-        updatedSkill[2].keyPressedTime = time;
-        return updatedSkill; // 변경된 배열을 반환합니다.
-      });
       if (
         skill[0].targetSkill.eng === pressedKey ||
         skill[0].targetSkill.kor === pressedKey
       ) {
+        // 1보다 작거나 같을 때와 마우스가 호버중일 때 눌렀을 때
         if (skill[0].shownTime <= 1 && skill[0].isHovered === true) {
           setSkill((prevState) => {
             const updatedSkill = [...prevState];
@@ -501,6 +363,7 @@ const InGamePlay = () => {
           });
           incrementScore(100);
           setPlus100Score(true);
+          // 화면에 점수 보이게 하는 setTimeout
           setTimeout(() => {
             setPlus100Score(false);
           }, 2000);
@@ -605,6 +468,7 @@ const InGamePlay = () => {
     }
   });
 
+  // 마우스 호버상태를 확인하는 함수
   const handleMouseEnter = () => {
     setSkill((prevState) => {
       const updatedSkill = [...prevState];
@@ -614,7 +478,7 @@ const InGamePlay = () => {
       return updatedSkill; // 변경된 배열을 반환합니다.
     });
   };
-
+  // 마우스 호버상태 해제일 때 확인하는 함수
   const handleMouseLeave = () => {
     setSkill((prevState) => {
       const updatedSkill = [...prevState];
@@ -626,7 +490,7 @@ const InGamePlay = () => {
   };
 
   return (
-    <StyledWrapper>
+    <InGamePlayStyled>
       <div className="game-container" ref={gameContainer}>
         <canvas className="canvas-container" ref={canvasRef}></canvas>
 
@@ -772,7 +636,7 @@ const InGamePlay = () => {
           />
         </div>
       </div>
-    </StyledWrapper>
+    </InGamePlayStyled>
   );
 };
 

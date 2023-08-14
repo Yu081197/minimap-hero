@@ -1,38 +1,47 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const useGetRandom = () => {
+function useGetRandom() {
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
+  const getRandomSkillFromRange = (startIndex, endIndex, skills) => {
+    const randomIndex = getRandomNumber(startIndex, endIndex);
+    return skills[randomIndex];
+  };
+
   const getRandomNumberThreeToSix = () => {
-    return getRandomNumber(3, 6); // 3, 4, 5, 6 중 랜덤한 숫자 생성
+    return getRandomNumber(3, 6);
   };
 
   const getRandomNumberTwoToFour = () => {
-    return getRandomNumber(2, 4); // 2, 3, 4 중 랜덤한 숫자 생성
+    return getRandomNumber(2, 4);
   };
 
-  const getRandomNumberZeroToTwo = () => {
-    return getRandomNumber(0, 2); // 0, 1, 2 중 랜덤한 숫자 생성
+  const getRandomNumberZeroToTwo = (skills) => {
+    const randomIndex = getRandomNumber(0, 2);
+    return skills[randomIndex];
   };
 
-  const getRandomNumberThreeToFive = () => {
-    return getRandomNumber(3, 5); // 3, 4, 5 중 랜덤한 숫자 생성
+  const getRandomNumberThreeToFive = (skills) => {
+    const randomIndex = getRandomNumber(3, 5);
+    return skills[randomIndex];
   };
 
-  const getRandomNumberSixToSeven = () => {
-    return getRandomNumber(6, 7); // 6, 7 중 랜덤한 숫자 생성
+  const getRandomNumberSixToSeven = (skills) => {
+    const randomIndex = getRandomNumber(6, 7);
+    return skills[randomIndex];
   };
 
   return {
     getRandomNumber,
+    getRandomSkillFromRange,
     getRandomNumberThreeToSix,
     getRandomNumberTwoToFour,
     getRandomNumberZeroToTwo,
     getRandomNumberThreeToFive,
     getRandomNumberSixToSeven,
   };
-};
+}
 
 export default useGetRandom;
