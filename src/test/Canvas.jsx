@@ -53,6 +53,7 @@ const StyledWrapper = styled.div`
 const Canvas = () => {
   const canvasRef = useRef(null);
   const gameContainer = useRef(null);
+  const [drawingActive, setDrawingActive] = useState(false);
   const [skill, setSkill] = useState([
     {
       id: 1,
@@ -121,7 +122,7 @@ const Canvas = () => {
     function drawCircle(x, y, radius) {
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = "blue";
+      ctx.strokeStyle = "#C89B3C";
       ctx.lineWidth = 3;
       ctx.stroke();
     }
@@ -143,6 +144,11 @@ const Canvas = () => {
 
     requestAnimationFrame(draw); // Start the animation loop
   }, []);
+
+  const handleDrawButtonClick = () => {
+    setDrawingActive(true); // 버튼을 클릭하면 원 그리기를 활성화
+  };
+
   return (
     <>
       <StyledWrapper>
@@ -157,10 +163,15 @@ const Canvas = () => {
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
         >
           <div className="skill-box">
-            <img className="skill" src={SSkill} />
+            <img
+              className="skill"
+              src={SSkill}
+              onClick={handleDrawButtonClick}
+            />
           </div>
         </div>
         <div className="game-container" ref={gameContainer}></div>
+        <button onClick={handleDrawButtonClick}>Draw</button>
       </StyledWrapper>
     </>
   );

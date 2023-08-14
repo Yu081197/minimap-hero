@@ -12,6 +12,7 @@ import HowToPlay03 from "./page/HowToPlay/HowToPlay03";
 
 import Test from "./test/Test";
 import Canvas from "./test/Canvas";
+import CanvasTest from "./test/CanvasTest";
 
 function routes() {
   return (
@@ -27,6 +28,7 @@ function routes() {
         <Route path="/ingameplay" element={<InGamePlay />} />
         <Route path="/test" element={<Test />} />
         <Route path="/canvas" element={<Canvas />} />
+        <Route path="/canvastest" element={<CanvasTest />} />
       </Routes>
     </BrowserRouter>
   );
