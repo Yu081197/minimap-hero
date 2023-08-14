@@ -1,3 +1,5 @@
+import React, { useState, useEffect, useRef } from "react";
+
 import styled from "styled-components";
 
 import Champ1 from "../../assets/img/champions/bdPiW70pfZb3EEqPIYRFFZtsakJSklTCEN-2f6DFuZAEClUD2g4aZzzf2m67NN2zAqvzMH4bevJD25S0Y3iC3w.jpg";
@@ -21,6 +23,54 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     gap: 30px;
   }
+  .select-modal {
+    display: flex;
+    position: absolute;
+    top: 20%;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #c8aa6d;
+    background-color: rgba(9, 20, 40, 0.8);
+    z-index: 999;
+  }
+  .select-modal-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .select-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* 어두운 배경 색상 */
+    z-index: 998;
+    display: flex;
+  }
+  .button-noclick {
+    font-family: "Marcellus SC", serif;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 5px 15px;
+    background: #000000;
+    color: #cdbe91;
+    box-shadow: inset 0 0 2px #000000;
+    border: 3px solid;
+    border-image: linear-gradient(to bottom, #c8aa6d, #7a5c29);
+    border-image-slice: 1;
+  }
+  .button-noclick:hover {
+    text-shadow: 0 0 5px #ffffff80;
+    box-shadow: 0 0 8px 0 #ffffff50;
+    background: linear-gradient(to bottom, #000000, #000000);
+    cursor: pointer;
+    transition: 0.1s;
+  }
+
   .explain-wrapper {
     display: flex;
     flex-direction: column;
@@ -125,10 +175,39 @@ const StyledWrapper = styled.div`
 `;
 
 const StartPage = () => {
+  const modalRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleModalContentClick = (e) => {
+    e.stopPropagation(); // Prevent the click event from propagating to the overlay
+  };
+
   return (
     <>
       <StyledWrapper>
         <div className="start-container">
+          {isModalOpen ? (
+            <div className="select-modal-overlay" onClick={toggleModal}>
+              <div className="select-modal" onClick={handleModalContentClick}>
+                <div className="select-modal-button-wrapper">
+                  <div className="button-container">
+                    <Link to="/countdown-game">
+                      <div class="button button-start">game mode</div>
+                    </Link>
+                  </div>
+                  <div className="button-container">
+                    <div class="button-start button-noclick">training mode</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="title-container">
             <div class=" button-start title">MINIMAP HERO</div>
           </div>
@@ -190,9 +269,9 @@ const StartPage = () => {
           </div>
           <div className="button-wrapper">
             <div className="button-container">
-              <Link to="/countdown">
-                <div class="button button-start">game start</div>
-              </Link>
+              <div class="button button-start" onClick={toggleModal}>
+                game start
+              </div>
             </div>
             <div className="button-container">
               <Link to="/how-to-play">
@@ -202,8 +281,6 @@ const StartPage = () => {
           </div>
         </div>
       </StyledWrapper>
-
-      {/* <Button /> */}
     </>
   );
 };

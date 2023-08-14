@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { resetScore } from "../../services/ScoreSlice";
-import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 
 const StyledWrapper = styled.div`

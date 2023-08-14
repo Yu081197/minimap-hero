@@ -6,7 +6,9 @@ import StartPage from "./page/StartPage/StartPage";
 import ScorePage from "./page/ScorePage/ScorePage";
 import HowToPlay from "./page/HowToPlay/HowToPlay";
 import InGamePlay from "./page/InGamePlay/InGamePlay";
-import CountDownPage from "./page/CountDownPage/CountDownPage";
+import TrainingMode from "./page/TrainingMode/TrainingMode";
+import GameCountDownPage from "./page/CountDownPage/GameCountDownPage";
+import TrainingCountDownPage from "./page/CountDownPage/TrainingCountDownPage";
 import HowToPlay01 from "./page/HowToPlay/HowToPlay01";
 import HowToPlay02 from "./page/HowToPlay/HowToPlay02";
 import HowToPlay03 from "./page/HowToPlay/HowToPlay03";
@@ -38,8 +40,10 @@ function routes() {
         <Route path="/how-to-play-01" element={<HowToPlay01 />} />
         <Route path="/how-to-play-02" element={<HowToPlay02 />} />
         <Route path="/how-to-play-03" element={<HowToPlay03 />} />
-        <Route path="/countdown" element={<CountDownPage />} />
+        <Route path="/countdown-game" element={<GameCountDownPage />} />
+        <Route path="/countdown-training" element={<TrainingCountDownPage />} />
         <Route path="/score" element={<ScorePage />} />
+        <Route path="/training-mode" element={<TrainingMode />} />
         <Route path="/ingameplay" element={<InGamePlay />} />
         {!isMobileDevice() && <Route path="/" element={<StartPage />} />}
       </Routes>
