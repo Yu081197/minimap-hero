@@ -131,18 +131,6 @@ const InGamePlay = () => {
   }
 
   function getRandomNumberZeroToTwo() {
-    return getRandomSkillFromRange(0, 2);
-  }
-
-  function getRandomNumberThreeToFive() {
-    return getRandomSkillFromRange(3, 5);
-  }
-
-  function getRandomNumberSixToSeven() {
-    return getRandomSkillFromRange(6, 7);
-  }
-
-  function getRandomNumberZeroToTwo() {
     const randomIndex = Math.floor(Math.random() * 3); // Generates a random number between 0 and 2 (inclusive)
     return skills[randomIndex];
   }
@@ -220,12 +208,16 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[0].isGamePlay === "non-playing") {
+      setSkill((prevState) => {
+        const updatedSkill = [...prevState];
+        const randomSkill = getRandomNumberZeroToTwo();
+        updatedSkill[0].targetSkill = randomSkill;
+        return updatedSkill;
+      });
       setTimeout(() => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
-          const randomSkill = getRandomNumberZeroToTwo();
           updatedSkill[0].showTime = getRandomNumberThreeToSix();
-          updatedSkill[0].targetSkill = randomSkill;
           updatedSkill[0].positionX = getRandomPositionX();
           updatedSkill[0].positionY = getRandomPositionY();
           updatedSkill[0].isShown = true;
@@ -252,12 +244,16 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[1].isGamePlay === "non-playing") {
+      setSkill((prevState) => {
+        const updatedSkill = [...prevState];
+        const randomSkill = getRandomNumberThreeToFive();
+        updatedSkill[1].targetSkill = randomSkill;
+        return updatedSkill;
+      });
       setTimeout(() => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
-          const randomSkill = getRandomNumberThreeToFive();
           updatedSkill[1].showTime = getRandomNumberThreeToSix();
-          updatedSkill[1].targetSkill = randomSkill;
           updatedSkill[1].positionX = getRandomPositionX();
           updatedSkill[1].positionY = getRandomPositionY();
           updatedSkill[1].isShown = true;
@@ -284,12 +280,16 @@ const InGamePlay = () => {
 
   useEffect(() => {
     if (skill[2].isGamePlay === "non-playing") {
+      setSkill((prevState) => {
+        const updatedSkill = [...prevState];
+        const randomSkill = getRandomNumberSixToSeven();
+        updatedSkill[2].targetSkill = randomSkill;
+        return updatedSkill;
+      });
       setTimeout(() => {
         setSkill((prevState) => {
           const updatedSkill = [...prevState];
-          const randomSkill = getRandomNumberSixToSeven();
           updatedSkill[2].showTime = getRandomNumberThreeToSix();
-          updatedSkill[2].targetSkill = randomSkill;
           updatedSkill[2].positionX = getRandomPositionX();
           updatedSkill[2].positionY = getRandomPositionY();
           updatedSkill[2].isShown = true;
@@ -478,7 +478,7 @@ const InGamePlay = () => {
       return updatedSkill; // 변경된 배열을 반환합니다.
     });
   };
-  // 마우스 호버상태 해제일 때 확인하는 함수
+  // 마우스 호버상태 해제 확인하는 함수
   const handleMouseLeave = () => {
     setSkill((prevState) => {
       const updatedSkill = [...prevState];
