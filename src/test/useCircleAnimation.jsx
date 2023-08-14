@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-const useCircleAnimation = (drawingActive) => {
+const useCircleAnimation = (circleDrawingStates) => {
   const canvasRef = useRef(null);
-  const animationRef = useRef(null);
+  const animationRefs = useRef([]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -11,13 +12,13 @@ const useCircleAnimation = (drawingActive) => {
     canvas.height = 900;
 
     const circles = [
-      { x: 300, y: 200, radius: 76.15 }, // 1초
-      { x: 500, y: 200, radius: 116.26 }, // 2초
-      { x: 700, y: 200, radius: 140.29 }, // 3초
-      { x: 900, y: 200, radius: 156.2 }, // 4초
-      { x: 300, y: 500, radius: 169.45 }, // 5초
-      { x: 500, y: 500, radius: 180.89 }, // 6초
-      { x: 700, y: 500, radius: 191.06 }, // 7초
+      { id: 1, x: 300, y: 200, radius: 77.5, active: false },
+      { id: 2, x: 500, y: 200, radius: 116.25, active: false },
+      { id: 3, x: 700, y: 200, radius: 155, active: false },
+      { id: 4, x: 900, y: 200, radius: 193.75, active: false },
+      { id: 5, x: 300, y: 500, radius: 232.5, active: false },
+      { id: 6, x: 500, y: 500, radius: 271.25, active: false },
+      { id: 7, x: 700, y: 500, radius: 271.25, active: false },
     ];
 
     function drawCircle(x, y, radius) {
@@ -28,29 +29,31 @@ const useCircleAnimation = (drawingActive) => {
       ctx.stroke();
     }
 
-    function draw() {
+    function drawAnimations() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      circles.forEach((circle) => {
-        if (circle.radius > 38.75) {
-          drawCircle(circle.x, circle.y, circle.radius);
-          circle.radius -= 1;
+      circles.forEach((circle, index) => {
+        if (circleDrawingStates[index]) {
+          if (circle.radius >= 38.75) {
+            drawCircle(circle.x, circle.y, circle.radius);
+            circle.radius -= 0.5;
+          }
         }
       });
 
-      if (circles.some((circle) => circle.radius > 38.75)) {
-        requestAnimationFrame(draw);
+      if (circleDrawingStates.some((isActive) => isActive)) {
+        animationRefs.current[0] = requestAnimationFrame(drawAnimations);
       }
     }
 
-    if (drawingActive) {
-      animationRef.current = requestAnimationFrame(draw);
-    }
+    drawAnimations();
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      animationRefs.current.forEach((animationId) => {
+        cancelAnimationFrame(animationId);
+      });
     };
-  }, [drawingActive]);
+  }, [circleDrawingStates]);
 
   return canvasRef;
 };

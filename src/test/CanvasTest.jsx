@@ -50,11 +50,24 @@ const StyledWrapper = styled.div`
     border: 2px solid #c8aa6e;
     background-color: #091428;
   }
+  .button-container {
+    display: flex;
+    z-index: 99;
+  }
 `;
 
 const Canvas = () => {
-  const [drawingActive, setDrawingActive] = useState(false);
-  const canvasRef = useCircleAnimation(drawingActive); // 커스텀 훅 사용
+  const [drawingActives, setDrawingActives] = useState([
+    false, // 원 1
+    false, // 원 2
+    false, // 원 3
+    false, // 원 4
+    false, // 원 5
+    false, // 원 6
+    false, // 원 7
+  ]);
+
+  const canvasRef = useCircleAnimation(drawingActives); // 커스텀 훅 사용
   const gameContainer = useRef(null);
 
   const [skill, setSkill] = useState([
@@ -74,8 +87,12 @@ const Canvas = () => {
     },
   ]);
 
-  const handleDrawButtonClick = () => {
-    setDrawingActive((prevState) => !prevState); // 이전 상태를 반전시켜 토글
+  const handleDrawButtonClick = (index) => {
+    setDrawingActives((prevStates) => {
+      const newStates = [...prevStates];
+      newStates[index] = !newStates[index]; // 해당 원의 상태를 반전시킴
+      return newStates;
+    });
   };
 
   return (
@@ -96,15 +113,64 @@ const Canvas = () => {
           </div>
         </div>
         <div className="game-container" ref={gameContainer}></div>
-        <button
-          style={{ backgroundColor: "white" }}
-          onClick={() => {
-            handleDrawButtonClick();
-            console.log(drawingActive);
-          }}
-        >
-          Draw
-        </button>
+        <div className="button-container">
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(0);
+            }}
+          >
+            One
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(1);
+            }}
+          >
+            Two
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(2);
+            }}
+          >
+            Three
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(3);
+            }}
+          >
+            Four
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(4);
+            }}
+          >
+            Five
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(5);
+            }}
+          >
+            Six
+          </button>
+          <button
+            style={{ backgroundColor: "white" }}
+            onClick={() => {
+              handleDrawButtonClick(6);
+            }}
+          >
+            Seven
+          </button>
+        </div>
       </StyledWrapper>
     </>
   );
