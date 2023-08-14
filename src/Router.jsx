@@ -5,8 +5,6 @@ import styled from "styled-components";
 import StartPage from "./page/StartPage/StartPage";
 import ScorePage from "./page/ScorePage/ScorePage";
 import HowToPlay from "./page/HowToPlay/HowToPlay";
-import Map from "./components/Map/Map";
-import UI from "./components/UI/UI";
 import InGamePlay from "./page/InGamePlay/InGamePlay";
 import CountDownPage from "./page/CountDownPage/CountDownPage";
 import HowToPlay01 from "./page/HowToPlay/HowToPlay01";
@@ -43,8 +41,6 @@ function routes() {
         <Route path="/countdown" element={<CountDownPage />} />
         <Route path="/score" element={<ScorePage />} />
         <Route path="/ingameplay" element={<InGamePlay />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/ui" element={<UI />} />
         {!isMobileDevice() && <Route path="/" element={<StartPage />} />}
       </Routes>
     </BrowserRouter>
