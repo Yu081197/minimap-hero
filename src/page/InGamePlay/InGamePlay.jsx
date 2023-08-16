@@ -62,7 +62,6 @@ const InGamePlay = () => {
     noShowTime: 화면에 보이지 않는 시간 상태
     keyPressedTime: 키가 눌렸을때의 전체 시간
     timePlusShowTime: 전체 시간과 화면에 보여지는 시간을 더한 상태
-
   */
   const [skill, setSkill] = useState([
     {
@@ -106,6 +105,7 @@ const InGamePlay = () => {
     },
   ]);
 
+  // 점수 올리는 함수
   const incrementScore = (amount) => {
     dispatch(increaseScore(amount));
   };
@@ -114,6 +114,7 @@ const InGamePlay = () => {
     dispatch(decreaseScore(amount));
   };
 
+  // 난수값 받아오는 함수
   function getRandomSkillFromRange(startIndex, endIndex) {
     const randomIndex = getRandomNumber(startIndex, endIndex);
     return skills[randomIndex];
@@ -143,6 +144,7 @@ const InGamePlay = () => {
     return skills[randomIndex];
   }
 
+  // 난수 위치 반환하는 함수
   let previousXValues = [];
   function getRandomPositionX() {
     const boxRect = gameContainer.current.getBoundingClientRect();
@@ -175,6 +177,13 @@ const InGamePlay = () => {
     return y;
   }
 
+  // 시간 끝나면 자동으로 score로 넘어가는 useEffect
+  useEffect(() => {
+    if (time === 0) {
+      navigate("/score");
+    }
+  });
+
   // setInterval로 스킬이 보여지는 시간 관리
   // 700마다 숫자가 떨어지고 shownTime이 0보다 작아지면 shownTime을 null로 바꾼다.
   useEffect(() => {
@@ -202,10 +211,10 @@ const InGamePlay = () => {
   }, []);
 
   // isGamePlay가 non-playing일때 실행되는 useEffect
-  // 각각 1, 2, 3초 후에 skill의 상태 업데이트 (보여지는 시간, 랜덤한 스킬, 위치, 보여지는 불리언, 게임 플레이 상태, 줄어드는 시간)
+  // 랜덤스킬 상태 바로 업데이트
+  // 각각 1, 2, 3초 후에 skill의 상태 업데이트 (보여지는 시간, 위치, 보여지는 불리언, 게임 플레이 상태, 줄어드는 시간)
   // 랜덤한 초 setTimeout 이후에 , 즉 랜덤한 시간 보여진 다음에 게임 플레이 상태가 플레이중이면 skill의 상태를 다시 업데이트(보여지는 불리언 false로, 게임 non 플레잉 상태)
   // 루프 생성
-
   useEffect(() => {
     if (skill[0].isGamePlay === "non-playing") {
       setSkill((prevState) => {
@@ -314,6 +323,7 @@ const InGamePlay = () => {
     }
   }, [skill[2].isGamePlay]);
 
+  // 키 눌림을 감지하는 useEffect
   useEffect(() => {
     document.addEventListener("keypress", handleKeyPress);
     document.addEventListener("keyup", handleKeyUp);
@@ -324,29 +334,8 @@ const InGamePlay = () => {
   }, []);
 
   const handleKeyPress = (e) => {
-    if (e.key === "q" || e.key === "ㅂ") {
-      setIsKeyQPressed(true);
-    }
-    if (e.key === "w" || e.key === "ㅈ") {
-      setIsKeyWPressed(true);
-    }
-    if (e.key === "e" || e.key === "ㄷ") {
-      setIsKeyEPressed(true);
-    }
-    if (e.key === "r" || e.key === "ㄱ") {
-      setIsKeyRPressed(true);
-    }
-    if (e.key === "d" || e.key === "ㅇ") {
-      setIsKeyDPressed(true);
-    }
-    if (e.key === "f" || e.key === "ㄹ") {
-      setIsKeyFPressed(true);
-    }
-
-    // 키를 눌렀을 때 확인하는 함수
     // 세 개의 스킬들중 하나라도 보인다면 실행
     // skill의 상태 변경
-
     const pressedKey = e.key.toLowerCase();
     if (skill[0].isShown || skill[1].isShown || skill[2].isShown) {
       if (
@@ -440,7 +429,29 @@ const InGamePlay = () => {
         }
       }
     }
+
+    // 키를 눌렀을 때 확인하는 함수
+    if (e.key === "q" || e.key === "ㅂ") {
+      setIsKeyQPressed(true);
+    }
+    if (e.key === "w" || e.key === "ㅈ") {
+      setIsKeyWPressed(true);
+    }
+    if (e.key === "e" || e.key === "ㄷ") {
+      setIsKeyEPressed(true);
+    }
+    if (e.key === "r" || e.key === "ㄱ") {
+      setIsKeyRPressed(true);
+    }
+    if (e.key === "d" || e.key === "ㅇ") {
+      setIsKeyDPressed(true);
+    }
+    if (e.key === "f" || e.key === "ㄹ") {
+      setIsKeyFPressed(true);
+    }
   };
+
+  // 키 떼졌을 때 확인하는 함수
   const handleKeyUp = (e) => {
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(false);
@@ -462,12 +473,6 @@ const InGamePlay = () => {
     }
   };
 
-  useEffect(() => {
-    if (time === 0) {
-      navigate("/score");
-    }
-  });
-
   // 마우스 호버상태를 확인하는 함수
   const handleMouseEnter = () => {
     setSkill((prevState) => {
@@ -475,7 +480,7 @@ const InGamePlay = () => {
       updatedSkill[0].isHovered = true;
       updatedSkill[1].isHovered = true;
       updatedSkill[2].isHovered = true;
-      return updatedSkill; // 변경된 배열을 반환합니다.
+      return updatedSkill;
     });
   };
   // 마우스 호버상태 해제 확인하는 함수
@@ -485,7 +490,7 @@ const InGamePlay = () => {
       updatedSkill[0].isHovered = false;
       updatedSkill[1].isHovered = false;
       updatedSkill[2].isHovered = false;
-      return updatedSkill; // 변경된 배열을 반환합니다.
+      return updatedSkill;
     });
   };
 
