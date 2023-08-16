@@ -5,6 +5,8 @@ import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 
 import styled from "styled-components";
 
+import EffectStyled from "./EffectStyled";
+
 import Map from "../../components/Map/Map";
 
 import NormalCursor from "../../assets/Summoner/normal.cur";
@@ -20,6 +22,13 @@ import QSkill from "../../assets/img/skills/skill-q.png";
 import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
+
+import StopEffect from "../../assets/img/StopEffect.png";
+
+import QEffcet from "../../assets/gif/gifEffect-Q.gif";
+import WEffcet from "../../assets/gif/gifEffect-W.gif";
+import EEffcet from "../../assets/gif/gifEffect-E.gif";
+import REffcet from "../../assets/gif/gifEffect-R.gif";
 
 const StyledWrapper = styled.div`
   p {
@@ -41,6 +50,7 @@ const StyledWrapper = styled.div`
     height: 900px;
     background-color: #091428;
   }
+
   .ui-cotainer {
     display: block;
     position: relative;
@@ -111,6 +121,7 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     border: 2px solid #c8aa6e;
     background-color: #091428;
+    z-index: 50;
   }
   .time-score-container {
     display: flex;
@@ -186,6 +197,11 @@ const InGamePlay = () => {
   const [isKeyRPressed, setIsKeyRPressed] = useState(false);
   const [isKeyDPressed, setIsKeyDPressed] = useState(false);
   const [isKeyFPressed, setIsKeyFPressed] = useState(false);
+
+  const [effectQVisible, setEffectQVisible] = useState(false);
+  const [effectWVisible, setEffectWVisible] = useState(false);
+  const [effectEVisible, setEffectEVisible] = useState(false);
+  const [effectRVisible, setEffectRVisible] = useState(false);
 
   /* 
     isGamePlay: 게임 중 상태
@@ -463,15 +479,19 @@ const InGamePlay = () => {
   const handleKeyPress = (e) => {
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(true);
+      setEffectQVisible(true);
     }
     if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(true);
+      setEffectWVisible(true);
     }
     if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(true);
+      setEffectEVisible(true);
     }
     if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(true);
+      setEffectRVisible(true);
     }
     if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(true);
@@ -581,15 +601,19 @@ const InGamePlay = () => {
   const handleKeyUp = (e) => {
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(false);
+      setEffectQVisible(false);
     }
     if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(false);
+      setEffectWVisible(false);
     }
     if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(false);
+      setEffectEVisible(false);
     }
     if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(false);
+      setEffectRVisible(false);
     }
     if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(false);
@@ -629,7 +653,47 @@ const InGamePlay = () => {
     <StyledWrapper>
       <div className="game-container" ref={gameContainer}>
         <canvas className="canvas-container" ref={canvasRef}></canvas>
-
+        <EffectStyled>
+          <div className="effect-container">
+            <img className="effect-stop" src={StopEffect} alt="effect"></img>
+            {effectQVisible ? (
+              <img
+                className="effect-gif Q-effect"
+                src={QEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectWVisible ? (
+              <img
+                className="effect-gif W-effect"
+                src={WEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectEVisible ? (
+              <img
+                className="effect-gif E-effect"
+                src={EEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectRVisible ? (
+              <img
+                className="effect-gif R-effect"
+                src={REffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+          </div>
+        </EffectStyled>
         <div
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
