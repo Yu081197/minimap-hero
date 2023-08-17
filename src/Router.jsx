@@ -13,6 +13,9 @@ import HowToPlay01 from "./page/HowToPlay/HowToPlay01";
 import HowToPlay02 from "./page/HowToPlay/HowToPlay02";
 import HowToPlay03 from "./page/HowToPlay/HowToPlay03";
 
+import DinoGame from "./components/MiniGame/DinoGame/DinoGame";
+import FlappyBird from "./components/MiniGame/FlappyBird";
+
 const StyledWrapper = styled.div`
   color: #cdfafa;
   font-size: 50px;
@@ -45,6 +48,9 @@ function routes() {
         <Route path="/score" element={<ScorePage />} />
         <Route path="/training-mode" element={<TrainingMode />} />
         <Route path="/ingameplay" element={<InGamePlay />} />
+
+        <Route path="dinogame" element={<DinoGame />} />
+        {/* <Route path="flappybird" element={<FlappyBird />} /> */}
         {!isMobileDevice() && <Route path="/" element={<StartPage />} />}
       </Routes>
     </BrowserRouter>
