@@ -78,6 +78,7 @@ const InGamePlayStyled = styled.div`
     background-color: #091428;
     flex-direction: column-reverse;
     gap: 5px;
+    z-index: 99;
   }
   .remain-time {
     color: #0ac8b9;

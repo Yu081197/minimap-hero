@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 
-import EffectStyled from "./EffectStyled";
+import EffectStyled from "./styles/Effect.styled";
 
 import InGamePlayStyled from "./styles/InGamePlay.styled";
 import useGetRandom from "../../utils/useGetRandom";
 
 import Map from "../../components/Map/Map";
-import NormalCursor from "../../assets/Summoner/normal.cur";
+
 import AttackCursor from "../../assets/Summoner/alt.cur";
+import CrossCur from "../../assets/Summoner/crosshair.cur";
 
 import skillUI from "../../assets/img/skillUI.png";
 import ASkill from "../../assets/img/skills/skill-a.png";
@@ -61,6 +62,10 @@ const InGamePlay = () => {
   const [isKeyRPressed, setIsKeyRPressed] = useState(false);
   const [isKeyDPressed, setIsKeyDPressed] = useState(false);
   const [isKeyFPressed, setIsKeyFPressed] = useState(false);
+
+  const [isKeyAPressed, setIsKeyAPressed] = useState(false);
+
+  const [cursorStyle, setCursorStyle] = useState("auto");
 
   const [effectQVisible, setEffectQVisible] = useState(false);
   const [effectWVisible, setEffectWVisible] = useState(false);
@@ -349,29 +354,6 @@ const InGamePlay = () => {
   }, []);
 
   const handleKeyPress = (e) => {
-
-    if (e.key === "q" || e.key === "ㅂ") {
-      setIsKeyQPressed(true);
-      setEffectQVisible(true);
-    }
-    if (e.key === "w" || e.key === "ㅈ") {
-      setIsKeyWPressed(true);
-      setEffectWVisible(true);
-    }
-    if (e.key === "e" || e.key === "ㄷ") {
-      setIsKeyEPressed(true);
-      setEffectEVisible(true);
-    }
-    if (e.key === "r" || e.key === "ㄱ") {
-      setIsKeyRPressed(true);
-      setEffectRVisible(true);
-    }
-    if (e.key === "d" || e.key === "ㅇ") {
-      setIsKeyDPressed(true);
-    }
-    if (e.key === "f" || e.key === "ㄹ") {
-      setIsKeyFPressed(true);
-    }
     // 세 개의 스킬들중 하나라도 보인다면 실행
     // skill의 상태 변경
     const pressedKey = e.key.toLowerCase();
@@ -487,6 +469,17 @@ const InGamePlay = () => {
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(true);
     }
+
+    if (e.key === "a" || e.key === "ㅁ") {
+      console.log("aa");
+      if (cursorStyle === "auto") {
+        setCursorStyle(`url(${CrossCur}), auto`);
+        console.log("hello");
+      } else {
+        setCursorStyle("auto");
+        console.log("hi");
+      }
+    }
   };
 
   // 키 떼졌을 때 확인하는 함수
@@ -536,9 +529,20 @@ const InGamePlay = () => {
     });
   };
 
+  const handleCursorStyle = () => {
+    if (cursorStyle) {
+      setCursorStyle("auto");
+    }
+  };
+
   return (
     <InGamePlayStyled>
-      <div className="game-container" ref={gameContainer}>
+      <div
+        className="game-container"
+        style={{ cursor: cursorStyle }}
+        ref={gameContainer}
+        onClick={handleCursorStyle}
+      >
         <canvas className="canvas-container" ref={canvasRef}></canvas>
         <EffectStyled>
           <div className="effect-container">
