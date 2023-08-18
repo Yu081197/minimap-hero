@@ -11,7 +11,7 @@ import RSkill from "../../assets/img/skills/skill-r.png";
 import { styled } from "styled-components";
 
 const StyledWrapper = styled.div`
-  .ui-cotainer {
+  .ui-container {
     display: block;
     position: relative;
   }
@@ -30,7 +30,7 @@ const StyledWrapper = styled.div`
   }
   .skill-q {
     top: 25px;
-    right: 558px;
+    right: 559px;
     width: 54px;
   }
   .skill-w {

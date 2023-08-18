@@ -5,7 +5,10 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     
     style{
-    display: none;
+        display: none;
+    }
+    title{
+        display: none;
     }
     a{
         text-decoration: none;

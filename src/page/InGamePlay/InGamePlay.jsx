@@ -3,15 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
 
+import EffectStyled from "./styles/Effect.styled";
+
 import InGamePlayStyled from "./styles/InGamePlay.styled";
 import useGetRandom from "../../utils/useGetRandom";
+
 import Map from "../../components/Map/Map";
-import NormalCursor from "../../assets/Summoner/normal.cur";
+
 import AttackCursor from "../../assets/Summoner/alt.cur";
+import CrossCur from "../../assets/Summoner/crosshair.cur";
 
 import skillUI from "../../assets/img/skillUI.png";
-import ASkill from "../../assets/img/skills/skill-a.png";
-import SSkill from "../../assets/img/skills/skill-s.png";
+import backgroundImg from "../../assets/img/backgroundImg.png";
+
+import ASkill from "../../assets/img/skills/skill-cm.png";
+import SSkill from "../../assets/img/skills/skill-mm.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
 import FSkill from "../../assets/img/skills/skill-f.png";
 import QSkill from "../../assets/img/skills/skill-q.png";
@@ -19,13 +25,19 @@ import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
 
+import StopEffect from "../../assets/img/Effect.jpg";
+import QEffcet from "../../assets/gif/gifEffect-Q.gif";
+import WEffcet from "../../assets/gif/gifEffect-W.gif";
+import EEffcet from "../../assets/gif/gifEffect-E.gif";
+import REffcet from "../../assets/gif/gifEffect-R.gif";
+
 const skills = [
   { id: 1, eng: "q", kor: "ㅂ", image: QSkill },
   { id: 2, eng: "w", kor: "ㅈ", image: WSkill },
   { id: 3, eng: "e", kor: "ㄷ", image: ESkill },
   { id: 4, eng: "r", kor: "ㄱ", image: RSkill },
   { id: 5, eng: "a", kor: "ㅁ", image: ASkill },
-  { id: 6, eng: "s", kor: "ㄴ", image: SSkill },
+  { id: 5, eng: "a", kor: "ㅁ", image: SSkill },
   { id: 7, eng: "d", kor: "ㅇ", image: DSkill },
   { id: 8, eng: "f", kor: "ㄹ", image: FSkill },
 ];
@@ -51,6 +63,15 @@ const InGamePlay = () => {
   const [isKeyRPressed, setIsKeyRPressed] = useState(false);
   const [isKeyDPressed, setIsKeyDPressed] = useState(false);
   const [isKeyFPressed, setIsKeyFPressed] = useState(false);
+
+  const [isKeyAPressed, setIsKeyAPressed] = useState(false);
+
+  const [cursorStyle, setCursorStyle] = useState("auto");
+
+  const [effectQVisible, setEffectQVisible] = useState(false);
+  const [effectWVisible, setEffectWVisible] = useState(false);
+  const [effectEVisible, setEffectEVisible] = useState(false);
+  const [effectRVisible, setEffectRVisible] = useState(false);
 
   /* 
     isGamePlay: 게임 중 상태
@@ -433,15 +454,19 @@ const InGamePlay = () => {
     // 키를 눌렀을 때 확인하는 함수
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(true);
+      setEffectQVisible(true);
     }
     if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(true);
+      setEffectWVisible(true);
     }
     if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(true);
+      setEffectEVisible(true);
     }
     if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(true);
+      setEffectRVisible(true);
     }
     if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(true);
@@ -449,27 +474,38 @@ const InGamePlay = () => {
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(true);
     }
+
+    if (e.key === "a" || e.key === "ㅁ") {
+      setCursorStyle(`url(${CrossCur}), auto`);
+    }
   };
 
   // 키 떼졌을 때 확인하는 함수
   const handleKeyUp = (e) => {
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(false);
+      setEffectQVisible(false);
     }
     if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(false);
+      setEffectWVisible(false);
     }
     if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(false);
+      setEffectEVisible(false);
     }
     if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(false);
+      setEffectRVisible(false);
     }
     if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(false);
     }
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(false);
+    }
+    if (e.key === "a" || e.key === "ㅁ") {
+      setCursorStyle("auto");
     }
   };
 
@@ -494,11 +530,67 @@ const InGamePlay = () => {
     });
   };
 
+  const handleCursorStyle = () => {
+    if (cursorStyle) {
+      setCursorStyle("auto");
+    }
+  };
+
   return (
     <InGamePlayStyled>
-      <div className="game-container" ref={gameContainer}>
+      <div
+        className="game-container"
+        style={{ cursor: cursorStyle }}
+        ref={gameContainer}
+        onClick={handleCursorStyle}
+      >
         <canvas className="canvas-container" ref={canvasRef}></canvas>
-
+        <img
+          className="background-container"
+          src={backgroundImg}
+          alt="backgroundImg"
+        ></img>
+        <EffectStyled>
+          <div className="effect-container">
+            <img className="effect-stop" src={StopEffect} alt="effect"></img>
+            {effectQVisible ? (
+              <img
+                className="effect-gif Q-effect"
+                src={QEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectWVisible ? (
+              <img
+                className="effect-gif W-effect"
+                src={WEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectEVisible ? (
+              <img
+                className="effect-gif E-effect"
+                src={EEffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+            {effectRVisible ? (
+              <img
+                className="effect-gif R-effect"
+                src={REffcet}
+                alt="effect"
+              ></img>
+            ) : (
+              <></>
+            )}
+          </div>
+        </EffectStyled>
         <div
           className="skill-container"
           style={{ left: skill[0].positionX, top: skill[0].positionY }}
