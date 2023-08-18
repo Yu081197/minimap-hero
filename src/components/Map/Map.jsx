@@ -15,6 +15,8 @@ import Champ7 from "../../assets/img/champions/i4825916414.jpg";
 import Champ8 from "../../assets/img/champions/145.png";
 import Champ9 from "../../assets/img/champions/bdPiW70pfZb3EEqPIYRFFZtsakJSklTCEN-2f6DFuZAEClUD2g4aZzzf2m67NN2zAqvzMH4bevJD25S0Y3iC3w.jpg";
 import Champ10 from "../../assets/img/champions/Z8HrEpVrkSExFS1so60ppGC0SosF3RDzWtq0y7CZ5Qn7YjDLMPgLnq6q7WwJzVUs0Yy-qan0tVHeEEXb7tn5Sw.jpg";
+import Ping from "../../assets/img/ping/skill-s.png";
+import PingAlert from "../../assets/img/ping/Muw2VQ5mZwD6I-0FvPEY-cVpE4Vd6lgQMWi7PS-QVRVDEIUPiBfXP3nGsnSQou3phzTrw-i8dx82HKZHDwji6ORhgbEW90SSlF1qitY12VId7T-IFbHumL7rFQjz_LLA2x4E7nTRpt1YNX9bkFhmGA.webp";
 
 import { styled } from "styled-components";
 
@@ -71,8 +73,24 @@ const StyledWrapper = styled.div`
     right: 70px;
     position: absolute;
     color: #00ff00;
-    background-color: #091428;
+    background-color: transparent;
     font-size: 70px;
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: red; /* 하이라이트 색상 */
+    }
+  }
+  .ping {
+    position: absolute;
+    bottom: 500px;
+    right: 150px;
+    background-color: transparent;
+    animation: blink 1s infinite;
   }
 `;
 
@@ -87,6 +105,8 @@ const Map = () => {
   const [isKeyTwoPressed, setIsKeyTwoPressed] = useState(false);
   const [isKeyThreePressed, setIsKeyThreePressed] = useState(false);
   const [isKeyFourPressed, setIsKeyFourPressed] = useState(false);
+
+  const [isPing, setIsPing] = useState(false);
 
   const [champion, setChampion] = useState({
     id: 1,
@@ -136,38 +156,38 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
+    setChampion((prevState) => {
+      const updatedChampion = { ...prevState };
+      const randomChampion = getRandomNumberZeroToTen();
+      updatedChampion.targetChampion = randomChampion;
+      updatedChampion.positionX = getRandomPositionX();
+      updatedChampion.positionY = getRandomPositionY();
+      return updatedChampion; // 변경된 배열을 반환합니다.
+    });
     if (champion.isGamePlay === "non-playing") {
-      setChampion((prevState) => {
-        const updatedChampion = { ...prevState };
-        const randomChampion = getRandomNumberZeroToTen();
-        updatedChampion.targetChampion = randomChampion;
-        updatedChampion.positionX = getRandomPositionX();
-        updatedChampion.positionY = getRandomPositionY();
-        return updatedChampion; // 변경된 배열을 반환합니다.
-      });
-      if (champion.isGamePlay === "non-playing") {
+      setTimeout(() => {
+        setChampion((prevState) => {
+          const updatedChampion = { ...prevState };
+          updatedChampion.isShown = true;
+          updatedChampion.isGamePlay = "playing";
+          return updatedChampion;
+        });
+        setIsPing(true);
         setTimeout(() => {
           setChampion((prevState) => {
             const updatedChampion = { ...prevState };
-            updatedChampion.isShown = true;
-            updatedChampion.isGamePlay = "playing";
+            updatedChampion.isShown = false;
+            updatedChampion.isGamePlay = "non-playing";
             return updatedChampion;
           });
-          setTimeout(() => {
-            setChampion((prevState) => {
-              const updatedChampion = { ...prevState };
-              updatedChampion.isShown = false;
-              updatedChampion.isGamePlay = "non-playing";
-              return updatedChampion;
-            });
-          }, 2000);
-        }, 3000);
-      }
-      if (prevTimeoutRef.current) {
-        clearTimeout(prevTimeoutRef.current);
-      }
-      prevTimeoutRef.current = setTimeout(() => {}, champion.noShowTime * 700);
+          setIsPing(false);
+        }, 2000);
+      }, 3000);
     }
+    if (prevTimeoutRef.current) {
+      clearTimeout(prevTimeoutRef.current);
+    }
+    prevTimeoutRef.current = setTimeout(() => {}, champion.noShowTime * 700);
   }, [champion.isGamePlay]);
 
   useEffect(() => {
@@ -225,6 +245,11 @@ const Map = () => {
     <>
       <StyledWrapper>
         <div className="map-box">
+          {isPing ? (
+            <img className="ping" src={PingAlert} alt="ping"></img>
+          ) : (
+            <></>
+          )}
           <div className="portrait-container">
             <img
               className="portrait"

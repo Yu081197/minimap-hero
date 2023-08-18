@@ -36,6 +36,19 @@ const HowToPlay02Styled = styled.div`
     font-size: 40px;
     background: #091429;
   }
+  .explain-box-a {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 40px;
+    background-color: transparent;
+  }
+  .explain-a {
+    background-color: transparent;
+    display: flex;
+    gap: 30px;
+  }
   .display {
     top: 10.125rem;
   }
