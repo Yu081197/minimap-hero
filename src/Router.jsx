@@ -49,8 +49,6 @@ function routes() {
         <Route path="/training-mode" element={<TrainingMode />} />
         <Route path="/ingameplay" element={<InGamePlay />} />
 
-        <Route path="dinogame" element={<DinoGame />} />
-        {/* <Route path="flappybird" element={<FlappyBird />} /> */}
         {!isMobileDevice() && <Route path="/" element={<StartPage />} />}
       </Routes>
     </BrowserRouter>
