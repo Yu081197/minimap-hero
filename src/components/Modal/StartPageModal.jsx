@@ -13,11 +13,11 @@ const StartPageModal = ({
             <div className="select-modal-button-wrapper">
               <div className="button-container">
                 <Link to="/countdown-game">
-                  <div class="button button-start">game mode</div>
+                  <div class="button button-start">easy</div>
                 </Link>
               </div>
               <div className="button-container">
-                <div class="button-start button-noclick">training mode</div>
+                <div class="button-start button-noclick">hard</div>
               </div>
             </div>
           </div>
