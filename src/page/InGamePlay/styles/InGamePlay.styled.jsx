@@ -11,14 +11,17 @@ const InGamePlayStyled = styled.div`
     justify-content: center;
     width: 1604px;
     height: 904px;
-    background-color: #091428;
+    background-color: transparent;
     border: 2px solid #c8aa6e;
   }
   .canvas-container {
     position: absolute;
     width: 1600px;
     height: 900px;
-    background-color: #091428;
+    background-color: transparent;
+  }
+  .background-container {
+    position: absolute;
   }
   .ui-cotainer {
     display: block;
@@ -27,10 +30,12 @@ const InGamePlayStyled = styled.div`
   .ui {
     position: absolute;
     bottom: 0px;
+    background-color: transparent;
   }
   .ui-skill {
     position: absolute;
     bottom: 0px;
+    background-color: transparent;
   }
   .skill-d {
     bottom: 4.7rem;
@@ -45,9 +50,8 @@ const InGamePlayStyled = styled.div`
     height: 31px;
   }
   .skill-q {
-    bottom: 4rem;
-    right: 39.1rem;
-    right: 54.86rem;
+    bottom: 3.99rem;
+    right: 55rem;
     width: 42px;
   }
   .skill-w {
@@ -75,7 +79,7 @@ const InGamePlayStyled = styled.div`
     height: 110%;
     border-radius: 50%;
     display: flex;
-    background-color: #091428;
+    background-color: transparent;
     flex-direction: column-reverse;
     gap: 5px;
     z-index: 99;
@@ -83,14 +87,14 @@ const InGamePlayStyled = styled.div`
   .remain-time {
     color: #0ac8b9;
     font-size: 25px;
-    background-color: #091428;
+    background-color: transparent;
   }
   .skill {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     border: 2px solid #c8aa6e;
-    background-color: #091428;
+    background-color: transparent;
   }
   .time-score-container {
     display: flex;
@@ -100,14 +104,14 @@ const InGamePlayStyled = styled.div`
     right: 50px;
     position: absolute;
     color: #cdfafa;
-    background-color: #091428;
+    background-color: transparent;
     font-size: 30px;
   }
   .time {
-    background-color: #091428;
+    background-color: transparent;
   }
   .score {
-    background-color: #091428;
+    background-color: transparent;
   }
   .score-plus {
     font-size: 50px;
@@ -119,13 +123,14 @@ const InGamePlayStyled = styled.div`
   }
   .fail {
     color: #cdfafa;
-    background-color: #091428;
+    background-color: transparent;
   }
   .skill-ui {
     width: 50%;
     position: absolute;
     bottom: 0;
     left: 23%;
+    background-color: transparent;
   }
   .skill-container {
     background-color: transparent;

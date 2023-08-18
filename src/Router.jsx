@@ -6,7 +6,6 @@ import StartPage from "./page/StartPage/StartPage";
 import ScorePage from "./page/ScorePage/ScorePage";
 import HowToPlay from "./page/HowToPlay/HowToPlay";
 import InGamePlay from "./page/InGamePlay/InGamePlay";
-import TrainingMode from "./page/TrainingMode/TrainingMode";
 import GameCountDownPage from "./page/CountDownPage/GameCountDownPage";
 import TrainingCountDownPage from "./page/CountDownPage/TrainingCountDownPage";
 import HowToPlay01 from "./page/HowToPlay/HowToPlay01";
@@ -46,7 +45,6 @@ function routes() {
         <Route path="/countdown-game" element={<GameCountDownPage />} />
         <Route path="/countdown-training" element={<TrainingCountDownPage />} />
         <Route path="/score" element={<ScorePage />} />
-        <Route path="/training-mode" element={<TrainingMode />} />
         <Route path="/ingameplay" element={<InGamePlay />} />
 
         {!isMobileDevice() && <Route path="/" element={<StartPage />} />}

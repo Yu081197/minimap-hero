@@ -8,6 +8,10 @@ const EffectStyled = styled.div`
     position: absolute;
     z-index: 49;
   }
+  .effect-stop {
+    position: absolute;
+    z-index: 4;
+  }
 `;
 
 export default EffectStyled;

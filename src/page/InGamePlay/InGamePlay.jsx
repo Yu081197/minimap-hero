@@ -14,8 +14,10 @@ import AttackCursor from "../../assets/Summoner/alt.cur";
 import CrossCur from "../../assets/Summoner/crosshair.cur";
 
 import skillUI from "../../assets/img/skillUI.png";
-import ASkill from "../../assets/img/skills/skill-a.png";
-import SSkill from "../../assets/img/skills/skill-s.png";
+import backgroundImg from "../../assets/img/backgroundImg.png";
+
+import ASkill from "../../assets/img/skills/skill-cm.png";
+import SSkill from "../../assets/img/skills/skill-mm.png";
 import DSkill from "../../assets/img/skills/skill-d.png";
 import FSkill from "../../assets/img/skills/skill-f.png";
 import QSkill from "../../assets/img/skills/skill-q.png";
@@ -23,8 +25,7 @@ import WSkill from "../../assets/img/skills/skill-w.png";
 import ESkill from "../../assets/img/skills/skill-e.png";
 import RSkill from "../../assets/img/skills/skill-r.png";
 
-import StopEffect from "../../assets/img/StopEffect.png";
-
+import StopEffect from "../../assets/img/Effect.jpg";
 import QEffcet from "../../assets/gif/gifEffect-Q.gif";
 import WEffcet from "../../assets/gif/gifEffect-W.gif";
 import EEffcet from "../../assets/gif/gifEffect-E.gif";
@@ -36,7 +37,7 @@ const skills = [
   { id: 3, eng: "e", kor: "ㄷ", image: ESkill },
   { id: 4, eng: "r", kor: "ㄱ", image: RSkill },
   { id: 5, eng: "a", kor: "ㅁ", image: ASkill },
-  { id: 6, eng: "s", kor: "ㄴ", image: SSkill },
+  { id: 5, eng: "a", kor: "ㅁ", image: SSkill },
   { id: 7, eng: "d", kor: "ㅇ", image: DSkill },
   { id: 8, eng: "f", kor: "ㄹ", image: FSkill },
 ];
@@ -453,15 +454,19 @@ const InGamePlay = () => {
     // 키를 눌렀을 때 확인하는 함수
     if (e.key === "q" || e.key === "ㅂ") {
       setIsKeyQPressed(true);
+      setEffectQVisible(true);
     }
     if (e.key === "w" || e.key === "ㅈ") {
       setIsKeyWPressed(true);
+      setEffectWVisible(true);
     }
     if (e.key === "e" || e.key === "ㄷ") {
       setIsKeyEPressed(true);
+      setEffectEVisible(true);
     }
     if (e.key === "r" || e.key === "ㄱ") {
       setIsKeyRPressed(true);
+      setEffectRVisible(true);
     }
     if (e.key === "d" || e.key === "ㅇ") {
       setIsKeyDPressed(true);
@@ -471,14 +476,7 @@ const InGamePlay = () => {
     }
 
     if (e.key === "a" || e.key === "ㅁ") {
-      console.log("aa");
-      if (cursorStyle === "auto") {
-        setCursorStyle(`url(${CrossCur}), auto`);
-        console.log("hello");
-      } else {
-        setCursorStyle("auto");
-        console.log("hi");
-      }
+      setCursorStyle(`url(${CrossCur}), auto`);
     }
   };
 
@@ -505,6 +503,9 @@ const InGamePlay = () => {
     }
     if (e.key === "f" || e.key === "ㄹ") {
       setIsKeyFPressed(false);
+    }
+    if (e.key === "a" || e.key === "ㅁ") {
+      setCursorStyle("auto");
     }
   };
 
@@ -544,6 +545,11 @@ const InGamePlay = () => {
         onClick={handleCursorStyle}
       >
         <canvas className="canvas-container" ref={canvasRef}></canvas>
+        <img
+          className="background-container"
+          src={backgroundImg}
+          alt="backgroundImg"
+        ></img>
         <EffectStyled>
           <div className="effect-container">
             <img className="effect-stop" src={StopEffect} alt="effect"></img>
