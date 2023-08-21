@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increaseScore, decreaseScore } from "../../services/ScoreSlice";
+import { useNavigate } from "react-router-dom";
 
 import MapImg from "../../assets/img/minimap.png";
 
@@ -98,6 +99,9 @@ const Map = () => {
   const mapContainer = useRef(null);
   const prevTimeoutRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [isCorrect, setIsCorrect] = useState(true);
 
   const [plus200Score, setPlus200Score] = useState(false);
 
@@ -141,6 +145,9 @@ const Map = () => {
   }
 
   useEffect(() => {
+    if (isCorrect === false) {
+      navigate("/score");
+    }
     const interval = setInterval(() => {
       setChampion((prevState) => {
         const updatedChampion = { ...prevState };
@@ -174,13 +181,19 @@ const Map = () => {
         });
         setIsPing(true);
         setTimeout(() => {
+          setIsPing(false);
           setChampion((prevState) => {
             const updatedChampion = { ...prevState };
             updatedChampion.isShown = false;
             updatedChampion.isGamePlay = "non-playing";
             return updatedChampion;
           });
-          setIsPing(false);
+
+          // setTimeout(() => {
+          //   if (champion.isShown === true) {
+          //     navigate("/score");
+          //   }
+          // });
         }, 2000);
       }, 3000);
     }
@@ -217,9 +230,12 @@ const Map = () => {
       if (champion.targetChampion.key === pressedKey) {
         incrementScore(200);
         setPlus200Score(true);
+        setIsPing(false);
+        setIsCorrect(true);
         setChampion((prevState) => {
           const updatedChampion = { ...prevState };
           updatedChampion.isShown = false;
+          updatedChampion.isGamePlay = "non-playing";
           return updatedChampion;
         });
         setTimeout(() => setPlus200Score(false), 2000);

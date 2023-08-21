@@ -47,7 +47,7 @@ const InGamePlay = () => {
   const navigate = useNavigate();
   const gameContainer = useRef(null);
   const prevTimeoutRef = useRef();
-  const [time, setTime] = useState(100);
+  const [time, setTime] = useState(0);
   const dispatch = useDispatch();
   const randomUtils = useGetRandom();
   const score = useSelector((state) => {
@@ -199,17 +199,12 @@ const InGamePlay = () => {
   }
 
   // 시간 끝나면 자동으로 score로 넘어가는 useEffect
-  useEffect(() => {
-    if (time === 0) {
-      navigate("/score");
-    }
-  });
 
   // setInterval로 스킬이 보여지는 시간 관리
   // 700마다 숫자가 떨어지고 shownTime이 0보다 작아지면 shownTime을 null로 바꾼다.
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime((props) => props - 1);
+      setTime((props) => props + 1);
       setSkill((prevState) => {
         const updatedSkill = [...prevState];
         updatedSkill[0].shownTime -= 1;
