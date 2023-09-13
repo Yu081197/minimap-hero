@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxHryTbfXsOmk-A54SSxd9Q6suH1Klcks",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "minimap-hero.firebaseapp.com",
   databaseURL: "https://minimap-hero-default-rtdb.firebaseio.com",
   projectId: "minimap-hero",
