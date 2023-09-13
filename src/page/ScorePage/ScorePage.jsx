@@ -31,7 +31,7 @@ const ScorePage = () => {
           {isStarSurveyModal ? (
             <>
               <div>
-                <StarSurveyModal />
+                <StarSurveyModal setIsStarSurveyModal={setIsStarSurveyModal} />
               </div>
             </>
           ) : (
